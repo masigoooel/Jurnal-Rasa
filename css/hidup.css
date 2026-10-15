@@ -1,0 +1,264 @@
+/* Efek hidup: latar bergerak, wajah berkedip, api streak, konfeti. Dimuat setelah fitur karena menimpa beberapa gaya dasarnya. */
+
+/* Lebih hidup: latar bergerak, wajah berkedip, konfeti */
+.blobs {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+.blobs i {
+  position: absolute;
+  width: 70vmax;
+  height: 70vmax;
+  border-radius: 50%;
+  opacity: 0.2;
+  will-change: transform;
+  --b: var(--tint);
+  background: radial-gradient(
+    closest-side,
+    color-mix(in srgb, var(--b) 70%, transparent),
+    transparent
+  );
+}
+.blobs i:nth-child(1) {
+  left: -25vmax;
+  top: -32vmax;
+  animation: drift1 60s ease-in-out infinite alternate;
+}
+.blobs i:nth-child(2) {
+  --b: var(--m2);
+  right: -30vmax;
+  top: 0;
+  opacity: 0.15;
+  animation: drift2 75s ease-in-out infinite alternate;
+}
+.blobs i:nth-child(3) {
+  --b: var(--accent);
+  left: 20vw;
+  bottom: -45vmax;
+  opacity: 0.12;
+  animation: drift1 90s ease-in-out infinite alternate-reverse;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .blobs i {
+    opacity: 0.15;
+  }
+}
+:root[data-theme="dark"] .blobs i {
+  opacity: 0.15;
+}
+@keyframes drift1 {
+  to {
+    transform: translate(12vw, 10vh) scale(1.15);
+  }
+}
+@keyframes drift2 {
+  to {
+    transform: translate(-14vw, 16vh) scale(0.9);
+  }
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.logo {
+  display: grid;
+  animation: bob 4s ease-in-out infinite;
+}
+.logo svg {
+  animation: pop 0.5s cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+h1 {
+  background: linear-gradient(
+    100deg,
+    var(--fg) 35%,
+    color-mix(in srgb, var(--tint) 70%, var(--fg)) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.eyes {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.mood .eyes,
+.logo .eyes,
+.empty .eyes {
+  animation: blink 5s infinite;
+}
+.mood:nth-child(2) .eyes {
+  animation-delay: 1.3s;
+}
+.mood:nth-child(3) .eyes {
+  animation-delay: 2.9s;
+}
+.mood:nth-child(4) .eyes {
+  animation-delay: 0.7s;
+}
+.mood:nth-child(5) .eyes {
+  animation-delay: 3.6s;
+}
+@keyframes blink {
+  0%,
+  94%,
+  100% {
+    transform: scaleY(1);
+  }
+  97% {
+    transform: scaleY(0.1);
+  }
+}
+.mood:hover svg {
+  animation: wobble 0.5s;
+}
+.mood[aria-pressed="true"] svg {
+  animation: bob 2.4s ease-in-out infinite;
+}
+.mood.pop svg {
+  animation:
+    pop 0.45s cubic-bezier(0.3, 1.6, 0.5, 1),
+    bob 2.4s 0.45s ease-in-out infinite;
+}
+@keyframes wobble {
+  25% {
+    transform: rotate(-10deg);
+  }
+  50% {
+    transform: rotate(8deg);
+  }
+  75% {
+    transform: rotate(-4deg);
+  }
+}
+
+h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.hi {
+  width: 30px;
+  height: 30px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  flex: none;
+  background: color-mix(in srgb, var(--hc) 20%, transparent);
+  color: color-mix(in srgb, var(--hc) 75%, var(--fg));
+}
+.hi svg {
+  width: 17px;
+  height: 17px;
+}
+.panel:hover .hi {
+  animation: wobble 0.5s;
+}
+
+.stat {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s;
+}
+.stat:hover {
+  transform: translateY(-2px);
+}
+.stat[style*="--sc"] {
+  background: color-mix(in srgb, var(--sc) 22%, var(--surface-2));
+}
+.stat.hot {
+  background: color-mix(in srgb, var(--m5) 16%, var(--surface-2));
+}
+.flame {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  width: 22px;
+  height: 22px;
+  fill: var(--m5);
+  transform-origin: bottom center;
+  animation: flicker 1.2s ease-in-out infinite alternate;
+}
+@keyframes flicker {
+  0% {
+    transform: scale(1) rotate(-3deg);
+  }
+  50% {
+    transform: scale(1.08, 0.94) rotate(2deg);
+  }
+  100% {
+    transform: scale(0.96, 1.06) rotate(-1deg);
+  }
+}
+
+.btn.primary {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(
+    135deg,
+    var(--accent),
+    color-mix(in srgb, var(--accent) 70%, var(--m1))
+  );
+}
+
+.confetti {
+  position: fixed;
+  width: 8px;
+  height: 10px;
+  border-radius: 2px;
+  pointer-events: none;
+  z-index: 50;
+  animation: confetti 1s cubic-bezier(0.15, 0.7, 0.3, 1) forwards;
+}
+@keyframes confetti {
+  0% {
+    transform: translate(-50%, -50%) scale(0.4);
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy) + 60px)) rotate(var(--r))
+      scale(1);
+    opacity: 0;
+  }
+}
+
+/* Gradasi rasa di bagian atas halaman: ikut berubah warna saat wajah rasa dipilih (--tint dari js/editor.js).
+   --tint didaftarkan sebagai warna supaya perubahannya bisa memudar pelan, bukan langsung berganti. */
+@property --tint {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #f2bf6c;
+}
+body {
+  --glow: 24%;
+  transition: --tint 0.9s ease;
+}
+body::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 380px;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--tint) var(--glow), transparent) 0%,
+    color-mix(in srgb, var(--tint) calc(var(--glow) / 3), transparent) 55%,
+    transparent 100%
+  );
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) body {
+    --glow: 14%;
+  }
+}
+:root[data-theme="dark"] body {
+  --glow: 14%;
+}

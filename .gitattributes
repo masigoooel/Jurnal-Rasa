@@ -1,0 +1,3 @@
+# Semua file teks memakai akhir baris LF (sama dengan Prettier), juga di Windows.
+* text=auto eol=lf
+*.png binary

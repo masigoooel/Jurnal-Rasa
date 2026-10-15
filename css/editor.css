@@ -1,0 +1,882 @@
+/* Editor: wajah rasa, label, pertanyaan pemantik, isi cepat (tidur, energi, syukur, kebiasaan, foto). */
+
+.ehead {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+}
+.moods {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+}
+.mood {
+  background: none;
+  border: 2px solid transparent;
+  border-radius: 14px;
+  padding: 8px 2px 6px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  transition:
+    transform 0.15s,
+    border-color 0.15s;
+}
+.mood svg {
+  width: 44px;
+  height: 44px;
+  max-width: 100%;
+}
+.mood:hover {
+  transform: translateY(-2px);
+}
+.mood svg {
+  transition:
+    filter 0.2s,
+    opacity 0.2s;
+}
+.mood[aria-pressed="true"] {
+  border-color: var(--c);
+  color: var(--fg);
+  background: color-mix(in srgb, var(--c) 18%, transparent);
+}
+.moods.picked .mood:not([aria-pressed="true"]) svg {
+  filter: saturate(0.35);
+  opacity: 0.6;
+}
+.moods.picked .mood:not([aria-pressed="true"]):hover svg {
+  filter: none;
+  opacity: 1;
+}
+.mood.pop svg {
+  animation: pop 0.45s cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+@keyframes pop {
+  0% {
+    transform: scale(0.8);
+  }
+  60% {
+    transform: scale(1.15) rotate(-6deg);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+.tag {
+  transition:
+    background 0.15s,
+    color 0.15s,
+    border-color 0.15s;
+  border: 1.5px solid var(--line);
+  background: var(--surface);
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.tag[aria-pressed="true"] {
+  background: var(--tc, var(--fg));
+  border-color: var(--tc, var(--fg));
+  color: var(--tcf, var(--bg));
+  animation: pop 0.3s;
+}
+textarea {
+  width: 100%;
+  min-height: 110px;
+  resize: vertical;
+  background: var(--surface-2);
+  border: 1.5px solid transparent;
+  border-radius: 14px;
+  padding: 12px 14px;
+  line-height: 1.55;
+}
+textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+/* Tinggi catatan diatur otomatis oleh fitNote() di js/editor.js. */
+#note {
+  min-height: 150px;
+  resize: none;
+  overflow: hidden;
+}
+.actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.btn {
+  border: 0;
+  border-radius: 12px;
+  padding: 11px 18px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    transform 0.12s,
+    filter 0.15s;
+}
+.btn:not(:disabled):active {
+  transform: scale(0.97);
+}
+.btn.primary:not(:disabled):hover {
+  filter: brightness(1.08);
+}
+.btn.primary {
+  background: var(--accent);
+  color: var(--accent-fg);
+  flex: 1;
+}
+.btn.primary:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.btn.text {
+  background: none;
+  color: var(--danger);
+  padding: 11px 8px;
+}
+.btn.ghost {
+  background: var(--surface-2);
+}
+.saved {
+  font-size: 13px;
+  color: var(--accent);
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  animation: rise 0.3s both;
+}
+.saved svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  animation: draw 0.5s 0.1s ease-out both;
+}
+@keyframes draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Fitur: pertanyaan pemantik, label sendiri, kilas balik */
+.small {
+  font-size: 13px;
+}
+.prompt {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.ptext {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  border: 1px dashed color-mix(in srgb, var(--accent) 45%, transparent);
+  color: var(--fg);
+  border-radius: 12px;
+  padding: 8px 12px;
+  font-size: 13.5px;
+  font-style: italic;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.ptext:hover {
+  background: color-mix(in srgb, var(--accent) 18%, transparent);
+}
+.iconbtn.sm {
+  width: 34px;
+  height: 34px;
+  flex: none;
+}
+.iconbtn.sm svg {
+  width: 16px;
+  height: 16px;
+}
+.tag.new {
+  border-style: dashed;
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 50%, transparent);
+}
+.tag.ghost {
+  background: none;
+  border-color: transparent;
+  color: var(--muted);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.tag.editing {
+  border-color: color-mix(in srgb, var(--danger) 45%, transparent);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  animation: wiggle 0.35s;
+}
+.tag.editing .x {
+  color: var(--danger);
+  font-size: 15px;
+  line-height: 1;
+}
+.tag.editing:hover {
+  background: color-mix(in srgb, var(--danger) 12%, transparent);
+}
+@keyframes wiggle {
+  30% {
+    transform: rotate(-2deg);
+  }
+  60% {
+    transform: rotate(2deg);
+  }
+}
+.tagadd {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.tagadd input {
+  border: 1.5px solid var(--accent);
+  background: var(--surface);
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-size: 13px;
+  width: 150px;
+  outline: none;
+}
+.flash {
+  border-top: 1px solid var(--line);
+  padding-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.flash .label {
+  margin-bottom: 4px;
+}
+.flash .entry {
+  border-top: 0;
+  padding: 8px 6px;
+}
+.flash .entry svg {
+  width: 30px;
+  height: 30px;
+}
+
+/* Saran napas saat hari berat */
+.calm {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 8px 8px 10px;
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--m2) 22%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--m1) 30%, transparent);
+  animation: rise 0.4s both;
+}
+.calm > div {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  font-size: 13.5px;
+}
+.calm span:not(.calmic) {
+  color: var(--muted);
+}
+.calmic {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--surface);
+  color: var(--m1);
+  flex: none;
+}
+.calmic svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Isi cepat: deretan tombol, satu panel terbuka */
+.xtras {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.xhint {
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 500;
+  margin-left: 4px;
+}
+.xbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.xchip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 1.5px solid var(--line);
+  background: var(--surface);
+  border-radius: 999px;
+  padding: 4px 12px 4px 4px;
+  font-size: 13px;
+  line-height: 1.2;
+  text-align: center;
+  color: var(--fg);
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
+}
+.xchip:hover {
+  border-color: color-mix(in srgb, var(--fg) 25%, var(--line));
+}
+.xchip[aria-expanded="true"] {
+  background: var(--surface-2);
+  border-color: var(--fg);
+}
+.xchip .hi.sm {
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+}
+.xchip .hi.sm svg {
+  width: 14px;
+  height: 14px;
+}
+.xstat {
+  font-size: 11px;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 700;
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  border-radius: 999px;
+  padding: 1px 7px;
+}
+.xstat:empty {
+  display: none;
+}
+.xpanel {
+  background: var(--surface-2);
+  border-radius: 14px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  animation: rise 0.25s both;
+}
+.xval {
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--fg);
+  font-weight: 600;
+  margin-left: 4px;
+}
+
+.energy {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 5px;
+  margin-top: 8px;
+}
+.en {
+  height: 30px;
+  border-radius: 8px;
+  border: 0;
+  cursor: pointer;
+  background: var(--surface);
+  transition:
+    background 0.2s,
+    transform 0.15s;
+}
+.en:hover {
+  transform: translateY(-2px);
+}
+.en.on {
+  background: var(--ec, var(--m3));
+}
+.sleeprow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+}
+#sleep {
+  flex: 1;
+  accent-color: var(--m1);
+  min-width: 0;
+}
+#sleep.unset {
+  opacity: 0.4;
+  filter: grayscale(1);
+}
+
+.grat {
+  gap: 8px;
+}
+.grat label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--surface);
+  border-radius: 12px;
+  padding: 0 12px;
+  border: 1.5px solid transparent;
+}
+.grat label:focus-within {
+  border-color: var(--m4);
+}
+.grat span {
+  font-family: var(--f-display);
+  font-weight: 800;
+  color: var(--m5);
+  width: 12px;
+}
+.grat input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: none;
+  padding: 10px 0;
+  outline: none;
+}
+
+.photo img {
+  width: 100%;
+  max-height: 320px;
+  object-fit: cover;
+  border-radius: 12px;
+  display: block;
+  margin-bottom: 8px;
+  animation: rise 0.4s both;
+}
+.photo-add {
+  width: 100%;
+  border: 2px dashed var(--line);
+  background: var(--surface);
+  border-radius: 14px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--fg);
+  transition: border-color 0.2s;
+}
+.photo-add:hover {
+  border-color: var(--m5);
+}
+.photo-add svg {
+  color: var(--m5);
+}
+.photo-add small {
+  font-weight: 400;
+  color: var(--muted);
+  font-size: 12px;
+}
+.pmsg {
+  color: var(--danger);
+  font-size: 13px;
+}
+.pmsg:empty {
+  display: none;
+}
+
+.mx {
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font-size: 18px;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.mx:hover {
+  background: var(--surface-2);
+  color: var(--danger);
+}
+
+@media (max-width: 520px) {
+  .calm {
+    flex-wrap: wrap;
+  }
+}
+
+/* Kebiasaan di editor */
+.habits {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+.hab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1.5px solid var(--line);
+  background: var(--surface);
+  border-radius: 999px;
+  padding: 6px 12px 6px 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+}
+.hcheck {
+  width: 18px;
+  height: 18px;
+  border-radius: 6px;
+  border: 2px solid var(--line);
+  display: grid;
+  place-items: center;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+}
+.hab[aria-pressed="true"] {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, var(--surface));
+}
+.hab[aria-pressed="true"] .hcheck {
+  background: var(--accent);
+  border-color: var(--accent);
+  animation: pop 0.3s;
+}
+.hab[aria-pressed="true"] .hcheck::after {
+  content: "";
+  width: 4px;
+  height: 8px;
+  border: solid var(--accent-fg);
+  border-width: 0 2.5px 2.5px 0;
+  transform: rotate(45deg) translate(-1px, -1px);
+}
+.hab.editing {
+  border-color: color-mix(in srgb, var(--danger) 45%, transparent);
+  animation: wiggle 0.35s;
+}
+.hab.editing .x {
+  color: var(--danger);
+  font-size: 15px;
+  line-height: 1;
+}
+
+.missed {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  font-size: 13.5px;
+  background: color-mix(in srgb, var(--m4) 18%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--m4) 40%, transparent);
+  border-radius: 12px;
+  padding: 8px 8px 8px 12px;
+  animation: rise 0.4s both;
+}
+
+.missed span {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Judul bagian dengan tombol kecil di kanan, misalnya "Atur" untuk label */
+.lrow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+/* Kata perasaan setelah wajah dipilih */
+.emos {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  animation: rise 0.3s both;
+}
+.emolist {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.tag.emo {
+  padding: 4px 11px;
+  font-size: 12.5px;
+}
+.tag.emo:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+/* Tombol kecil di judul catatan: mikrofon dan mode fokus */
+.ltools {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.iconbtn.mic.on {
+  background: var(--danger);
+  border-color: var(--danger);
+  color: #fff;
+  animation: micpulse 1.4s ease-in-out infinite;
+}
+@keyframes micpulse {
+  50% {
+    box-shadow: 0 0 0 6px color-mix(in srgb, var(--danger) 22%, transparent);
+  }
+}
+.micline {
+  margin-top: 6px;
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+.micline i {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 6px;
+  border-radius: 50%;
+  background: var(--danger);
+  animation: micpulse 1.4s ease-in-out infinite;
+}
+.micline span {
+  color: var(--muted);
+}
+
+/* Pilihan tema pertanyaan pemantik */
+.ptheme {
+  position: relative;
+  cursor: pointer;
+}
+.ptheme.on {
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+}
+.ptheme select {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+/* Kartu dukungan saat beberapa hari terasa berat */
+.care {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 8px 12px 14px;
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--m1) 14%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--m1) 35%, transparent);
+  font-size: 13.5px;
+  animation: rise 0.4s both;
+}
+.care > div {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.care > div > span {
+  color: var(--muted);
+}
+.care .row {
+  margin-top: 8px;
+}
+.care .btn,
+.wkcard .btn {
+  flex: none;
+}
+
+/* Kartu refleksi mingguan */
+.wkcard {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 8px 10px 14px;
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--m3) 22%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--m3) 50%, transparent);
+  font-size: 13.5px;
+  animation: rise 0.4s both;
+}
+.wkcard > div:not(.wkdots) {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.wkcard > div span {
+  color: var(--muted);
+  font-size: 12.5px;
+}
+.wkdots {
+  display: grid;
+  grid-template-columns: repeat(7, 7px);
+  gap: 3px;
+}
+.wkdots i {
+  height: 18px;
+  border-radius: 4px;
+  background: var(--surface-2);
+}
+
+/* Niat harian. Selama belum diisi cukup satu baris ajakan. */
+.intent.slim {
+  padding: 0;
+  background: none;
+}
+.islim {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 12px;
+  border: 1.5px dashed var(--line);
+  border-radius: 12px;
+  background: none;
+  color: var(--fg);
+  font-size: 13.5px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+.islim:hover {
+  background: var(--surface-2);
+}
+.islim svg {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  color: var(--m5);
+}
+.islim span {
+  margin-left: auto;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted);
+}
+.islim.sep {
+  margin-top: 10px;
+}
+.intent {
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: var(--surface-2);
+  font-size: 13.5px;
+}
+.ihead {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+}
+.itext {
+  margin-top: 3px;
+  font-size: 15px;
+  font-weight: 600;
+}
+.iform {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+.iform input {
+  flex: 1;
+  min-width: 0;
+  border: 1.5px solid var(--line);
+  background: var(--surface);
+  border-radius: 10px;
+  padding: 7px 10px;
+  font: inherit;
+  color: var(--fg);
+  outline: none;
+}
+.iform .btn {
+  flex: none;
+}
+.iform input:focus {
+  border-color: var(--accent);
+}
+.ires {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+}
+.ichip {
+  border-radius: 999px;
+  padding: 3px 10px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--face);
+}
+.ichip.r2 {
+  background: var(--m5);
+}
+.ichip.r1 {
+  background: var(--m4);
+}
+.ichip.r0 {
+  background: var(--m2);
+}
+.intent .sep {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--line);
+}
+.iplan {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+@media (max-width: 520px) {
+  .wkdots {
+    display: none;
+  }
+}
+
+/* HP kecil: ikon saran napas disembunyikan supaya teksnya tidak terjepit */
+@media (max-width: 400px) {
+  .calmic {
+    display: none;
+  }
+}

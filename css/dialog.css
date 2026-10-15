@@ -1,0 +1,957 @@
+/* Dialog: bingkai umum, napas, rekap, pengaturan, layar kunci, sambutan, perubahan belum disimpan, layar pembuka. */
+
+/* Dialog umum */
+.dlg {
+  border: 0;
+  border-radius: 24px;
+  padding: 20px;
+  background: var(--surface);
+  color: var(--fg);
+  width: min(480px, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px);
+  box-shadow: 0 30px 80px -20px rgb(0 0 0 / 0.5);
+}
+.dlg[open] {
+  animation: dlgin 0.35s cubic-bezier(0.3, 1.3, 0.5, 1) both;
+}
+.dlg::backdrop {
+  background: rgb(10 14 20 / 0.5);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+@keyframes dlgin {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.96);
+  }
+}
+.dhead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.dhead svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Napas */
+.bmain,
+.bdone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  padding: 6px 0 4px;
+}
+.bring {
+  position: relative;
+  width: 240px;
+  height: 240px;
+  display: grid;
+  place-items: center;
+  margin: 8px 0;
+}
+.bring::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px dashed color-mix(in srgb, var(--m1) 40%, transparent);
+}
+.bcircle {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, var(--m2), var(--m1));
+  transform: scale(0.5);
+  transition-property: transform;
+  transition-timing-function: ease-in-out;
+  box-shadow: 0 0 60px -10px var(--m1);
+}
+.btext {
+  position: relative;
+  font-family: var(--f-display);
+  font-size: 20px;
+  font-weight: 600;
+  color: #fff;
+  text-shadow: 0 1px 6px rgb(0 0 0 / 0.25);
+  max-width: 150px;
+}
+.bcount {
+  font-size: 13px;
+  color: var(--muted);
+}
+.bdone h3 {
+  font-family: var(--f-display);
+  font-size: 24px;
+}
+.bdone svg {
+  animation:
+    pop 0.5s both,
+    bob 3s 0.5s ease-in-out infinite;
+}
+
+/* Rekap ala Wrapped */
+.wrapdlg {
+  padding: 0;
+  width: min(420px, calc(100vw - 24px));
+  height: min(740px, calc(100dvh - 24px));
+  overflow: hidden;
+  position: relative;
+  background: var(--surface);
+}
+.wbars {
+  position: absolute;
+  top: 12px;
+  left: 14px;
+  right: 52px;
+  display: flex;
+  gap: 4px;
+  z-index: 4;
+}
+.wbars span {
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--fg) 18%, transparent);
+  overflow: hidden;
+}
+.wbars i {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: var(--fg);
+}
+.wbars .done i {
+  width: 100%;
+}
+.wbars .run i {
+  animation: wfill 5s linear forwards;
+}
+@keyframes wfill {
+  to {
+    width: 100%;
+  }
+}
+.wx {
+  position: absolute;
+  top: 4px;
+  right: 8px;
+  z-index: 5;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  background: none;
+  font-size: 26px;
+  color: var(--fg);
+  cursor: pointer;
+}
+.slide {
+  position: absolute;
+  inset: 0;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 14px;
+  padding: 56px 28px 36px;
+  background: radial-gradient(
+      120% 70% at 20% 0%,
+      color-mix(in srgb, var(--sc) 55%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      90% 60% at 100% 100%,
+      color-mix(in srgb, var(--sc) 35%, transparent),
+      transparent 70%
+    ),
+    var(--surface);
+}
+.slide.on {
+  display: flex;
+}
+.slide > * {
+  animation: rise 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.slide > *:nth-child(2) {
+  animation-delay: 0.12s;
+}
+.slide > *:nth-child(3) {
+  animation-delay: 0.24s;
+}
+.slide > *:nth-child(4) {
+  animation-delay: 0.36s;
+}
+.slide > *:nth-child(5) {
+  animation-delay: 0.48s;
+}
+.wk {
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--muted);
+}
+.wbig {
+  font-family: var(--f-display);
+  font-weight: 800;
+  font-size: 44px;
+  line-height: 1.05;
+  overflow-wrap: anywhere;
+}
+.wmid {
+  font-family: var(--f-display);
+  font-weight: 600;
+  font-size: 24px;
+}
+.wtxt {
+  font-size: 16px;
+  max-width: 300px;
+}
+.wface svg {
+  animation:
+    pop 0.6s 0.1s cubic-bezier(0.3, 1.6, 0.5, 1) both,
+    bob 3s 1s ease-in-out infinite;
+}
+.wq {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.5;
+  font-style: italic;
+  max-width: 320px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--surface) 70%, transparent);
+}
+.wq.big {
+  font-size: 20px;
+}
+.wdots {
+  display: grid;
+  grid-template-columns: repeat(7, 18px);
+  gap: 6px;
+  margin-top: 8px;
+}
+.wdots i {
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  background: color-mix(in srgb, var(--fg) 10%, transparent);
+}
+.wdist {
+  display: flex;
+  width: 100%;
+  max-width: 300px;
+  height: 14px;
+  border-radius: 999px;
+  overflow: hidden;
+  gap: 2px;
+}
+.wdist i {
+  display: block;
+  height: 100%;
+}
+.wflame {
+  width: 80px;
+  height: 80px;
+  fill: var(--m5);
+  transform-origin: bottom center;
+  animation:
+    rise 0.6s both,
+    flicker 1.2s 0.6s ease-in-out infinite alternate !important;
+}
+.wbtns {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  max-width: 280px;
+  position: relative;
+  z-index: 3;
+}
+.wnav {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 35%;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  z-index: 2;
+}
+.wnav.prev {
+  left: 0;
+}
+.wnav.next {
+  right: 0;
+  width: 65%;
+}
+
+/* Pengaturan */
+.setrow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 14px 0;
+  border-top: 1px solid var(--line);
+}
+.setrow > div:first-child {
+  min-width: 0;
+}
+#pinAct {
+  flex-wrap: nowrap;
+  flex: none;
+}
+.setrow p {
+  margin-top: 2px;
+}
+.setsub {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0 0 14px;
+}
+.pf {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.pf input {
+  border: 1.5px solid var(--line);
+  background: var(--surface-2);
+  border-radius: 10px;
+  padding: 9px 12px;
+  font-size: 15px;
+  outline: none;
+  max-width: 220px;
+}
+.pf input:focus {
+  border-color: var(--accent);
+}
+.switch {
+  position: relative;
+  flex: none;
+  width: 46px;
+  height: 28px;
+  cursor: pointer;
+}
+.switch input {
+  position: absolute;
+  opacity: 0;
+  inset: 0;
+  margin: 0;
+  cursor: pointer;
+}
+.switch span {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: var(--line);
+  transition: background 0.2s;
+  pointer-events: none;
+}
+.switch span::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.3);
+  transition: transform 0.25s cubic-bezier(0.3, 1.4, 0.5, 1);
+}
+.switch input:checked + span {
+  background: var(--accent);
+}
+.switch input:checked + span::after {
+  transform: translateX(18px);
+}
+.switch input:focus-visible + span {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Layar kunci */
+.lock {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: radial-gradient(
+      80% 60% at 20% 0%,
+      color-mix(in srgb, var(--m4) 30%, transparent),
+      transparent
+    ),
+    radial-gradient(
+      70% 60% at 100% 100%,
+      color-mix(in srgb, var(--m2) 30%, transparent),
+      transparent
+    ),
+    var(--bg);
+}
+.lockbox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+  max-width: 320px;
+  animation: rise 0.5s both;
+}
+.pdots {
+  display: flex;
+  gap: 12px;
+  margin: 10px 0 6px;
+  min-height: 16px;
+}
+.pdots i {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid var(--muted);
+  transition:
+    background 0.15s,
+    transform 0.15s;
+}
+.pdots i.on {
+  background: var(--fg);
+  border-color: var(--fg);
+  transform: scale(1.1);
+}
+.pdots.shake {
+  animation: shake 0.4s;
+}
+@keyframes shake {
+  20%,
+  60% {
+    transform: translateX(-8px);
+  }
+  40%,
+  80% {
+    transform: translateX(8px);
+  }
+}
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 68px);
+  gap: 12px;
+  margin: 6px 0 4px;
+}
+.keypad button {
+  height: 68px;
+  border-radius: 50%;
+  border: 0;
+  background: var(--surface);
+  font-family: var(--f-display);
+  font-size: 26px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 8px -4px rgb(0 0 0 / 0.2);
+  transition:
+    transform 0.1s,
+    background 0.15s;
+}
+.keypad button:active {
+  transform: scale(0.92);
+  background: var(--surface-2);
+}
+.forgot {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13.5px;
+  background: var(--surface);
+  border-radius: 14px;
+  padding: 12px 14px;
+}
+
+@media (max-width: 520px) {
+  .wbig {
+    font-size: 38px;
+  }
+}
+
+/* Sambutan */
+.weldlg {
+  width: min(420px, calc(100vw - 32px));
+  padding: 28px 24px 22px;
+}
+.wel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+}
+.wel > * {
+  animation: rise 0.45s both;
+}
+.wel > *:nth-child(2) {
+  animation-delay: 0.08s;
+}
+.wel > *:nth-child(3) {
+  animation-delay: 0.16s;
+}
+.wel h2 {
+  font-size: 26px;
+  justify-content: center;
+}
+.wart {
+  min-height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+.wart.faces {
+  gap: 6px;
+}
+.wart.faces svg {
+  animation:
+    pop 0.5s both,
+    bob 3s ease-in-out infinite;
+}
+.wart.faces svg:nth-child(2) {
+  animation-delay: 0.08s, 0.4s;
+}
+.wart.faces svg:nth-child(3) {
+  animation-delay: 0.16s, 0.8s;
+}
+.wart.faces svg:nth-child(4) {
+  animation-delay: 0.24s, 1.2s;
+}
+.wart.faces svg:nth-child(5) {
+  animation-delay: 0.32s, 1.6s;
+}
+.wart.chips {
+  flex-wrap: wrap;
+  gap: 7px;
+  max-width: 300px;
+}
+.wart.chips .tag {
+  cursor: default;
+  animation: pop 0.4s both;
+}
+.wart.tabs {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  text-align: left;
+}
+.wtab {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--surface-2);
+  border-radius: 12px;
+  padding: 8px 12px;
+}
+.wtab > div {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+}
+.wtab small {
+  color: var(--muted);
+  font-size: 12.5px;
+}
+.wdots2 {
+  display: flex;
+  gap: 6px;
+  margin-top: 4px;
+}
+.wdots2 i {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--line);
+  transition:
+    width 0.25s,
+    background 0.25s;
+}
+.wdots2 i.on {
+  width: 22px;
+  background: var(--accent);
+}
+.wbtnrow {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  margin-top: 6px;
+}
+.wbtnrow .btn {
+  flex: 1;
+}
+
+.setrow.col {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+}
+
+.stobar {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  overflow: hidden;
+}
+
+.stobar i {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--accent);
+  transition: width 0.4s;
+}
+
+.stobar i.warn {
+  background: var(--danger);
+}
+
+.impsum {
+  font-size: 14px;
+  background: var(--surface-2);
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+
+.ucol {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ucol .btn {
+  width: 100%;
+}
+
+.dlg.narrow {
+  width: min(380px, calc(100vw - 32px));
+}
+
+.utitle {
+  font-size: 20px;
+  display: block;
+  margin-bottom: 6px;
+}
+
+#dlgUnsaved p {
+  margin-bottom: 14px;
+}
+
+#unsCancel {
+  color: var(--muted);
+}
+
+/* Layar pembuka: tampil sebentar saat aplikasi dibuka, lalu memudar */
+body:has(.splash:not(.out)) {
+  overflow: hidden;
+}
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(
+      70% 50% at 50% 35%,
+      color-mix(in srgb, var(--m4) 26%, transparent),
+      transparent
+    ),
+    var(--bg);
+  transition:
+    opacity 0.45s ease,
+    visibility 0.45s;
+}
+.splash.out {
+  opacity: 0;
+  visibility: hidden;
+}
+.spbox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: transform 0.45s ease;
+}
+.splash.out .spbox {
+  transform: scale(1.06);
+}
+.splogo {
+  animation:
+    sppop 0.4s cubic-bezier(0.3, 1.6, 0.5, 1) both,
+    bob 3s 0.4s ease-in-out infinite;
+}
+.splogo .eyes {
+  animation: blink 3s 0.5s infinite;
+}
+.spname {
+  margin-top: 16px;
+  font-family: "Bricolage Grotesque", system-ui, sans-serif;
+  font-size: 30px;
+  font-weight: 800;
+  animation: spup 0.35s 0.05s ease both;
+}
+.sptag {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 14px;
+  animation: spup 0.35s 0.1s ease both;
+}
+.spdots {
+  display: flex;
+  gap: 8px;
+  margin-top: 26px;
+  animation: spup 0.35s 0.15s ease both;
+}
+.spdots i {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  animation: spwave 1s ease-in-out infinite;
+}
+.spdots i:nth-child(1) {
+  background: var(--m1);
+}
+.spdots i:nth-child(2) {
+  background: var(--m2);
+  animation-delay: 0.1s;
+}
+.spdots i:nth-child(3) {
+  background: var(--m3);
+  animation-delay: 0.2s;
+}
+.spdots i:nth-child(4) {
+  background: var(--m4);
+  animation-delay: 0.3s;
+}
+.spdots i:nth-child(5) {
+  background: var(--m5);
+  animation-delay: 0.4s;
+}
+@keyframes sppop {
+  from {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+}
+@keyframes spup {
+  from {
+    transform: translateY(8px);
+    opacity: 0;
+  }
+}
+@keyframes spwave {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-8px);
+  }
+}
+
+/* Dialog bertumpuk rapi (bantuan, refleksi) */
+.dlg.stack[open] {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+a.btn {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+}
+a.btn.primary {
+  color: var(--accent-fg);
+}
+
+/* Mode menulis fokus */
+.focusdlg {
+  width: min(760px, calc(100vw - 32px));
+  height: min(88dvh, 900px);
+}
+.focusdlg[open] {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.fhead {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.fhead > div {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+#fnote {
+  flex: 1;
+  min-height: 0;
+  resize: none;
+  font-size: 17px;
+  line-height: 1.75;
+  padding: 16px 18px;
+}
+.ffoot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+@media (max-width: 520px) {
+  .focusdlg {
+    width: 100vw;
+    max-width: 100vw;
+    height: 100dvh;
+    max-height: 100dvh;
+    border-radius: 0;
+    padding: 16px;
+  }
+  #fnote {
+    font-size: 16px;
+    padding: 12px 14px;
+  }
+}
+
+/* Bantuan & dukungan */
+.hline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--surface-2);
+  font-size: 14px;
+}
+.hline > div {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.hline .row {
+  flex: none;
+}
+.hform {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.hwarn {
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--danger) 12%, var(--surface));
+  font-size: 13.5px;
+}
+.helplist {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 14px;
+  line-height: 1.75;
+}
+
+/* Refleksi mingguan */
+.rweek {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 4px;
+}
+.rweek > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  font-size: 11px;
+  color: var(--muted);
+}
+.rnone {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px dashed var(--line);
+}
+.rq {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 600;
+}
+.rq textarea {
+  min-height: 72px;
+  font-weight: 400;
+}
+
+/* Sakelar fitur di Pengaturan */
+.feats {
+  display: flex;
+  flex-direction: column;
+}
+.feat {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 0;
+  border-top: 1px dashed var(--line);
+  cursor: pointer;
+}
+.feat > span:first-child {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+}
+.feat b {
+  font-weight: 600;
+}
+.feat small {
+  color: var(--muted);
+  font-size: 12.5px;
+}
+
+/* Pengaturan dikelompokkan: judul kecil per kelompok, baris pertama tanpa garis. */
+.setgrp {
+  margin: 18px 0 2px;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.setgrp + .setrow {
+  border-top: 0;
+}
+#dlgSet .setrow {
+  padding: 11px 0;
+}
+.setlinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 6px 0 4px;
+}
+.setlinks .btn {
+  flex: none;
+}
+#instBox {
+  padding-top: 8px;
+}

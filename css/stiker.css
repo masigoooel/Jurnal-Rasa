@@ -1,0 +1,290 @@
+/* Stiker: tempelan di kalender, judul editor, laci stiker, pembuat stiker, dan buku stiker. */
+
+svg.stk {
+  display: block;
+  overflow: visible;
+  filter: drop-shadow(0 1px 1.5px rgb(0 0 0 / 0.28));
+}
+
+/* Di kotak tanggal: pojok kiri atas (pojok kanan dipakai tanda foto) */
+.dstk {
+  position: absolute;
+  top: -7px;
+  left: -6px;
+  z-index: 2;
+  width: 24px;
+  height: 24px;
+  transform: rotate(var(--r, 0deg));
+  pointer-events: none;
+  animation: stkin 0.35s cubic-bezier(0.3, 1.6, 0.5, 1) both;
+}
+.dstk b {
+  position: absolute;
+  right: -7px;
+  bottom: -4px;
+  font-size: 9px;
+  font-weight: 800;
+  line-height: 1;
+  padding: 2px 3px;
+  border-radius: 999px;
+  background: var(--fg);
+  color: var(--bg);
+}
+@keyframes stkin {
+  from {
+    transform: scale(0.3) rotate(-40deg);
+    opacity: 0;
+  }
+}
+@media (max-width: 520px) {
+  .dstk {
+    width: 19px;
+    height: 19px;
+    top: -6px;
+    left: -5px;
+  }
+}
+
+/* Mode tempel: tombol aktif dan kotak tanggal bergaris putus-putus */
+.cal.stkmode .day {
+  outline: 1.5px dashed color-mix(in srgb, var(--m5) 60%, transparent);
+  outline-offset: -3px;
+  cursor: copy;
+}
+.cal.stkmode .day.future {
+  opacity: 1;
+}
+.stkhint {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 8px 8px 12px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--m5) 16%, var(--surface));
+  font-size: 13px;
+}
+.stkhint span {
+  flex: 1;
+  min-width: 0;
+}
+.stkhint .btn {
+  flex: none;
+}
+
+/* Stiker di samping judul editor */
+.ehead {
+  align-items: center;
+}
+.estk {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-left: auto;
+}
+.estk-i {
+  transform: rotate(var(--r, 0deg));
+}
+
+/* Laci stiker */
+.splaced {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 56px;
+  padding: 6px 12px;
+  border-radius: 14px;
+  background: var(--surface-2);
+}
+.sput {
+  position: relative;
+  border: 0;
+  background: none;
+  padding: 2px;
+  cursor: pointer;
+  transform: rotate(var(--r, 0deg));
+}
+.sput i {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-style: normal;
+  font-size: 13px;
+  line-height: 1;
+  background: var(--fg);
+  color: var(--bg);
+}
+.sgrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
+  gap: 6px;
+}
+.stile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 2px 6px;
+  border: 1.5px solid transparent;
+  border-radius: 12px;
+  background: none;
+  color: var(--fg);
+  font-size: 11px;
+  line-height: 1.2;
+  text-align: center;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    transform 0.15s;
+}
+.stile svg.stk {
+  width: 40px;
+  height: 40px;
+}
+.stile:hover:not(:disabled) {
+  background: var(--surface-2);
+  transform: translateY(-2px) rotate(-3deg);
+}
+.stile.on {
+  background: color-mix(in srgb, var(--m5) 16%, var(--surface));
+  border-color: var(--m5);
+}
+.stile:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+.stile.del {
+  animation: wiggle 0.3s ease-in-out infinite alternate;
+}
+.stile.new {
+  border: 1.5px dashed var(--line);
+  color: var(--muted);
+}
+.snew {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+}
+
+/* Pembuat stiker */
+.smake {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px;
+  border-radius: 14px;
+  background: var(--surface-2);
+}
+.smake .seg {
+  align-self: flex-start;
+}
+.smrow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.smprev {
+  flex: none;
+  transform: rotate(-6deg);
+}
+.smfields {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.smfields .pf input {
+  max-width: none;
+  background: var(--surface);
+}
+.swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.sw {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 3px solid var(--surface);
+  background: var(--c);
+  box-shadow: 0 0 0 1.5px var(--line);
+  cursor: pointer;
+}
+.sw[aria-pressed="true"] {
+  box-shadow: 0 0 0 2.5px var(--fg);
+}
+
+/* Buku stiker di Koleksi */
+.stkbook {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.ssoon {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.ssoon-i {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 12px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--surface-2);
+  color: var(--fg);
+  text-align: left;
+  cursor: pointer;
+}
+.ssoon-i span {
+  display: flex;
+  flex-direction: column;
+  margin-left: 8px;
+  min-width: 0;
+  font-size: 13.5px;
+}
+.ssoon-i small {
+  color: var(--muted);
+}
+.sused {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.sused-i {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  font-size: 12px;
+}
+
+/* Stiker kecil di daftar catatan */
+.entry .d svg.stk {
+  display: inline-block;
+  vertical-align: -3px;
+  margin-left: 4px;
+}
+
+/* HP: tiga tombol di kepala kalender dibuat lebih ramping supaya judul bulan tetap satu baris */
+.mtitle {
+  white-space: nowrap;
+}
+@media (max-width: 520px) {
+  .nav {
+    gap: 4px;
+  }
+  .nav button {
+    width: 32px;
+    height: 32px;
+  }
+}

@@ -1,0 +1,252 @@
+/* Catatan: daftar semua catatan, cari & saring, mode sembunyikan isi, dialog cetak. */
+
+.hist {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.entry {
+  border-radius: 12px;
+  transition: background 0.15s;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+  padding: 12px 6px;
+  border-top: 1px solid var(--line);
+  cursor: pointer;
+  background: none;
+  border-left: 0;
+  border-right: 0;
+  border-bottom: 0;
+  text-align: left;
+  width: 100%;
+}
+.entry:first-child {
+  border-top: 0;
+}
+.entry:hover {
+  background: var(--surface-2);
+}
+.entry svg {
+  width: 34px;
+  height: 34px;
+}
+.entry .d {
+  font-weight: 700;
+  font-size: 14px;
+}
+.entry .t {
+  font-size: 12.5px;
+  color: var(--muted);
+}
+.entry .note {
+  font-size: 14px;
+  margin-top: 3px;
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Semua catatan: cari & saring */
+.filters {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface-2);
+  border-radius: 12px;
+  padding: 0 12px;
+  color: var(--muted);
+  border: 1.5px solid transparent;
+}
+.search:focus-within {
+  border-color: var(--accent);
+}
+.search input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: none;
+  padding: 10px 0;
+  outline: none;
+  color: var(--fg);
+}
+.frow {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.fmoods {
+  display: flex;
+  gap: 4px;
+}
+.fm {
+  background: none;
+  border: 2px solid transparent;
+  border-radius: 999px;
+  padding: 2px;
+  cursor: pointer;
+  display: grid;
+  opacity: 0.55;
+  transition:
+    opacity 0.15s,
+    transform 0.15s;
+}
+.fm:hover {
+  opacity: 0.9;
+}
+.fm[aria-pressed="true"] {
+  opacity: 1;
+  border-color: var(--fg);
+  transform: scale(1.08);
+}
+#fTag {
+  background: var(--surface-2);
+  border: 1.5px solid transparent;
+  border-radius: 10px;
+  padding: 7px 10px;
+  font-size: 13.5px;
+  max-width: 100%;
+}
+.link {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: var(--accent);
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.mgroup {
+  font-size: 11.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--muted);
+  padding: 14px 6px 4px;
+}
+.mgroup:first-child {
+  padding-top: 0;
+}
+.mgroup + .entry {
+  border-top: 0;
+}
+mark {
+  background: color-mix(in srgb, var(--m4) 55%, transparent);
+  color: inherit;
+  border-radius: 3px;
+  padding: 0 1px;
+}
+.more {
+  margin-top: 8px;
+}
+
+/* Riwayat: foto dan momen */
+.entry.wp {
+  grid-template-columns: auto minmax(0, 1fr) auto;
+}
+.thumb {
+  width: 56px;
+  height: 56px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+.day[data-ph]::before {
+  content: "";
+  position: absolute;
+  top: 12%;
+  right: 12%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--surface);
+  box-shadow: 0 0 0 1.5px var(--face);
+}
+
+/* Sembunyikan isi catatan */
+body.hide-notes .entry .note,
+body.hide-notes .gcard p,
+body.hide-notes .entry .thumb {
+  filter: blur(6px);
+  transition: filter 0.2s;
+}
+body.hide-notes .entry:hover .note,
+body.hide-notes .entry:focus-visible .note,
+body.hide-notes .gcard:hover p,
+body.hide-notes .entry:hover .thumb {
+  filter: none;
+}
+
+/* Daftar catatan yang ringkas */
+.hist .entry {
+  padding: 9px 6px;
+  gap: 10px;
+  align-items: center;
+}
+.hist .entry svg {
+  width: 30px;
+  height: 30px;
+}
+.hist .entry .note {
+  -webkit-line-clamp: 1;
+  font-size: 13.5px;
+  color: var(--muted);
+  margin-top: 1px;
+}
+.hist .entry .d {
+  font-size: 13.5px;
+}
+.hist .thumb {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+}
+
+/* Dialog cetak */
+.chk {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.chk input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent);
+}
+#prMonth {
+  border: 1.5px solid var(--line);
+  background: var(--surface-2);
+  border-radius: 10px;
+  padding: 9px 12px;
+  font-size: 14.5px;
+  max-width: 100%;
+}
+
+#printOpen {
+  white-space: nowrap;
+  flex: none;
+}
+@media (max-width: 520px) {
+  .frow {
+    flex-wrap: nowrap;
+  }
+  .fmoods {
+    gap: 0;
+  }
+  #fTag {
+    min-width: 0;
+    flex: 0 1 140px;
+  }
+}

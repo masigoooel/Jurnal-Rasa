@@ -1,0 +1,154 @@
+/* Cetak: tampilan saat dicetak / disimpan ke PDF. */
+
+/* ===== Tampilan cetak ===== */
+#printArea {
+  display: none;
+}
+@media print {
+  :root,
+  :root:not([data-theme="light"]),
+  :root[data-theme="dark"] {
+    --bg: #fff;
+    --surface: #fff;
+    --surface-2: #f2f4f7;
+    --line: #dde2e9;
+    --fg: #1b2130;
+    --muted: #5d6676;
+    --m1: #5876cf;
+    --m2: #9fb4e6;
+    --m3: #c4bfb6;
+    --m4: #f2bf6c;
+    --m5: #e98c34;
+    --face: #22253a;
+    color-scheme: light;
+  }
+  @page {
+    margin: 16mm 14mm;
+  }
+  body {
+    background: #fff !important;
+    padding: 0 !important;
+    font-size: 11pt;
+  }
+  body > *:not(#printArea) {
+    display: none !important;
+  }
+  #printArea {
+    display: block;
+    color: #1b2130;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  #printArea h1 {
+    font-family: var(--f-display);
+    font-size: 26pt;
+    margin: 2px 0;
+  }
+  #printArea h2 {
+    font-family: var(--f-display);
+    font-size: 13pt;
+    margin: 18px 0 8px;
+    display: block;
+  }
+  .phd p {
+    margin: 0;
+    color: #5d6676;
+    font-size: 10pt;
+  }
+  .phd p:first-child {
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+  }
+  .psum {
+    display: flex;
+    gap: 10px;
+    margin-top: 14px;
+  }
+  .psum div {
+    flex: 1;
+    border: 1px solid #dde2e9;
+    border-radius: 10px;
+    padding: 8px 10px;
+    display: flex;
+    flex-direction: column;
+  }
+  .psum b {
+    font-family: var(--f-display);
+    font-size: 18pt;
+  }
+  .psum span {
+    font-size: 9pt;
+    color: #5d6676;
+  }
+  .pdist {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    font-size: 10pt;
+    margin-bottom: 8px;
+  }
+  .pdist span {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .pdist i {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    display: inline-block;
+  }
+  .pstrip {
+    display: grid;
+    grid-template-columns: repeat(31, 1fr);
+    gap: 2px;
+  }
+  .pstrip i {
+    aspect-ratio: 1;
+    border-radius: 3px;
+    background: #f2f4f7;
+    display: grid;
+    place-items: center;
+  }
+  .pstrip small {
+    font-size: 6.5pt;
+    color: #22253a;
+  }
+  .pent {
+    break-inside: avoid;
+    border-top: 1px solid #dde2e9;
+    padding: 10px 0;
+  }
+  .phead {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .phead span {
+    color: #5d6676;
+    font-size: 10pt;
+  }
+  .ptags {
+    font-size: 9.5pt;
+    color: #5d6676;
+    margin-top: 3px;
+  }
+  .pnote {
+    white-space: pre-wrap;
+    margin-top: 6px;
+    line-height: 1.5;
+  }
+  .pex {
+    font-size: 10pt;
+    margin-top: 4px;
+  }
+  .pent img {
+    max-width: 45%;
+    max-height: 160px;
+    border-radius: 8px;
+    margin-top: 6px;
+    display: block;
+  }
+}

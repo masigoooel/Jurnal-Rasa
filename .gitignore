@@ -1,0 +1,10 @@
+# File sistem operasi dan editor
+Thumbs.db
+desktop.ini
+.DS_Store
+.vscode/
+.idea/
+
+# Dependensi dan hasil sementara (kalau nanti memakai npm)
+node_modules/
+*.log

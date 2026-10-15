@@ -1,0 +1,285 @@
+/* Koleksi: dinding syukur, kapsul waktu, lencana. */
+
+/* Dinding syukur */
+.gwall {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+}
+.gwall .empty,
+.gmore {
+  grid-column: 1/-1;
+}
+.gcard {
+  border: 0;
+  text-align: left;
+  cursor: pointer;
+  border-radius: 14px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  justify-content: space-between;
+  min-height: 96px;
+  background: color-mix(in srgb, var(--gc) 26%, var(--surface));
+  transform: rotate(var(--rot));
+  transition: transform 0.2s;
+  animation: rise 0.4s both;
+}
+.gcard:hover {
+  transform: rotate(0) scale(1.03);
+}
+.gcard p {
+  font-size: 14px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+.gcard small {
+  font-size: 11.5px;
+  color: var(--muted);
+}
+
+/* Lencana */
+.badges {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 10px;
+}
+.bd {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+  padding: 14px 8px;
+  border-radius: 14px;
+  background: var(--surface-2);
+}
+.bd b {
+  font-size: 13px;
+  line-height: 1.25;
+}
+.bd small {
+  font-size: 11.5px;
+  color: var(--muted);
+  line-height: 1.3;
+}
+.bd:not(.on) {
+  opacity: 0.5;
+}
+.bd:not(.on) .bdg {
+  background: var(--surface);
+  color: var(--muted);
+  box-shadow: none;
+}
+.bdg {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  flex: none;
+  color: #fff;
+  background: radial-gradient(
+    circle at 30% 25%,
+    color-mix(in srgb, var(--bc) 60%, #fff),
+    var(--bc)
+  );
+  box-shadow: 0 6px 14px -6px var(--bc);
+}
+.bdg svg {
+  width: 24px;
+  height: 24px;
+}
+.bd.on .bdg {
+  animation: pop 0.5s both;
+}
+.bd.on:hover .bdg {
+  animation: wobble 0.5s;
+}
+
+/* Kapsul waktu */
+.capform {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: var(--surface-2);
+  border-radius: 16px;
+  padding: 14px;
+}
+.capform textarea {
+  min-height: 90px;
+  background: var(--surface);
+}
+.capopts {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.capopts .btn {
+  margin-left: auto;
+}
+.seg {
+  display: inline-flex;
+  background: var(--surface);
+  border-radius: 12px;
+  padding: 3px;
+  gap: 2px;
+}
+.seg button {
+  border: 0;
+  background: none;
+  border-radius: 9px;
+  padding: 6px 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+}
+.seg button[aria-pressed="true"] {
+  background: var(--m1);
+  color: #fff;
+}
+.caps {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.caps:empty {
+  display: none;
+}
+.cap {
+  border-radius: 16px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border: 1px solid var(--line);
+  animation: rise 0.4s both;
+}
+.caph {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.caph > div {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+}
+.caph small {
+  color: var(--muted);
+  font-size: 12.5px;
+}
+.capic {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  flex: none;
+  background: var(--surface-2);
+  color: var(--muted);
+}
+.capic svg {
+  width: 20px;
+  height: 20px;
+}
+.cap.locked {
+  background: repeating-linear-gradient(
+    135deg,
+    var(--surface),
+    var(--surface) 10px,
+    var(--surface-2) 10px,
+    var(--surface-2) 20px
+  );
+}
+.cap.ready {
+  background: color-mix(in srgb, var(--m1) 14%, var(--surface));
+  border-color: color-mix(in srgb, var(--m1) 40%, transparent);
+}
+.cap.ready .capic {
+  background: var(--m1);
+  color: #fff;
+  animation: bob 2s ease-in-out infinite;
+}
+.cap.ready .btn {
+  align-self: flex-start;
+}
+.cap.open .capic {
+  background: color-mix(in srgb, var(--m4) 40%, var(--surface));
+  color: var(--fg);
+}
+.captext {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 14.5px;
+  line-height: 1.6;
+  background: var(--surface-2);
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-style: italic;
+}
+.cap.reveal .captext {
+  animation: unfold 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+@keyframes unfold {
+  from {
+    opacity: 0;
+    transform: perspective(600px) rotateX(-60deg);
+    transform-origin: top;
+  }
+}
+.capdel {
+  color: var(--muted);
+}
+.capdel:hover {
+  color: var(--danger);
+}
+body.hide-notes .captext {
+  filter: blur(6px);
+}
+body.hide-notes .cap:hover .captext {
+  filter: none;
+}
+
+@media (max-width: 520px) {
+  .capopts .btn {
+    margin-left: 0;
+    flex-basis: 100%;
+  }
+}
+
+/* Daftar refleksi mingguan */
+.refs {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.ref {
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: var(--surface-2);
+  font-size: 14px;
+}
+.rhead {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+}
+.ref p {
+  margin-top: 8px;
+}
+.ref p span {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+}
+body.hide-notes .ref p {
+  filter: blur(5px);
+}

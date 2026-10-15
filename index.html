@@ -1,0 +1,1370 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Jurnal Rasa</title>
+    <meta
+      name="description"
+      content="Jurnal mood harian: catat perasaan, lihat kalender rasa dan grafik bulanan."
+    />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <meta name="theme-color" content="#21706a" />
+    <link rel="icon" href="icons/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Jurnal Rasa" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600;700&family=Caveat:wght@600&display=swap"
+    />
+    <link rel="stylesheet" href="css/dasar.css" />
+    <link rel="stylesheet" href="css/tata-letak.css" />
+    <link rel="stylesheet" href="css/editor.css" />
+    <link rel="stylesheet" href="css/kalender.css" />
+    <link rel="stylesheet" href="css/wawasan.css" />
+    <link rel="stylesheet" href="css/catatan.css" />
+    <link rel="stylesheet" href="css/hidup.css" />
+    <link rel="stylesheet" href="css/koleksi.css" />
+    <link rel="stylesheet" href="css/dialog.css" />
+    <link rel="stylesheet" href="css/stiker.css" />
+    <link rel="stylesheet" href="css/template.css" />
+    <link rel="stylesheet" href="css/cetak.css" />
+    <script>
+      try {
+        const t = localStorage.getItem("jurnal-rasa:theme");
+        if (t === "light" || t === "dark") document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    </script>
+  </head>
+  <body data-tab="tulis" data-rtab="kalender">
+    <div class="splash" id="splash" role="status" aria-label="Memuat Jurnal Rasa">
+      <div class="spbox">
+        <svg class="splogo" viewBox="0 0 44 44" width="84" height="84" aria-hidden="true">
+          <circle cx="22" cy="22" r="20" fill="var(--m4)" />
+          <g class="eyes">
+            <circle cx="16" cy="18" r="2.2" fill="var(--face)" />
+            <circle cx="28" cy="18" r="2.2" fill="var(--face)" />
+          </g>
+          <path
+            d="M15.5 27 Q22 32 28.5 27"
+            fill="none"
+            stroke="var(--face)"
+            stroke-width="2.4"
+            stroke-linecap="round"
+          />
+        </svg>
+        <p class="spname">Jurnal Rasa</p>
+        <p class="sptag">Catat rasamu, kenali dirimu</p>
+        <div class="spdots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+      </div>
+    </div>
+    <script>
+      // Pengaman: kalau ada skrip yang gagal, layar pembuka tetap hilang sendiri.
+      setTimeout(() => document.getElementById("splash")?.remove(), 6000);
+    </script>
+    <div class="blobs" aria-hidden="true"><i></i><i></i><i></i></div>
+    <div class="wrap">
+      <header class="top">
+        <div class="brand">
+          <span class="logo" id="logo" aria-hidden="true"></span>
+          <div>
+            <h1>Jurnal Rasa</h1>
+            <p class="sub">
+              <span id="greet"></span> · <span id="todayText"></span><span id="todayShort"></span>
+            </p>
+          </div>
+        </div>
+        <div class="tools">
+          <span class="status" id="status"><i></i>Menyiapkan…</span
+          ><button class="iconbtn" id="theme" aria-label="Ganti tema"></button
+          ><button class="iconbtn" id="setOpen" aria-label="Pengaturan" title="Pengaturan">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="3" />
+              <path
+                d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"
+              />
+            </svg>
+          </button>
+        </div>
+      </header>
+      <div class="banner" id="banner" hidden></div>
+      <div class="wrapnote" id="wrapNote" hidden></div>
+
+      <div class="grid">
+        <section class="panel editor" data-sec="tulis" aria-label="Catatan harian">
+          <div class="ehead">
+            <h2 id="edTitle">Hari ini</h2>
+            <div class="estk" id="estk"></div>
+            <button
+              class="btn ghost"
+              id="toToday"
+              hidden
+              style="padding: 6px 12px; font-size: 13px"
+            >
+              Ke hari ini
+            </button>
+          </div>
+          <div class="missed" id="missed" hidden></div>
+          <div class="care" id="care" hidden></div>
+          <div class="intent" id="intent" hidden></div>
+          <div>
+            <p class="label" style="margin-bottom: 8px">Bagaimana perasaanmu?</p>
+            <div class="moods" id="moods"></div>
+          </div>
+          <div class="emos" id="emos" hidden></div>
+          <div class="calm" id="calm" hidden>
+            <span class="calmic"
+              ><svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M3 9h11a3 3 0 1 0-3-3M3 15h15a3 3 0 1 1-3 3M3 12h7" /></svg
+            ></span>
+            <div><b>Hari yang berat, ya.</b><span>Mau tarik napas 1 menit?</span></div>
+            <button class="btn ghost sm" id="breathOpen">Mulai</button
+            ><button class="iconbtn sm" id="calmHide" aria-label="Tutup saran">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M6 6l12 12M18 6L6 18" />
+              </svg>
+            </button>
+          </div>
+          <div>
+            <div class="lrow">
+              <label class="label" for="note">Ceritakan harimu</label>
+              <span class="ltools">
+                <button
+                  class="iconbtn sm mic"
+                  data-mic="note"
+                  aria-label="Bicara untuk menulis"
+                  title="Bicara untuk menulis"
+                  hidden
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <rect x="9" y="3" width="6" height="11" rx="3" />
+                    <path d="M5 11a7 7 0 0 0 14 0M12 18v3" />
+                  </svg>
+                </button>
+                <button
+                  class="iconbtn sm"
+                  id="focusOpen"
+                  aria-label="Perbesar untuk menulis panjang"
+                  title="Mode menulis fokus"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" />
+                  </svg>
+                </button>
+              </span>
+            </div>
+            <div class="prompt">
+              <button
+                class="ptext"
+                id="promptUse"
+                title="Masukkan pertanyaan ini ke catatan"
+              ></button
+              ><button
+                class="iconbtn sm"
+                id="promptNext"
+                aria-label="Pertanyaan lain"
+                title="Pertanyaan lain"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M3 12a9 9 0 0 1 15.5-6.2L21 8M21 3v5h-5M21 12a9 9 0 0 1-15.5 6.2L3 16M3 21v-5h5"
+                  />
+                </svg>
+              </button>
+              <label class="iconbtn sm ptheme" id="pThemeBtn" title="Tema pertanyaan"
+                ><svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M12 3l9 5-9 5-9-5z" />
+                  <path d="M3 13l9 5 9-5" /></svg
+                ><select id="pTheme" aria-label="Tema pertanyaan pemantik"></select
+              ></label>
+            </div>
+            <textarea
+              id="note"
+              placeholder="Apa yang terjadi hari ini? Hal kecil yang bikin senang, atau yang lagi dipikirkan."
+            ></textarea>
+            <p class="micline" data-micline="note" hidden></p>
+          </div>
+          <div class="xtras">
+            <p class="label">Isi cepat <span class="xhint">boleh dilewati</span></p>
+            <div class="xbar">
+              <button class="xchip" data-x="tags" aria-expanded="false">
+                <span class="hi sm" style="--hc: var(--m1)"
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M3 12V4h8l9 9-8 8z" />
+                    <path d="M7.5 7.5h.01" /></svg></span
+                >Label<span class="xstat" id="sTags"></span>
+              </button>
+              <button class="xchip" data-x="body" aria-expanded="false">
+                <span class="hi sm" style="--hc: var(--m2)"
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M13 2L4 14h7l-1 8 9-12h-7z" /></svg></span
+                >Energi &amp; tidur<span class="xstat" id="sBody"></span>
+              </button>
+              <button class="xchip" data-x="grat" aria-expanded="false">
+                <span class="hi sm" style="--hc: var(--m4)"
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path
+                      d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"
+                    /></svg></span
+                >Syukur<span class="xstat" id="sGrat"></span>
+              </button>
+              <button class="xchip" data-x="hab" aria-expanded="false">
+                <span class="hi sm" style="--hc: var(--accent)"
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <rect x="3.5" y="3.5" width="17" height="17" rx="4" />
+                    <path d="M8 12.5l3 3 5-6" /></svg></span
+                >Kebiasaan<span class="xstat" id="sHab"></span>
+              </button>
+              <button class="xchip" data-x="photo" aria-expanded="false">
+                <span class="hi sm" style="--hc: var(--m5)"
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M4 8h3l2-3h6l2 3h3v11H4z" />
+                    <circle cx="12" cy="13" r="3.5" /></svg></span
+                >Foto<span class="xstat" id="sPhoto"></span>
+              </button>
+            </div>
+            <div class="xpanel" data-xp="tags" hidden>
+              <div class="lrow">
+                <p class="muted small">Apa yang memengaruhi harimu?</p>
+                <button class="link small" id="tagEdit">Atur</button>
+              </div>
+              <div class="tags" id="tags"></div>
+            </div>
+            <div class="xpanel" data-xp="body" hidden>
+              <div>
+                <p class="label">Energi <span class="xval" id="enVal"></span></p>
+                <div class="energy" id="energy"></div>
+              </div>
+              <div>
+                <p class="label">Tidur semalam <span class="xval tnum" id="sleepVal"></span></p>
+                <div class="sleeprow">
+                  <input
+                    type="range"
+                    id="sleep"
+                    min="0"
+                    max="12"
+                    step="0.5"
+                    aria-label="Jam tidur semalam"
+                  /><button class="link small" id="sleepClear">kosongkan</button>
+                </div>
+              </div>
+            </div>
+            <div class="xpanel grat" data-xp="grat" hidden>
+              <p class="muted small">Aku bersyukur atas…</p>
+              <label
+                ><span>1</span><input data-g="0" maxlength="120" placeholder="Hal kecil juga boleh"
+              /></label>
+              <label
+                ><span>2</span
+                ><input data-g="1" maxlength="120" placeholder="Seseorang yang membantumu"
+              /></label>
+              <label
+                ><span>3</span
+                ><input data-g="2" maxlength="120" placeholder="Sesuatu tentang dirimu sendiri"
+              /></label>
+            </div>
+            <div class="xpanel" data-xp="hab" hidden>
+              <p class="muted small">Centang kebiasaan yang kamu lakukan hari ini.</p>
+              <div class="habits" id="habits"></div>
+            </div>
+            <div class="xpanel" data-xp="photo" hidden>
+              <div class="photo" id="photo"></div>
+              <input type="file" accept="image/*" id="photoIn" hidden />
+            </div>
+          </div>
+          <div class="actions" id="actions"></div>
+          <div class="wkcard" id="weekly" hidden></div>
+          <div class="flash" id="flash" hidden></div>
+        </section>
+
+        <div class="right">
+          <div class="rtabs" role="tablist" aria-label="Bagian">
+            <button data-tab="kalender" aria-current="page">
+              <svg
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="3.5" y="5" width="17" height="15" rx="3" />
+                <path d="M3.5 10h17M8 3v4M16 3v4" /></svg
+              >Kalender
+            </button>
+            <button data-tab="wawasan">
+              <svg
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M3 20h18M6 16v-5M11 16V6M16 16v-8" /></svg
+              >Wawasan
+            </button>
+            <button data-tab="koleksi">
+              <svg
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M6 3h12v18l-6-4-6 4z" /></svg
+              >Koleksi
+            </button>
+            <button data-tab="catatan">
+              <svg
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M9 6h11M9 12h11M9 18h11M4.5 6h.01M4.5 12h.01M4.5 18h.01" /></svg
+              >Catatan
+            </button>
+          </div>
+          <section class="panel" data-sec="kalender" aria-label="Bulan ini">
+            <div class="mhead">
+              <h2>
+                <span class="hi" style="--hc: var(--accent)"
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <rect x="3.5" y="5" width="17" height="15" rx="3" />
+                    <path d="M3.5 10h17M8 3v4M16 3v4" /></svg></span
+                ><button
+                  class="mtitle"
+                  id="monthTitle"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                  title="Pilih bulan"
+                ></button>
+              </h2>
+              <div class="nav">
+                <button id="prevM" aria-label="Bulan sebelumnya">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                  >
+                    <path d="M15 5l-7 7 7 7" />
+                  </svg>
+                </button>
+                <button id="nextM" aria-label="Bulan berikutnya">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                  >
+                    <path d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+                <button
+                  id="pageMenuBtn"
+                  aria-haspopup="menu"
+                  aria-expanded="false"
+                  aria-controls="pageMenu"
+                  aria-label="Lainnya: stiker, template, hias, gambar"
+                  title="Lainnya"
+                >
+                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <circle cx="12" cy="5.5" r="1.9" />
+                    <circle cx="12" cy="12" r="1.9" />
+                    <circle cx="12" cy="18.5" r="1.9" />
+                  </svg>
+                </button>
+              </div>
+              <div class="pmenu" id="pageMenu" role="menu" aria-label="Halaman bulan" hidden>
+                <button role="menuitem" id="stkMode" aria-pressed="false">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M20 12.5V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h5.5z" />
+                    <path d="M12.5 20c0-4.5 3-7.5 7.5-7.5" />
+                    <path d="M9 10h.01M15 10h.01" /></svg
+                  >Tempel stiker
+                </button>
+                <button role="menuitem" id="tplOpen">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <rect x="3.5" y="3.5" width="7" height="7" rx="1.5" />
+                    <rect x="13.5" y="3.5" width="7" height="7" rx="1.5" />
+                    <rect x="3.5" y="13.5" width="7" height="7" rx="1.5" />
+                    <rect x="13.5" y="13.5" width="7" height="7" rx="1.5" /></svg
+                  >Template &amp; judul
+                </button>
+                <button role="menuitem" id="hiasOpen">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z" />
+                    <path d="M19 15l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7z" /></svg
+                  >Hias halaman
+                </button>
+                <button role="menuitem" data-page-png="calpage">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M12 4v11M7 10l5 5 5-5M5 20h14" /></svg
+                  >Simpan sebagai gambar
+                </button>
+              </div>
+            </div>
+            <div class="mpick" id="mpick" hidden></div>
+            <div class="stats" id="stats"></div>
+            <div class="stkhint" id="stkHint" hidden>
+              <span
+                >Ketuk tanggal mana saja untuk menempel stiker, termasuk tanggal yang akan
+                datang.</span
+              ><button class="btn primary sm" id="stkModeOff">Selesai</button>
+            </div>
+            <div class="calpage" id="calpage">
+              <div class="motif" id="motif" aria-hidden="true"></div>
+              <div class="decob" aria-hidden="true"></div>
+              <p class="ptitle" id="pTitle" hidden></p>
+              <div class="cal" id="cal"></div>
+              <div class="legend" id="legend"></div>
+              <div class="deco" id="deco" aria-hidden="true"></div>
+            </div>
+          </section>
+
+          <section class="panel" data-sec="kalender" aria-label="Grafik rasa">
+            <h2>
+              <span class="hi" style="--hc: var(--m5)"
+                ><svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M3 17l5-6 4 4 8-9" />
+                  <path d="M15 6h5v5" /></svg></span
+              >Naik turun bulan ini
+            </h2>
+            <div class="chartbox" id="chart"></div>
+          </section>
+
+          <section class="panel" data-sec="kalender" aria-label="Setahun">
+            <div class="mhead">
+              <h2>
+                <span class="hi" style="--hc: var(--m1)"
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <rect x="3" y="3" width="7" height="7" rx="1.5" />
+                    <rect x="14" y="3" width="7" height="7" rx="1.5" />
+                    <rect x="3" y="14" width="7" height="7" rx="1.5" />
+                    <rect x="14" y="14" width="7" height="7" rx="1.5" /></svg></span
+                ><span id="yearTitle"></span>
+              </h2>
+              <div class="nav">
+                <button id="prevY" aria-label="Tahun sebelumnya">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                  >
+                    <path d="M15 5l-7 7 7 7" />
+                  </svg>
+                </button>
+                <button id="nextY" aria-label="Tahun berikutnya">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                  >
+                    <path d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <p class="muted small" id="yearSum"></p>
+            <div class="yearwrap" id="yearWrap"><div id="year"></div></div>
+          </section>
+
+          <section class="panel" data-sec="wawasan" aria-label="Apa yang membuat harimu lebih baik">
+            <div>
+              <h2>
+                <span class="hi" style="--hc: var(--m2)"
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path
+                      d="M12 3v18M5 7h14M5 7l-3 7a3 3 0 0 0 6 0zM19 7l-3 7a3 3 0 0 0 6 0z"
+                    /></svg></span
+                >Apa yang membuat harimu lebih baik
+              </h2>
+              <p class="muted small" style="margin-top: 6px">
+                Rata-rata rasamu saat sesuatu ada atau terjadi, dibanding saat tidak. Dari label,
+                kebiasaan, tidur, dan energi.
+              </p>
+            </div>
+            <div class="seg" id="facSeg">
+              <button data-fac="month" aria-pressed="true">Bulan ini</button
+              ><button data-fac="all" aria-pressed="false">Semua waktu</button>
+            </div>
+            <div id="factors"></div>
+            <div id="habDone"></div>
+          </section>
+
+          <section class="panel" data-sec="wawasan" aria-label="Perasaan bulan ini">
+            <div>
+              <h2>
+                <span class="hi" style="--hc: var(--m5)"
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <circle cx="12" cy="12" r="8.5" />
+                    <path d="M8.5 14.5a4.5 4.5 0 0 0 7 0M9 10h.01M15 10h.01" /></svg></span
+                >Perasaan bulan ini
+              </h2>
+              <p class="muted small" style="margin-top: 6px" id="emoSum"></p>
+            </div>
+            <div id="emoList"></div>
+          </section>
+
+          <section class="panel" data-sec="wawasan" aria-label="Rasa per hari">
+            <div>
+              <h2>
+                <span class="hi" style="--hc: var(--accent)"
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M3 20h18M6 16v-5M11 16V6M16 16v-8" /></svg></span
+                >Rasa per hari
+              </h2>
+              <p class="muted small" style="margin-top: 6px" id="wkSum"></p>
+            </div>
+            <div class="week" id="week"></div>
+          </section>
+
+          <section class="panel" data-sec="wawasan" aria-label="Rekap bulanan" id="secWrap" hidden>
+            <div>
+              <h2>
+                <span class="hi" style="--hc: var(--m4)"
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path
+                      d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5L18 18M6 18l2.5-2.5M15.5 8.5L18 6"
+                    /></svg></span
+                >Rekap bulanan
+              </h2>
+              <p class="muted small" style="margin-top: 6px">
+                Cerita singkat perjalanan rasamu tiap bulan. Bisa disimpan sebagai gambar.
+              </p>
+            </div>
+            <div class="wraplist" id="wrapList"></div>
+          </section>
+
+          <section class="panel" data-sec="koleksi" aria-label="Syukur">
+            <div class="mhead">
+              <h2>
+                <span class="hi" style="--hc: var(--m4)"
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path
+                      d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"
+                    /></svg></span
+                >Syukur
+              </h2>
+              <div class="nav">
+                <button id="gPrev" aria-label="Bulan sebelumnya">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                  >
+                    <path d="M15 5l-7 7 7 7" />
+                  </svg></button
+                ><button id="gNext" aria-label="Bulan berikutnya">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                  >
+                    <path d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <p class="muted small" id="gratSum"></p>
+            <div class="gwall" id="gwall"></div>
+          </section>
+
+          <section class="panel" data-sec="koleksi" aria-label="Refleksi mingguan">
+            <div class="mhead">
+              <h2>
+                <span class="hi" style="--hc: var(--m3)"
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path
+                      d="M4 19V5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v14M4 19h16M8 8h8M8 12h5"
+                    /></svg></span
+                >Refleksi mingguan
+              </h2>
+              <button class="btn ghost sm" id="refOpen">Tulis</button>
+            </div>
+            <p class="muted small" id="refSum"></p>
+            <div class="refs" id="refList"></div>
+          </section>
+
+          <section class="panel" data-sec="koleksi" aria-label="Buku stiker">
+            <div class="mhead">
+              <h2>
+                <span class="hi" style="--hc: var(--m5)"
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M20 12.5V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h5.5z" />
+                    <path d="M12.5 20c0-4.5 3-7.5 7.5-7.5" />
+                    <path d="M9 10h.01M15 10h.01" /></svg></span
+                >Buku stiker
+              </h2>
+              <button class="btn ghost sm" id="stkBook">Buat stiker</button>
+            </div>
+            <p class="muted small" id="stkSum"></p>
+            <div class="stkbook" id="stkUsed"></div>
+          </section>
+
+          <section class="panel" data-sec="koleksi" aria-label="Kapsul waktu" id="secCap">
+            <div>
+              <h2>
+                <span class="hi" style="--hc: var(--m1)"
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <rect x="3" y="5" width="18" height="14" rx="2.5" />
+                    <path d="M3.5 6.5l8.5 6.5 8.5-6.5" /></svg></span
+                >Kapsul waktu
+              </h2>
+              <p class="muted small" style="margin-top: 6px">
+                Tulis surat untuk dirimu di masa depan. Suratnya baru bisa dibuka setelah waktunya
+                tiba.
+              </p>
+            </div>
+            <div class="capform">
+              <textarea
+                id="capText"
+                maxlength="2000"
+                placeholder="Hai, aku di masa depan. Saat ini aku sedang…"
+              ></textarea>
+              <div class="capopts">
+                <span class="muted small">Buka lagi dalam</span>
+                <div class="seg" id="capSeg">
+                  <button data-cap="3" aria-pressed="true">3 bulan</button
+                  ><button data-cap="6" aria-pressed="false">6 bulan</button
+                  ><button data-cap="12" aria-pressed="false">1 tahun</button>
+                </div>
+                <button class="btn primary sm" id="capSave" disabled>Kunci kapsul</button>
+              </div>
+              <p class="pmsg" id="capMsg"></p>
+            </div>
+            <div class="caps" id="caps"></div>
+          </section>
+
+          <section class="panel" data-sec="koleksi" aria-label="Lencana" id="secBadge">
+            <div>
+              <h2>
+                <span class="hi" style="--hc: var(--m5)"
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path
+                      d="M8 4h8v5a4 4 0 0 1-8 0zM8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8 21h8M10 17h4"
+                    /></svg></span
+                >Lencana
+              </h2>
+              <p class="muted small" style="margin-top: 6px" id="badgeSum"></p>
+            </div>
+            <div class="badges" id="badges"></div>
+          </section>
+
+          <section class="panel" data-sec="catatan" aria-label="Semua catatan">
+            <div class="mhead">
+              <h2>
+                <span class="hi" style="--hc: var(--m3)"
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z" />
+                    <path d="M5 17a3 3 0 0 1 3-3h11M9 8h6" /></svg></span
+                >Semua catatan
+              </h2>
+              <button
+                class="btn ghost sm iconlbl"
+                id="printOpen"
+                title="Cetak atau simpan sebagai PDF"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M7 9V3h10v6M7 17H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2"
+                  />
+                  <rect x="7" y="14" width="10" height="7" rx="1" /></svg
+                >Cetak
+              </button>
+            </div>
+            <div class="filters" id="histTools">
+              <label class="search"
+                ><svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                >
+                  <circle cx="11" cy="11" r="7" />
+                  <path d="M20 20l-4-4" /></svg
+                ><input
+                  id="q"
+                  type="search"
+                  placeholder="Cari di catatan atau label…"
+                  aria-label="Cari catatan"
+              /></label>
+              <div class="frow">
+                <div class="fmoods" id="fMoods" aria-label="Saring berdasarkan rasa"></div>
+                <select id="fTag" aria-label="Saring berdasarkan label"></select>
+              </div>
+            </div>
+            <p class="muted small" id="histCount"></p>
+            <div class="hist" id="hist"></div>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <nav class="tabbar" aria-label="Navigasi">
+      <button data-tab="tulis" aria-current="page">
+        <svg
+          width="22"
+          height="22"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M4 20h4L19 9l-4-4L4 16z" />
+          <path d="M13.5 6.5l4 4" /></svg
+        >Tulis
+      </button>
+      <button data-tab="kalender">
+        <svg
+          width="22"
+          height="22"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <rect x="3.5" y="5" width="17" height="15" rx="3" />
+          <path d="M3.5 10h17M8 3v4M16 3v4" /></svg
+        >Kalender
+      </button>
+      <button data-tab="wawasan">
+        <svg
+          width="22"
+          height="22"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M3 20h18M6 16v-5M11 16V6M16 16v-8" /></svg
+        >Wawasan
+      </button>
+      <button data-tab="koleksi">
+        <svg
+          width="22"
+          height="22"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M6 3h12v18l-6-4-6 4z" /></svg
+        >Koleksi
+      </button>
+      <button data-tab="catatan">
+        <svg
+          width="22"
+          height="22"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M9 6h11M9 12h11M9 18h11M4.5 6h.01M4.5 12h.01M4.5 18h.01" /></svg
+        >Catatan
+      </button>
+    </nav>
+
+    <div class="toasts" id="toasts" aria-live="polite"></div>
+
+    <div class="lock" id="lock" hidden>
+      <div class="lockbox">
+        <span class="logo" id="lockLogo" aria-hidden="true"></span>
+        <h2>Jurnal Rasa terkunci</h2>
+        <p class="muted">Masukkan PIN untuk membuka</p>
+        <div class="pdots" id="pdots"></div>
+        <div class="keypad" id="keypad"></div>
+        <button class="link" id="forgot">Lupa PIN?</button>
+        <div class="forgot" id="forgotBox" hidden>
+          <p>
+            PIN tidak bisa dipulihkan. Satu-satunya cara membuka jurnal adalah menghapus PIN
+            <b>beserta semua catatan</b> di browser ini.
+          </p>
+          <button class="btn text" id="wipe">Hapus semua catatan &amp; PIN</button>
+        </div>
+      </div>
+    </div>
+
+    <dialog class="dlg" id="dlgBreath" aria-label="Latihan napas">
+      <form method="dialog" class="dhead">
+        <h2>
+          <span class="hi" style="--hc: var(--m2)"
+            ><svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M3 9h11a3 3 0 1 0-3-3M3 15h15a3 3 0 1 1-3 3M3 12h7" /></svg></span
+          >Napas tenang
+        </h2>
+        <button class="iconbtn sm" aria-label="Tutup">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M6 6l12 12M18 6L6 18" />
+          </svg>
+        </button>
+      </form>
+      <div class="bmain" id="bmain">
+        <div class="bring">
+          <div class="bcircle" id="bcircle"></div>
+          <p class="btext" id="btext">Siap…</p>
+        </div>
+        <p class="tnum bcount" id="bcount">60 detik</p>
+        <p class="muted small">Tarik napas saat lingkaran membesar, hembuskan saat mengecil.</p>
+      </div>
+      <div class="bdone" id="bdone" hidden>
+        <span id="bface"></span>
+        <h3>Selesai</h3>
+        <p class="muted">
+          Semoga sedikit lebih ringan. Kamu boleh menulis apa pun yang kamu rasakan sekarang.
+        </p>
+        <div class="row">
+          <button class="btn ghost" id="breathAgain">Ulangi</button>
+          <form method="dialog"><button class="btn primary">Kembali menulis</button></form>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog class="dlg wrapdlg" id="dlgWrap" aria-label="Rekap bulanan"></dialog>
+
+    <dialog class="dlg narrow" id="dlgUnsaved" aria-label="Perubahan belum disimpan">
+      <h2 class="utitle">Ada perubahan yang belum disimpan</h2>
+      <p class="muted">Catatan untuk <b id="unsDate"></b> sudah kamu ubah tapi belum disimpan.</p>
+      <div class="ucol">
+        <button class="btn primary" id="unsSave">Simpan, lalu pindah</button
+        ><button class="btn ghost" id="unsDiscard">Buang perubahan</button
+        ><button class="btn text" id="unsCancel">Tetap di sini</button>
+      </div>
+    </dialog>
+
+    <dialog class="dlg weldlg" id="dlgWelcome" aria-label="Selamat datang"></dialog>
+
+    <dialog class="dlg" id="dlgPrint" aria-label="Cetak catatan">
+      <form method="dialog" class="dhead">
+        <h2>
+          <span class="hi" style="--hc: var(--m3)"
+            ><svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M7 9V3h10v6M7 17H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2"
+              />
+              <rect x="7" y="14" width="10" height="7" rx="1" /></svg></span
+          >Cetak / PDF
+        </h2>
+        <button class="iconbtn sm" aria-label="Tutup">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M6 6l12 12M18 6L6 18" />
+          </svg>
+        </button>
+      </form>
+      <div class="setsub">
+        <label class="pf"
+          ><span>Bulan</span
+          ><select id="prMonth"></select
+        ></label>
+        <label class="chk"
+          ><input type="checkbox" id="prExtra" checked /> Sertakan syukur, kebiasaan, dan
+          momen</label
+        >
+        <label class="chk"><input type="checkbox" id="prPhoto" /> Sertakan foto</label>
+        <p class="muted small">
+          Pilih “Simpan sebagai PDF” di jendela cetak kalau ingin menyimpan file PDF. Isi catatan
+          ikut tercetak, jadi simpan hasilnya di tempat yang aman.
+        </p>
+        <div class="row"><button class="btn primary" id="printGo">Cetak</button></div>
+      </div>
+    </dialog>
+
+    <dialog class="dlg" id="dlgSet" aria-label="Pengaturan">
+      <form method="dialog" class="dhead" id="setHead">
+        <h2>
+          <span class="hi" style="--hc: var(--m3)"
+            ><svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="3" />
+              <path
+                d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"
+              /></svg></span
+          >Pengaturan
+        </h2>
+        <button class="iconbtn sm" aria-label="Tutup">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M6 6l12 12M18 6L6 18" />
+          </svg>
+        </button>
+      </form>
+      <p class="setgrp">Catatan</p>
+      <div class="setrow">
+        <div>
+          <b>Backup</b>
+          <p class="muted small" id="bkNote"></p>
+        </div>
+        <div class="row" style="flex-wrap: nowrap; flex: none">
+          <button class="btn ghost sm" id="bkExport">Unduh</button
+          ><button class="btn ghost sm" id="bkImport">Pulihkan</button>
+        </div>
+      </div>
+      <input type="file" id="bkFile" accept="application/json,.json" hidden />
+      <div class="setsub" id="impBox" hidden></div>
+      <div class="setsub" id="stoSub" hidden>
+        <p class="muted small" id="stoNote"></p>
+        <div class="stobar"><i id="stoBar"></i></div>
+      </div>
+      <div class="setrow">
+        <div>
+          <b>Pengingat harian</b>
+          <p class="muted small">Kalau hari ini belum menulis.</p>
+        </div>
+        <label class="switch"><input type="checkbox" id="remOn" /><span></span></label>
+      </div>
+      <div class="setsub" id="remSub">
+        <label class="pf"
+          ><span>Jam pengingat</span><input type="time" id="remTime" value="20:00"
+        /></label>
+        <p class="muted small" id="remNote"></p>
+      </div>
+
+      <p class="setgrp">Privasi</p>
+      <div class="setrow">
+        <div>
+          <b>Kunci PIN</b>
+          <p class="muted small" id="pinNote"></p>
+        </div>
+        <div class="row" id="pinAct"></div>
+      </div>
+      <div class="setsub" id="pinForm" hidden></div>
+      <div class="setrow">
+        <div>
+          <b>Sembunyikan isi catatan</b>
+          <p class="muted small">Diburamkan sampai disentuh.</p>
+        </div>
+        <label class="switch"><input type="checkbox" id="hideOn" /><span></span></label>
+      </div>
+
+      <p class="setgrp">Tampilan</p>
+      <div class="setrow">
+        <b>Huruf lebih besar</b>
+        <label class="switch"><input type="checkbox" id="bigOn" /><span></span></label>
+      </div>
+      <div class="setrow">
+        <b>Kurangi animasi</b>
+        <label class="switch"><input type="checkbox" id="calmOn" /><span></span></label>
+      </div>
+      <div class="setrow">
+        <div>
+          <b>Fitur yang ditampilkan</b>
+          <p class="muted small" id="featSum"></p>
+        </div>
+        <button class="btn ghost sm" id="featToggle" aria-expanded="false">Atur</button>
+      </div>
+      <div class="setsub" id="featBox" hidden>
+        <div class="feats" id="feats"></div>
+        <p class="muted small">Yang dimatikan hanya disembunyikan. Datanya tetap tersimpan.</p>
+      </div>
+
+      <p class="setgrp">Lainnya</p>
+      <div class="setlinks">
+        <button class="btn ghost sm" data-help>Bantuan &amp; dukungan</button
+        ><button class="btn ghost sm" id="welcomeAgain">Panduan</button
+        ><button class="btn ghost sm" id="instOpen" aria-expanded="false">Pasang di HP</button>
+      </div>
+      <div class="setsub" id="instBox" hidden>
+        <p class="muted small" id="instNote"></p>
+        <button class="btn primary sm" id="instBtn" hidden>Pasang sekarang</button>
+      </div>
+    </dialog>
+
+    <dialog class="dlg focusdlg" id="dlgFocus" aria-label="Menulis fokus">
+      <div class="fhead">
+        <div>
+          <p class="label" id="fDate"></p>
+          <button class="ptext" id="fPrompt" title="Masukkan pertanyaan ini ke catatan"></button>
+        </div>
+        <button
+          class="iconbtn sm"
+          id="fPromptNext"
+          aria-label="Pertanyaan lain"
+          title="Pertanyaan lain"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path
+              d="M3 12a9 9 0 0 1 15.5-6.2L21 8M21 3v5h-5M21 12a9 9 0 0 1-15.5 6.2L3 16M3 21v-5h5"
+            />
+          </svg>
+        </button>
+      </div>
+      <textarea
+        id="fnote"
+        aria-label="Catatan"
+        placeholder="Tulis sepanjang yang kamu mau. Tidak ada yang menilai."
+      ></textarea>
+      <p class="micline" data-micline="fnote" hidden></p>
+      <div class="ffoot">
+        <span class="muted small tnum" id="fCount"></span>
+        <span class="ltools">
+          <button
+            class="iconbtn sm mic"
+            data-mic="fnote"
+            aria-label="Bicara untuk menulis"
+            title="Bicara untuk menulis"
+            hidden
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect x="9" y="3" width="6" height="11" rx="3" />
+              <path d="M5 11a7 7 0 0 0 14 0M12 18v3" />
+            </svg>
+          </button>
+          <button class="btn primary sm" id="focusDone">Selesai</button>
+        </span>
+      </div>
+    </dialog>
+
+    <dialog class="dlg stack" id="dlgHelp" aria-label="Bantuan dan dukungan"></dialog>
+
+    <dialog class="dlg stack" id="dlgRef" aria-label="Refleksi mingguan"></dialog>
+
+    <dialog class="dlg stack" id="dlgStk" aria-label="Stiker"></dialog>
+
+    <dialog class="dlg stack" id="dlgTpl" aria-label="Atur halaman bulan"></dialog>
+
+    <dialog class="dlg hiasdlg" id="dlgHias" aria-label="Hias halaman bulan"></dialog>
+
+    <div id="printArea" aria-hidden="true"></div>
+
+    <script src="js/inti.js"></script>
+    <script src="js/editor.js"></script>
+    <script src="js/kalender.js"></script>
+    <script src="js/wawasan.js"></script>
+    <script src="js/catatan.js"></script>
+    <script src="js/koleksi.js"></script>
+    <script src="js/napas.js"></script>
+    <script src="js/menulis.js"></script>
+    <script src="js/refleksi.js"></script>
+    <script src="js/dukungan.js"></script>
+    <script src="js/stiker.js"></script>
+    <script src="js/hewan.js"></script>
+    <script src="js/lucu.js"></script>
+    <script src="js/hias.js"></script>
+    <script src="js/rekap.js"></script>
+    <script src="js/pengaturan.js"></script>
+    <script src="js/sambutan.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>

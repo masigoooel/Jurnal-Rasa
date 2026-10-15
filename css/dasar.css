@@ -1,0 +1,256 @@
+/* Dasar: reset, warna tema, huruf, dan komponen kecil yang dipakai di mana-mana (tombol, toast, kotak kosong). */
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  margin: 0;
+}
+[hidden] {
+  display: none !important;
+}
+/* Warna tema. Skala rasa dari dingin (berat) ke hangat (senang). */
+:root {
+  /* Latar sedikit hangat dan bukan putih murni supaya tidak silau; teks tidak hitam pekat. */
+  --bg: #f4f3ef;
+  --surface: #fdfcfa;
+  --surface-2: #f0eee9;
+  --line: #e2dfd8;
+  --fg: #22272f;
+  --muted: #5d6470;
+  --accent: #21706a;
+  --accent-fg: #ffffff;
+  --danger: #b8402f;
+  --m1: #5876cf;
+  --m2: #9fb4e6;
+  --m3: #c4bfb6;
+  --m4: #f2bf6c;
+  --m5: #e98c34;
+  --face: #22253a;
+  --f-display: "Bricolage Grotesque", system-ui, sans-serif;
+  --f-body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #11151c;
+    --surface: #1a1f28;
+    --surface-2: #222833;
+    --line: #2f3644;
+    --fg: #e2e5ea;
+    --muted: #9aa3b2;
+    --accent: #5ec0b4;
+    --accent-fg: #0d1a19;
+    --danger: #ff8a78;
+    --m1: #8ea6f0;
+    --m2: #b7c6ec;
+    --m3: #bbb6ad;
+    --m4: #f2c27a;
+    --m5: #f5a04a;
+    --face: #1b1e2c;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  --bg: #11151c;
+  --surface: #1a1f28;
+  --surface-2: #222833;
+  --line: #2f3644;
+  --fg: #e2e5ea;
+  --muted: #9aa3b2;
+  --accent: #5ec0b4;
+  --accent-fg: #0d1a19;
+  --danger: #ff8a78;
+  --m1: #8ea6f0;
+  --m2: #b7c6ec;
+  --m3: #bbb6ad;
+  --m4: #f2c27a;
+  --m5: #f5a04a;
+  --face: #1b1e2c;
+  color-scheme: dark;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  --tint: var(--m4);
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--f-body);
+  font-size: 15px;
+  line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 20px 40px;
+}
+button,
+input,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+h1,
+h2,
+h3 {
+  font-family: var(--f-display);
+  margin: 0;
+  line-height: 1.1;
+  text-wrap: balance;
+}
+h1 {
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+h2 {
+  font-size: 21px;
+  font-weight: 600;
+}
+p {
+  margin: 0;
+}
+.muted {
+  color: var(--muted);
+}
+/* Angka sama lebar supaya rata saat berjajar (font tetap sama dengan teks). */
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+.label {
+  font-size: 11.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.empty {
+  color: var(--muted);
+  font-size: 14px;
+  padding: 18px;
+  text-align: center;
+  background: var(--surface-2);
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.empty svg {
+  animation: bob 3s ease-in-out infinite;
+}
+.empty b {
+  color: var(--fg);
+  font-family: var(--f-display);
+  font-size: 17px;
+  font-weight: 600;
+}
+@keyframes bob {
+  50% {
+    transform: translateY(-4px) rotate(4deg);
+  }
+}
+
+/* Komponen kecil */
+.btn.sm {
+  padding: 7px 12px;
+  font-size: 13px;
+  border-radius: 10px;
+}
+.row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.hi.sm {
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+}
+.hi.sm svg {
+  width: 15px;
+  height: 15px;
+}
+
+/* Toast */
+.toasts {
+  position: fixed;
+  left: 50%;
+  top: 16px;
+  transform: translateX(-50%);
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: min(380px, calc(100vw - 32px));
+  pointer-events: none;
+}
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 12px 14px;
+  box-shadow: 0 16px 40px -16px rgb(0 0 0 / 0.35);
+  animation: tin 0.5s cubic-bezier(0.3, 1.4, 0.5, 1) both;
+  pointer-events: auto;
+}
+.toast.out {
+  animation: tout 0.4s both;
+}
+.toast > div {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  font-size: 13.5px;
+}
+.toast small {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  color: var(--accent);
+}
+.toast span:not(.bdg) {
+  color: var(--muted);
+  font-size: 12.5px;
+}
+@keyframes tin {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+}
+@keyframes tout {
+  to {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+}
+
+/* Label dengan ikon */
+.iconlbl {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.iconlbl svg {
+  width: 16px;
+  height: 16px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
