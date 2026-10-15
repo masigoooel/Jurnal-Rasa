@@ -602,3 +602,17 @@
   opacity: 0.4;
   transition: opacity 0.2s;
 }
+
+/* Template yang angkanya di pojok kiri atas: stiker tanggal pindah ke pojok kanan atas supaya angkanya tidak tertutup,
+   dan penanda hari ini di template lucu turun ke pojok kanan bawah. */
+.calpage[data-tpl="bujo"] .dstk,
+.calpage[data-tpl="malam"] .dstk,
+.calpage[data-shape] .dstk {
+  left: auto;
+  right: -6px;
+}
+.calpage[data-shape] .day.today::after,
+.calpage[data-shape] .day.has.today::after {
+  top: auto;
+  bottom: 5px;
+}
