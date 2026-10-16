@@ -130,5 +130,9 @@ hideSplash(() => {
 // PWA: simpan file aplikasi untuk dipakai offline. Hanya bisa saat dibuka lewat http(s), bukan dari file langsung.
 if ("serviceWorker" in navigator && location.protocol.startsWith("http"))
   addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+// Safari lama di iPhone mengabaikan user-scalable=no, jadi gerakan cubit dicegah langsung.
+["gesturestart", "gesturechange"].forEach(t =>
+  document.addEventListener(t, e => e.preventDefault(), { passive: false })
+);
 // Minta browser tidak menghapus data situs ini saat ruang penyimpanan HP menipis.
 navigator.storage?.persist?.().catch(() => {});

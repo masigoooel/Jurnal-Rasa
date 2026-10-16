@@ -2,7 +2,7 @@
    Catatanmu tidak lewat sini; catatan tetap di localStorage browser.
    Kalau menambah file CSS/JS baru, tambahkan juga ke CORE di bawah, lalu naikkan nomor versi CACHE. */
 
-const CACHE = "jurnal-rasa-v12";
+const CACHE = "jurnal-rasa-v13";
 const CORE = [
   "./",
   "index.html",

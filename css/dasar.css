@@ -2,6 +2,9 @@
 
 html {
   -webkit-text-size-adjust: 100%;
+  /* Seperti aplikasi: geser boleh, tapi cubit dan ketuk dua kali tidak memperbesar layar.
+     Untuk tulisan yang lebih besar ada pilihan "Huruf lebih besar" di Pengaturan. */
+  touch-action: pan-x pan-y;
 }
 body {
   margin: 0;
