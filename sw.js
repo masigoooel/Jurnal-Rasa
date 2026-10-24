@@ -2,7 +2,7 @@
    Catatanmu tidak lewat sini; catatan tetap di localStorage browser.
    Kalau menambah file CSS/JS baru, tambahkan juga ke CORE di bawah, lalu naikkan nomor versi CACHE. */
 
-const CACHE = "jurnal-rasa-v13";
+const CACHE = "jurnal-rasa-v23";
 const CORE = [
   "./",
   "index.html",
@@ -18,21 +18,24 @@ const CORE = [
   "css/stiker.css",
   "css/tata-letak.css",
   "css/template.css",
+  "css/tenang.css",
   "css/wawasan.css",
   "icons/apple-touch-icon.png",
   "icons/favicon-32.png",
   "icons/icon-192.png",
   "icons/icon-512.png",
   "icons/icon-maskable-512.png",
+  "icons/logo.svg",
   "js/catatan.js",
   "js/dukungan.js",
   "js/editor.js",
-  "js/hewan.js",
-  "js/lucu.js",
+  "js/hiasan.js",
+  "js/lama.js",
   "js/hias.js",
   "js/inti.js",
   "js/kalender.js",
   "js/koleksi.js",
+  "js/fitur.js",
   "js/main.js",
   "js/menulis.js",
   "js/napas.js",
@@ -67,8 +70,9 @@ self.addEventListener("activate", e => {
   );
 });
 
-// Ambil dari cache dulu supaya cepat dan bisa offline, sambil memperbarui cache di belakang layar.
-// Jadi perubahan baru di server terlihat pada kali berikutnya aplikasi dibuka.
+// Ambil dari jaringan dulu supaya perubahan terbaru langsung terpakai, lalu simpan salinannya ke cache.
+// Kalau sedang offline (atau jaringan gagal), pakai salinan dari cache.
+// Dulu cache-first: setelah pembaruan, file lama dan baru bisa tercampur sehingga tab tidak bisa berpindah.
 self.addEventListener("fetch", e => {
   const req = e.request;
   if (req.method !== "GET") return;
@@ -76,21 +80,18 @@ self.addEventListener("fetch", e => {
     font = url.hostname === "fonts.googleapis.com" || url.hostname === "fonts.gstatic.com";
   if (url.origin !== location.origin && !font) return;
   e.respondWith(
-    caches.open(CACHE).then(async c => {
-      const hit =
-        (await c.match(req, { ignoreSearch: true })) ||
-        (req.mode === "navigate" ? await c.match("./") : undefined);
-      const net = fetch(req)
+    caches.open(CACHE).then(c =>
+      fetch(req)
         .then(res => {
           if (res.ok || res.type === "opaque") c.put(req, res.clone());
           return res;
         })
-        .catch(() => hit || Response.error());
-      if (hit) {
-        e.waitUntil(net);
-        return hit;
-      }
-      return net;
-    })
+        .catch(async () => {
+          const hit =
+            (await c.match(req, { ignoreSearch: true })) ||
+            (req.mode === "navigate" ? await c.match("./") : undefined);
+          return hit || Response.error();
+        })
+    )
   );
 });

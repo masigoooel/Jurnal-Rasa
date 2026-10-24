@@ -39,36 +39,71 @@ const SET_DEF = {
   pinLen: 0,
   calm: false,
   big: false,
+  sound: false,
   fIntent: true,
+  fEmo: true,
+  fBody: true,
   fHabit: true,
+  fWeather: true,
+  fDoodle: true,
+  fPhoto: true,
+  fFlash: true,
+  fSeason: true,
+  fRefl: true,
   fCap: true,
   fBadge: false,
 };
-// Fitur tambahan yang boleh dimatikan. Saat mati hanya disembunyikan; datanya tidak dihapus.
+// Semua fitur pilihan di satu tempat. Saat mati hanya disembunyikan (kelas no-* di body, lihat tata-letak.css);
+// datanya tidak dihapus. [kunci, nama, keterangan, kelompok]
 const FEATS = [
-  ["fIntent", "Niat harian", "Ajakan memasang niat di atas catatan"],
-  ["fHabit", "Kebiasaan", "Daftar centang di Isi cepat"],
-  ["fCap", "Kapsul waktu", "Surat untuk dirimu di masa depan"],
-  ["fBadge", "Lencana & hari beruntun", "Hitungan hari berturut-turut dan lencana"],
+  ["fIntent", "Niat harian", "Ajakan memasang niat di atas catatan", "tulis"],
+  ["fEmo", "Kata perasaan", "Pilihan kata setelah memilih rasa", "tulis"],
+  ["fBody", "Energi & tidur", "Di Isi cepat", "tulis"],
+  ["fHabit", "Kebiasaan", "Daftar centang di Isi cepat", "tulis"],
+  ["fWeather", "Cuaca", "Di Isi cepat", "tulis"],
+  ["fDoodle", "Coretan", "Kanvas kecil untuk menggambar", "tulis"],
+  ["fPhoto", "Foto", "Satu foto per hari", "tulis"],
+  ["fFlash", "Kenangan", "Catatan dari minggu dan tahun lalu", "tulis"],
+  ["fSeason", "Rekap musim", "Ringkasan tiga bulan di Wawasan", "lain"],
+  ["fRefl", "Refleksi mingguan", "Pertanyaan akhir pekan di Koleksi", "lain"],
+  ["fCap", "Kapsul waktu", "Surat untuk dirimu di masa depan", "lain"],
+  ["fBadge", "Lencana & hari beruntun", "Hitungan hari berturut-turut dan lencana", "lain"],
 ];
+const FEAT_GRP = { tulis: "Halaman tulis", lain: "Wawasan & koleksi" };
 function applyFeatures() {
   const b = document.body.classList;
   FEATS.forEach(([k]) => b.toggle("no-" + k.slice(1).toLowerCase(), !S.set[k]));
   b.toggle("calm-motion", !!S.set.calm);
   document.documentElement.classList.toggle("big-text", !!S.set.big);
 }
+// Ringkasan: "10 dari 12 aktif · cuaca, lencana mati".
+function featSummary() {
+  const off = FEATS.filter(([k]) => !S.set[k]).map(([, n]) => n.split(" & ")[0].toLowerCase());
+  let t = `${FEATS.length - off.length} dari ${FEATS.length} aktif`;
+  if (off.length)
+    t += ` · ${off.slice(0, 2).join(", ")}${off.length > 2 ? ` +${off.length - 2}` : ""} mati`;
+  return t;
+}
 function renderFeats() {
-  const on = FEATS.filter(([k]) => S.set[k]).length;
-  $("#featSum").textContent = `${on} dari ${FEATS.length} aktif`;
+  $("#featSum").textContent = featSummary();
   $("#featBox").hidden = !S.featOpen;
   $("#featToggle").setAttribute("aria-expanded", !!S.featOpen);
   $("#featToggle").textContent = S.featOpen ? "Tutup" : "Atur";
-  $("#feats").innerHTML = FEATS.map(
-    ([k, n, d]) =>
-      `<label class="feat"><span><b>${n}</b><small>${d}</small></span><span class="switch"><input type="checkbox" data-feat="${k}"${S.set[k] ? " checked" : ""}><span></span></span></label>`
-  ).join("");
+  $("#feats").innerHTML = Object.entries(FEAT_GRP)
+    .map(
+      ([g, gn]) =>
+        `<p class="featgrp">${gn}</p>` +
+        FEATS.filter(f => f[3] === g)
+          .map(
+            ([k, n, d]) =>
+              `<label class="feat"><span><b>${n}</b><small>${d}</small></span><span class="switch"><input type="checkbox" data-feat="${k}"${S.set[k] ? " checked" : ""}><span></span></span></label>`
+          )
+          .join("")
+    )
+    .join("");
   $("#calmOn").checked = !!S.set.calm;
   $("#bigOn").checked = !!S.set.big;
+  $("#soundOn").checked = !!S.set.sound;
 }
 function loadSet() {
   try {
@@ -258,6 +293,8 @@ function cleanEntries(obj) {
     if (strList(e.habits).length) x.habits = strList(e.habits);
     if (strList(e.emo).length) x.emo = strList(e.emo).slice(0, EMO_MAX);
     if (typeof e.photo === "string" && e.photo.startsWith("data:image/")) x.photo = e.photo;
+    if (isWeather(e.weather)) x.weather = e.weather;
+    if (typeof e.doodle === "string" && e.doodle.startsWith("data:image/png")) x.doodle = e.doodle;
     if (Array.isArray(e.moments))
       x.moments = e.moments
         .filter(m => m && [1, 2, 3, 4, 5].includes(m.mood))
@@ -723,13 +760,12 @@ $("#remTime").addEventListener("change", e => {
 });
 document.addEventListener("change", e => {
   const k = e.target.dataset?.feat,
-    sw = { calmOn: "calm", bigOn: "big" }[e.target.id];
+    sw = { calmOn: "calm", bigOn: "big", soundOn: "sound" }[e.target.id];
   if (!k && !sw) return;
   S.set[k || sw] = e.target.checked;
   saveSet();
-  if (k)
-    $("#featSum").textContent =
-      `${FEATS.filter(([f]) => S.set[f]).length} dari ${FEATS.length} aktif`;
+  if (k) $("#featSum").textContent = featSummary();
+  if (sw === "sound" && S.set.sound) kertas("simpan");
   applyFeatures();
   renderAll();
 });

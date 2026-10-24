@@ -29,7 +29,10 @@ function loadDraft() {
     moments: (e.moments || []).map(m => ({ ...m })),
     habits: [...(e.habits || [])],
     emo: [...(e.emo || [])],
+    weather: isWeather(e.weather) ? e.weather : "",
+    doodle: typeof e.doodle === "string" && e.doodle.startsWith("data:image/") ? e.doodle : "",
   };
+  S.showAll = false;
   S.dirty = false;
   S.restored = false;
   const saved = readDraft();
@@ -39,6 +42,7 @@ function loadDraft() {
   }
   $("#note").value = S.draft.note;
   renderExtras();
+  paintDoodle();
 }
 
 function buildEntry() {
@@ -57,6 +61,8 @@ function buildEntry() {
   if (d.moments.length) b.moments = d.moments.map(m => ({ ...m }));
   if (d.habits.length) b.habits = [...d.habits];
   if (d.emo.length) b.emo = [...d.emo];
+  if (d.weather) b.weather = d.weather;
+  if (d.doodle) b.doodle = d.doodle;
   return b;
 }
 
@@ -80,6 +86,8 @@ function readDraft() {
         moments: Array.isArray(d.moments) ? d.moments : [],
         habits: Array.isArray(d.habits) ? d.habits.filter(x => typeof x === "string") : [],
         emo: Array.isArray(d.emo) ? d.emo.filter(x => typeof x === "string").slice(0, EMO_MAX) : [],
+        weather: isWeather(d.weather) ? d.weather : "",
+        doodle: typeof d.doodle === "string" && d.doodle.startsWith("data:image/") ? d.doodle : "",
       },
     };
   } catch (_) {
@@ -116,7 +124,12 @@ function renderStatus() {
 
 function renderEditor() {
   const isToday = S.sel === todayKey();
-  $("#edTitle").textContent = isToday ? "Hari ini" : fmtShort(S.sel);
+  {
+    const d = fromKey(S.sel);
+    $("#edDay").textContent =
+      (isToday ? "Hari ini · " : "") + d.toLocaleDateString("id-ID", { weekday: "long" });
+    $("#edTitle").textContent = d.toLocaleDateString("id-ID", { day: "numeric", month: "long" });
+  }
   $("#toToday").hidden = isToday;
   const mo = $("#moods");
   mo.classList.toggle("picked", !!S.draft.mood);
@@ -131,10 +144,8 @@ function renderEditor() {
   document.body.style.setProperty("--tint", tint || "var(--m4)");
   $("#tags").style.setProperty("--tc", tint || "var(--fg)");
   $("#tags").style.setProperty("--tcf", tint ? "var(--face)" : "var(--bg)");
-  if (S.logoMood !== S.draft.mood) {
-    S.logoMood = S.draft.mood;
-    $("#logo").innerHTML = face(S.draft.mood || 3, 46);
-  }
+  applyHeavy();
+  renderWeather();
   renderEmos();
   renderTags();
   renderPrompt();
@@ -297,7 +308,7 @@ function renderFlash() {
       found
         .map(([l, k]) => {
           const e = S.entries[k];
-          return `<button class="entry" data-day="${k}">${face(e.mood, 30)}<div style="min-width:0"><div class="d">${l} <span class="t">· ${fmtShort(k)} · ${MOODS[e.mood].n}</span></div>${e.note ? `<div class="note">${esc(e.note)}</div>` : ""}</div></button>`;
+          return `<button class="entry${l === "Setahun lalu" ? " yearago" : ""}" data-day="${k}">${face(e.mood, 30)}<div style="min-width:0"><div class="d">${l} <span class="t">· ${fmtShort(k)} · ${MOODS[e.mood].n}</span></div>${e.note ? `<div class="note">${esc(e.note)}</div>` : ""}</div></button>`;
         })
         .join("")
     : "";
@@ -320,6 +331,9 @@ function renderQuick() {
   $("#sTags").textContent = d.tags.length ? `${d.tags.length}` : "";
   $("#sHab").textContent = d.habits.length ? `${d.habits.length}` : "";
   $("#sPhoto").textContent = d.photo ? "✓" : "";
+  $("#sWeather").textContent = weatherName(d.weather);
+  $("#sDoodle").textContent = d.doodle ? "✓" : "";
+  if (S.xopen === "doodle") renderDoodle();
   document
     .querySelectorAll(".xchip")
     .forEach(c => c.setAttribute("aria-expanded", c.dataset.x === S.xopen));
@@ -434,7 +448,7 @@ function goTo(k) {
   S.vmo = d.getMonth();
   loadDraft();
   renderAll();
-  if (isMobile()) setTab("tulis");
+  if (isMobile() || document.body.dataset.tab !== "tulis") setTab("tulis");
   else if ($(".editor").getBoundingClientRect().top < 0)
     window.scrollTo({ top: 0, behavior: "smooth" });
 }
@@ -462,6 +476,7 @@ function saveEntry() {
   S.justSaved = true;
   S.saving = false;
   buzz();
+  kertas("simpan");
   renderAll();
   if (body.mood >= 3) burst($("#save"), body.mood);
   else encourage();
@@ -681,6 +696,13 @@ document.addEventListener("click", e => {
     return;
   }
   if (t.dataset.day) {
+    // Di desktop, catatan yang diklik di tab Catatan cukup dibuka di halaman baca sebelahnya.
+    if (t.closest("#hist")) setLastRead(t.dataset.day);
+    if (!isMobile() && document.body.dataset.tab === "catatan" && t.closest("#hist")) {
+      S.readK = t.dataset.day;
+      renderRead();
+      return;
+    }
     select(t.dataset.day);
     return;
   }

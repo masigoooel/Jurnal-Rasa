@@ -85,7 +85,7 @@ function renderHistory() {
       h += `<p class="mgroup">${fromKey(k).toLocaleDateString("id-ID", { month: "long", year: "numeric" })}</p>`;
     }
     const ph = typeof e.photo === "string" && e.photo.startsWith("data:image/");
-    h += `<button class="entry${ph ? " wp" : ""}" data-day="${k}">${face(e.mood, 34)}<div style="min-width:0"><div class="d">${fmtShort(k)}${dayStickers(
+    h += `<button class="entry${ph ? " wp" : ""}${k === S.readK ? " on" : ""}${k === S.lastRead ? " mark" : ""}" data-day="${k}"${k === S.lastRead ? ' title="Terakhir dibaca"' : ""}>${face(e.mood, 34)}<div style="min-width:0"><div class="d">${fmtShort(k)}${dayStickers(
       k
     )
       .map(s => stickerSvg(s, 16))
@@ -97,6 +97,56 @@ function renderHistory() {
   if (ks.length > shown.length)
     h += `<button class="btn ghost more" id="more">Tampilkan lebih banyak (${ks.length - shown.length} lagi)</button>`;
   $("#hist").innerHTML = h;
+}
+
+/* ===== Baca catatan (halaman kanan tab Catatan di desktop) ===== */
+// Hanya untuk membaca. Mengubah catatan tetap lewat tab Tulis, jadi halaman tulis tidak muncul dobel.
+function renderRead() {
+  const el = $("#readView");
+  if (!el) return;
+  const ks = Object.keys(S.entries).sort().reverse();
+  if (!S.readK || !S.entries[S.readK]) S.readK = ks[0] || "";
+  document.querySelectorAll("#hist .entry").forEach(b => {
+    b.classList.toggle("on", b.dataset.day === S.readK);
+    b.classList.toggle("mark", b.dataset.day === S.lastRead);
+  });
+  const k = S.readK,
+    e = S.entries[k];
+  if (!e) {
+    el.innerHTML = emptyBox("Pilih catatan di sebelah kiri untuk membacanya di sini.");
+    return;
+  }
+  const d = fromKey(k),
+    ph = typeof e.photo === "string" && e.photo.startsWith("data:image/");
+  el.innerHTML = `<div class="rhead"><div><p class="label">${d.toLocaleDateString("id-ID", { weekday: "long" })} · ${d.getFullYear()}</p><h2>${d.toLocaleDateString("id-ID", { day: "numeric", month: "long" })}</h2></div><span class="rmood">${face(e.mood, 28)}${esc(moodText(e))}</span></div>${
+    e.tags?.length
+      ? `<div class="rtags">${e.tags.map(t => `<span>${esc(t)}</span>`).join("")}</div>`
+      : ""
+  }${e.weather ? `<p class="rweather">${wIcon(e.weather, 18)}${weatherName(e.weather)}</p>` : ""}${e.note ? `<p class="rnote">${esc(e.note)}</p>` : `<p class="muted">Hari ini dicatat tanpa cerita.</p>`}${e.doodle ? `<img class="rdoodle" src="${esc(e.doodle)}" alt="Coretan ${esc(fmtShort(k))}">` : ""}${
+    e.grat?.length
+      ? `<div class="rgrat"><p class="label">Disyukuri</p><ul>${e.grat.map(g => `<li>${esc(g)}</li>`).join("")}</ul></div>`
+      : ""
+  }${ph ? `<img class="rphoto" src="${esc(e.photo)}" alt="Foto ${esc(fmtShort(k))}">` : ""}<div class="row"><button class="btn ghost" data-day="${k}">Ubah catatan</button></div>`;
+}
+
+/* ===== Minggu ini (halaman kanan tab Tulis di desktop) ===== */
+function renderSide() {
+  const el = $("#wkStrip");
+  if (!el) return;
+  const t = fromKey(todayKey()),
+    mon = new Date(t);
+  mon.setDate(t.getDate() - ((t.getDay() + 6) % 7));
+  const tk = todayKey();
+  let h = "";
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(mon);
+    d.setDate(mon.getDate() + i);
+    const k = keyOf(d),
+      e = S.entries[k],
+      fut = k > tk;
+    h += `<button class="wkd${e ? " has" : ""}${k === tk ? " today" : ""}${k === S.sel ? " sel" : ""}" ${fut ? "disabled" : `data-day="${k}"`} ${e ? `style="--c:var(--m${e.mood})"` : ""} aria-label="${fmtLong(k)}${e ? ", " + MOODS[e.mood].n : fut ? "" : ", belum diisi"}"><small>${d.toLocaleDateString("id-ID", { weekday: "short" })}</small><span>${d.getDate()}</span></button>`;
+  }
+  el.innerHTML = h;
 }
 
 /* ===== Cetak / PDF ===== */

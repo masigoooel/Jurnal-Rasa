@@ -14,42 +14,48 @@ body {
 }
 /* Warna tema. Skala rasa dari dingin (berat) ke hangat (senang). */
 :root {
-  /* Latar sedikit hangat dan bukan putih murni supaya tidak silau; teks tidak hitam pekat. */
-  --bg: #f4f3ef;
-  --surface: #fdfcfa;
-  --surface-2: #f0eee9;
-  --line: #e2dfd8;
-  --fg: #22272f;
-  --muted: #5d6470;
-  --accent: #21706a;
+  /* Palet "Lumut & Pasir": hijau lumut dan pasir muda yang redup supaya terasa tenang. Skala rasa tetap dari dingin (berat) ke hangat (senang). */
+  --bg: #f3f2ec;
+  --surface: #fcfbf8;
+  --surface-2: #efeee6;
+  --desk: #e7e6dc;
+  --page2: #f9f8f2;
+  --soft: #e8ebdc;
+  --line: #e3e1d6;
+  --fg: #2e3127;
+  --muted: #676a5c;
+  --accent: #6a7b4e;
   --accent-fg: #ffffff;
-  --danger: #b8402f;
-  --m1: #5876cf;
-  --m2: #9fb4e6;
-  --m3: #c4bfb6;
-  --m4: #f2bf6c;
-  --m5: #e98c34;
-  --face: #22253a;
-  --f-display: "Bricolage Grotesque", system-ui, sans-serif;
+  --danger: #a8483a;
+  --m1: #7f8fb7;
+  --m2: #aebbd2;
+  --m3: #cdc9bd;
+  --m4: #e2c98e;
+  --m5: #d9a77f;
+  --face: #2e3127;
+  --f-display: "Fraunces", Georgia, serif;
   --f-body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #11151c;
-    --surface: #1a1f28;
-    --surface-2: #222833;
-    --line: #2f3644;
-    --fg: #e2e5ea;
-    --muted: #9aa3b2;
-    --accent: #5ec0b4;
-    --accent-fg: #0d1a19;
-    --danger: #ff8a78;
-    --m1: #8ea6f0;
-    --m2: #b7c6ec;
-    --m3: #bbb6ad;
-    --m4: #f2c27a;
-    --m5: #f5a04a;
-    --face: #1b1e2c;
+    --bg: #161914;
+    --surface: #1f231c;
+    --surface-2: #272c23;
+    --desk: #10130e;
+    --page2: #1c2019;
+    --soft: #2c3324;
+    --line: #363c30;
+    --fg: #e7e8e0;
+    --muted: #a3a796;
+    --accent: #a9bb88;
+    --accent-fg: #1a1f14;
+    --danger: #f08a78;
+    --m1: #9eaad6;
+    --m2: #bcc7e0;
+    --m3: #c3bfb2;
+    --m4: #e8d29e;
+    --m5: #e6b48c;
+    --face: #1a1d16;
     color-scheme: dark;
   }
 }
@@ -57,21 +63,24 @@ body {
   color-scheme: light;
 }
 :root[data-theme="dark"] {
-  --bg: #11151c;
-  --surface: #1a1f28;
-  --surface-2: #222833;
-  --line: #2f3644;
-  --fg: #e2e5ea;
-  --muted: #9aa3b2;
-  --accent: #5ec0b4;
-  --accent-fg: #0d1a19;
-  --danger: #ff8a78;
-  --m1: #8ea6f0;
-  --m2: #b7c6ec;
-  --m3: #bbb6ad;
-  --m4: #f2c27a;
-  --m5: #f5a04a;
-  --face: #1b1e2c;
+  --bg: #161914;
+  --surface: #1f231c;
+  --surface-2: #272c23;
+  --desk: #10130e;
+  --page2: #1c2019;
+  --soft: #2c3324;
+  --line: #363c30;
+  --fg: #e7e8e0;
+  --muted: #a3a796;
+  --accent: #a9bb88;
+  --accent-fg: #1a1f14;
+  --danger: #f08a78;
+  --m1: #9eaad6;
+  --m2: #bcc7e0;
+  --m3: #c3bfb2;
+  --m4: #e8d29e;
+  --m5: #e6b48c;
+  --face: #1a1d16;
   color-scheme: dark;
 }
 * {
@@ -106,14 +115,19 @@ h3 {
   line-height: 1.1;
   text-wrap: balance;
 }
+h1,
+h2,
+h3 {
+  font-variation-settings: "SOFT" 100;
+}
 h1 {
   font-size: 34px;
-  font-weight: 800;
-  letter-spacing: -0.01em;
+  font-weight: 600;
+  letter-spacing: -0.015em;
 }
 h2 {
   font-size: 21px;
-  font-weight: 600;
+  font-weight: 560;
 }
 p {
   margin: 0;

@@ -699,7 +699,7 @@ body:has(.splash:not(.out)) {
 }
 .spname {
   margin-top: 16px;
-  font-family: "Bricolage Grotesque", system-ui, sans-serif;
+  font-family: "Fraunces", system-ui, sans-serif;
   font-size: 30px;
   font-weight: 800;
   animation: spup 0.35s 0.05s ease both;

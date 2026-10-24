@@ -29,6 +29,14 @@ function factorRows(pairs, min) {
     app: (k, e) => !!e.energy,
     has: e => e.energy >= 4,
   });
+  WEATHER.forEach(([w, n]) =>
+    F.push({
+      n: "Cuaca " + n.toLowerCase(),
+      type: "Cuaca",
+      app: (k, e) => !!e.weather,
+      has: e => e.weather === w,
+    })
+  );
   return F.map(f => {
     const ap = pairs.filter(([k, e]) => f.app(k, e)),
       yes = ap.filter(([, e]) => f.has(e)).map(([, e]) => e.mood),

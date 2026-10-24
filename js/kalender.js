@@ -21,9 +21,7 @@ function monthCells(y, mo, live) {
     dim = new Date(y, mo + 1, 0).getDate(),
     lead = (first.getDay() + 6) % 7,
     tk = todayKey(),
-    tag = live ? "button" : "div",
-    // Foto hanya disisipkan untuk template Scrapbook (fotonya jadi isi kotak), supaya kalender lain tetap ringan.
-    scrap = tplOf(y, mo) === "scrap";
+    tag = live ? "button" : "div";
   let h = ["Sen", "Sel", "Rab", "Kam", "Jum", "Sab", "Min"]
     .map(d => `<div class="dow">${d}</div>`)
     .join("");
@@ -34,7 +32,7 @@ function monthCells(y, mo, live) {
       fut = k > tk,
       stk = dayStickers(k),
       ph = e?.photo?.startsWith("data:image/");
-    h += `<${tag} style="--i:${i}${ph && scrap ? `;--ph:url('${e.photo}')` : ""}" class="day ${e ? "has" : ""} ${k === tk ? "today" : ""} ${live && k === S.sel ? "sel" : ""} ${fut ? "future" : ""}" ${live && fut && !S.stkMode ? "disabled" : ""} ${e ? `data-c="${e.mood}"` : ""} ${ph ? `data-ph="1"` : ""} data-day="${k}" ${live ? `aria-label="${fmtLong(k)}${e ? ", " + MOODS[e.mood].n : ""}${stk.length ? ", stiker " + esc(stk.map(s => s.n).join(", ")) : ""}"` : ""}><span class="n">${i + 1}</span>${stk.length ? `<span class="dstk" style="--r:${tilt(k)}deg">${stickerSvg(stk[0])}${stk.length > 1 ? `<b>+${stk.length - 1}</b>` : ""}</span>` : ""}</${tag}>`;
+    h += `<${tag} style="--i:${i}" class="day ${e ? "has" : ""} ${k === tk ? "today" : ""} ${live && k === S.sel ? "sel" : ""} ${fut ? "future" : ""}" ${live && fut && !S.stkMode ? "disabled" : ""} ${e ? `data-c="${e.mood}"` : ""} ${ph ? `data-ph="1"` : ""} data-day="${k}" ${live ? `aria-label="${fmtLong(k)}${e ? ", " + MOODS[e.mood].n : ""}${stk.length ? ", stiker " + esc(stk.map(s => s.n).join(", ")) : ""}"` : ""}><span class="n">${i + 1}</span>${stk.length ? `<span class="dstk" style="--r:${tilt(k)}deg">${stickerSvg(stk[0])}${stk.length > 1 ? `<b>+${stk.length - 1}</b>` : ""}</span>` : ""}</${tag}>`;
   }
   return h;
 }

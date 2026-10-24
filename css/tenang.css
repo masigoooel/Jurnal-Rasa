@@ -1,0 +1,1181 @@
+/* Tampilan tenang ("buku terbuka"): lapisan terakhir di atas gaya fitur.
+   Desktop: kedua kolom jadi dua halaman buku, tab kanan jadi pita pembatas yang menyembul di atas buku.
+   HP: kertas penuh layar, panel tanpa kartu, dan tab bawah bertanda pita.
+   Juga: logo Rembulan, kotak kosong tanpa latar abu-abu, panel tulis yang lebih lega, kalender Klasik berbentuk bulatan.
+   Hapus tautan file ini di index.html untuk kembali ke tampilan lama. */
+
+/* Logo Rembulan: bintangnya berkelip pelan. */
+.logo svg {
+  width: 52px;
+  height: 52px;
+}
+.logo .star,
+.splogo .star {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: twinkle 4.5s ease-in-out infinite;
+}
+@keyframes twinkle {
+  50% {
+    opacity: 0.55;
+    transform: scale(0.82) rotate(18deg);
+  }
+}
+.spname {
+  font-weight: 600;
+  font-variation-settings: "SOFT" 100;
+}
+
+/* Judul memakai serif lembut; angka besar ikut lebih ringan. */
+.stat b,
+.panel h2 {
+  font-weight: 560;
+  font-variation-settings: "SOFT" 100;
+}
+
+/* Panel sedikit lebih bulat dengan bayangan yang lebih halus. */
+.panel {
+  border-radius: 22px;
+  box-shadow:
+    0 1px 2px color-mix(in srgb, var(--fg) 4%, transparent),
+    0 14px 36px -24px color-mix(in srgb, var(--fg) 25%, transparent);
+}
+
+/* Kotak kosong: tanpa latar abu-abu, cukup ilustrasi kecil dan satu kalimat. */
+.empty {
+  background: none;
+  padding: 10px 8px 2px;
+  border-radius: 0;
+}
+.empty b {
+  font-weight: 560;
+}
+
+/* Angka ringkasan: garis tipis, bukan kotak berisi. */
+.stat {
+  background: none;
+  border: 1px solid var(--line);
+}
+
+/* ===== Panel tulis ===== */
+/* Niat harian: satu baris ajakan yang tenang, bukan kotak bergaris putus. */
+.islim {
+  border: 0;
+  padding: 4px 2px;
+  border-radius: 8px;
+  color: var(--muted);
+  font-weight: 500;
+}
+.islim:hover {
+  background: none;
+  color: var(--fg);
+}
+.islim svg {
+  color: var(--m4);
+}
+
+/* Pertanyaan pemantik menyatu dengan kolom tulis. */
+.writebox {
+  background: var(--surface-2);
+  border: 1.5px solid transparent;
+  border-radius: 16px;
+  transition: border-color 0.15s;
+}
+.writebox:focus-within {
+  border-color: var(--accent);
+}
+.writebox .prompt {
+  margin: 0;
+  padding: 8px 8px 0 14px;
+  gap: 2px;
+}
+.writebox .ptext {
+  background: none;
+  border: 0;
+  border-radius: 6px;
+  padding: 4px 0;
+  color: var(--accent);
+}
+.writebox .ptext:hover {
+  background: none;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.writebox .prompt .iconbtn.sm {
+  width: 30px;
+  height: 30px;
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+.writebox .prompt .iconbtn.sm:hover {
+  background: var(--surface);
+}
+.writebox textarea {
+  background: transparent;
+  border: 0;
+  padding-top: 6px;
+}
+.writebox textarea:focus {
+  border: 0;
+}
+
+/* Isi cepat: tombol lebih kecil dan ringan. */
+.xchip {
+  background: none;
+  border: 1px solid var(--line);
+  padding: 3px 11px 3px 3px;
+  font-size: 12.5px;
+}
+.xchip .hi.sm {
+  width: 24px;
+  height: 24px;
+}
+.xchip[aria-expanded="true"] {
+  background: var(--soft);
+  border-color: var(--accent);
+}
+
+/* ===== Kalender Klasik ===== */
+/* Tanggal kosong cukup angka; tanggal terisi jadi bulatan warna rasa; hari ini bercincin. */
+.calpage[data-tpl="klasik"] .day:not(.has) {
+  background: transparent;
+}
+.calpage[data-tpl="klasik"] .day:not(.has):not(.future):hover {
+  background: var(--surface-2);
+}
+/* Bulatan selebar 75% kotak: tingginya sama dengan kotak 4:3 lama, jadi posisi hiasan tidak bergeser. */
+.calpage[data-tpl="klasik"] .day {
+  width: 75%;
+  aspect-ratio: 1;
+  justify-self: center;
+  border-radius: 999px;
+}
+.calpage[data-tpl="klasik"] .day.today {
+  outline: 1.5px solid var(--accent);
+  outline-offset: -1.5px;
+}
+.calpage[data-tpl="klasik"] .day.today::after {
+  display: none;
+}
+.day:not(.future):hover {
+  transform: scale(1.05);
+}
+
+/* Ruang scrollbar selalu disediakan, supaya halaman tidak bergeser ke samping saat pindah tab
+   (tab yang pendek tidak punya scrollbar, tab yang panjang punya). */
+html {
+  scrollbar-gutter: stable;
+}
+
+/* ===== Buku terbuka (desktop) ===== */
+@media (min-width: 821px) {
+  /* Meja di belakang buku ikut berwarna lembut sesuai rasa yang dipilih (--tint dari js/editor.js). */
+  body {
+    background: color-mix(in srgb, var(--tint) 16%, var(--desk));
+    padding-top: 0;
+  }
+  .blobs,
+  .status,
+  .top .sub {
+    display: none;
+  }
+  .wrap {
+    max-width: 1180px;
+    gap: 18px;
+  }
+  /* Kepala halaman: logo kiri, pita pembatas di tengah menggantung dari tepi atas, tombol kanan. */
+  .top {
+    align-items: flex-start;
+    flex-wrap: nowrap;
+  }
+  .top .brand,
+  .top .tools {
+    padding-top: 20px;
+  }
+  .top .logo svg {
+    width: 40px;
+    height: 40px;
+  }
+  .top h1 {
+    font-size: 24px;
+  }
+  .top > .rtabs {
+    position: static;
+    display: flex;
+    gap: 8px;
+    margin: 0 auto;
+    padding: 0;
+    background: none;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  /* Semua pita sama tinggi; yang aktif hanya turun sedikit (transform), jadi kepala halaman tidak bergeser. */
+  .top > .rtabs button {
+    flex: none;
+    min-width: 92px;
+    height: 54px;
+    justify-content: center;
+    align-items: flex-end;
+    padding: 0 14px 10px;
+    border-radius: 0 0 10px 10px;
+    background: color-mix(in srgb, var(--line) 85%, var(--desk));
+    color: var(--muted);
+    transform: translateY(-8px);
+    transition:
+      transform 0.2s,
+      background 0.2s,
+      color 0.2s;
+  }
+  .top > .rtabs button:hover {
+    color: var(--fg);
+    transform: translateY(-4px);
+  }
+  .top > .rtabs button[aria-current="page"] {
+    transform: none;
+    background: var(--accent);
+    color: var(--accent-fg);
+  }
+  .top > .rtabs svg {
+    display: none;
+  }
+
+  /* Buku: dua halaman. Isi tiap halaman dipindah oleh layoutBook() di js/main.js. */
+  .grid {
+    gap: 0;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: stretch;
+    background: var(--surface);
+    border-radius: 10px 10px 18px 18px;
+    box-shadow:
+      0 2px 0 var(--line),
+      0 4px 0 var(--surface),
+      0 6px 0 var(--line),
+      0 30px 60px -30px color-mix(in srgb, var(--fg) 35%, transparent);
+  }
+  .grid > .right {
+    display: none;
+  }
+  .pg {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 12px 0;
+  }
+  .pgL {
+    border-right: 1px solid var(--line);
+  }
+  .pgR {
+    background: var(--page2);
+    border-radius: 0 10px 18px 0;
+  }
+  .pg > .panel {
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 26px 40px;
+    animation: none;
+  }
+  .pg > .panel + .panel {
+    border-top: 1px dashed var(--line);
+  }
+  .edhead h2 {
+    font-size: 42px;
+  }
+}
+@media (min-width: 821px) and (max-width: 1020px) {
+  .top > .rtabs button {
+    min-width: 0;
+    padding-inline: 10px;
+  }
+  .top > .rtabs button[aria-current="page"] {
+    transform: none;
+  }
+  .pg > .panel {
+    padding: 22px 26px;
+  }
+}
+
+/* ===== HP: kertas penuh layar ===== */
+@media (max-width: 820px) {
+  body {
+    background: var(--surface);
+  }
+  .pg,
+  .top > .rtabs,
+  .top .sub {
+    display: none;
+  }
+  .top h1 {
+    font-size: 22px;
+  }
+  .top .logo svg {
+    width: 34px;
+    height: 34px;
+  }
+  .blobs {
+    display: none;
+  }
+  .grid > .panel,
+  .right > .panel {
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 6px 2px 14px;
+  }
+  .right > [data-sec="kalender"] ~ [data-sec="kalender"],
+  .right > [data-sec="wawasan"] ~ [data-sec="wawasan"],
+  .right > [data-sec="koleksi"] ~ [data-sec="koleksi"],
+  .right > [data-sec="catatan"] ~ [data-sec="catatan"] {
+    border-top: 1px dashed var(--line);
+    padding-top: 18px;
+  }
+  .grid,
+  .right {
+    gap: 10px;
+  }
+
+  /* Tab bawah: pita kecil menandai halaman yang terbuka. */
+  .tabbar {
+    background: var(--page2);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  .tabbar button {
+    position: relative;
+    padding-top: 10px;
+  }
+  .tabbar svg,
+  .tabbar button[aria-current="page"] svg {
+    width: 22px;
+    height: 22px;
+    padding: 0;
+    background: none;
+  }
+  .tabbar button[aria-current="page"] svg {
+    color: var(--fg);
+  }
+  .tabbar button[aria-current="page"]::before {
+    content: "";
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    width: 22px;
+    height: 12px;
+    margin-left: -11px;
+    background: var(--accent);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 68%, 0 100%);
+  }
+}
+
+/* Kolom tulis langsung di atas kertas, bergaris seperti buku tulis (semua ukuran layar). */
+.writebox,
+.writebox:focus-within {
+  background: none;
+  border: 0;
+  border-radius: 0;
+}
+.writebox .prompt {
+  padding: 0;
+}
+.writebox textarea {
+  padding: 0;
+}
+.writebox textarea {
+  line-height: 30px;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 29px,
+    var(--line) 29px,
+    var(--line) 30px
+  );
+  background-attachment: local;
+}
+
+/* ===== Halaman tulis ===== */
+.edhead {
+  min-width: 0;
+}
+.edhead h2 {
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 1.05;
+}
+.edhead .label {
+  margin-bottom: 4px;
+}
+.feelq {
+  margin: 0 0 6px;
+  font-size: 14px;
+  color: var(--muted);
+}
+.editor .lrow .label {
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 500;
+  font-size: 14px;
+}
+.writebox .ptext {
+  font-family: var(--f-display);
+  font-variation-settings: "SOFT" 100;
+  font-size: 17px;
+  font-style: italic;
+  color: var(--accent);
+}
+/* Isi cepat jadi deret tautan "+ Label · + Energi …" */
+.xtras > .label {
+  display: none;
+}
+.xbar {
+  gap: 2px 16px;
+}
+.xchip,
+.xchip[aria-expanded="true"] {
+  border: 0;
+  background: none;
+  padding: 6px 0;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--muted);
+}
+.xchip::before {
+  content: "+";
+  margin-right: 2px;
+}
+.xchip .hi {
+  display: none;
+}
+.xchip:hover,
+.xchip[aria-expanded="true"] {
+  color: var(--fg);
+}
+.xchip[aria-expanded="true"] {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.actions .btn.primary {
+  border-radius: 999px;
+}
+
+/* Judul bagian tanpa kotak ikon, cukup serif. */
+.panel h2 > .hi {
+  display: none;
+}
+.top h1 {
+  background: none;
+  color: var(--fg);
+}
+.mhead > h2,
+.panel > h2 {
+  font-size: 22px;
+}
+
+/* ===== Baca catatan (tab Catatan, desktop) ===== */
+@media (max-width: 820px) {
+  #secSide,
+  #secRead {
+    display: none !important;
+  }
+}
+.readv {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.readv .rhead {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.readv h2 {
+  font-size: 40px;
+  font-weight: 500;
+  line-height: 1.05;
+  margin-top: 4px;
+}
+.rmood {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 999px;
+  padding: 4px 14px 4px 4px;
+  background: var(--surface-2);
+  font-weight: 600;
+  font-size: 14px;
+}
+.rtags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.rtags span {
+  border-radius: 999px;
+  background: var(--surface-2);
+  padding: 3px 10px;
+  font-size: 12.5px;
+  font-weight: 600;
+}
+.rnote {
+  font-size: 17px;
+  line-height: 32px;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 31px,
+    var(--line) 31px,
+    var(--line) 32px
+  );
+}
+.rgrat ul {
+  margin: 6px 0 0;
+  padding-left: 20px;
+}
+.rphoto {
+  max-width: 100%;
+  border-radius: 12px;
+}
+#hist .entry.on {
+  background: var(--surface-2);
+  border-radius: 12px;
+}
+
+/* ===== Minggu ini (tab Tulis, desktop) ===== */
+.wkstrip {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 14px;
+}
+.wkd {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
+  color: var(--fg);
+}
+.wkd small {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+}
+.wkd span {
+  width: 100%;
+  max-width: 52px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+  border: 1.5px dashed var(--line);
+}
+.wkd.has span {
+  background: var(--c);
+  border-color: transparent;
+  color: var(--face);
+  font-weight: 600;
+}
+.wkd.today span {
+  border: 2px solid var(--accent);
+}
+.wkd.sel span {
+  box-shadow:
+    0 0 0 2px var(--surface),
+    0 0 0 4px var(--fg);
+}
+.wkd:disabled {
+  cursor: default;
+  opacity: 0.4;
+}
+#secSide .wkcard,
+#secSide .flash {
+  margin-top: 22px;
+}
+
+/* Template baru dengan kotak tanggal membulat. */
+.calpage[data-tpl="embun"] .day,
+.calpage[data-tpl="teh"] .day,
+.calpage[data-tpl="kerikil"] .day {
+  border-radius: 16px;
+}
+
+/* Pengingat backup: satu baris kecil yang tenang, bukan kartu yang menonjol. */
+.banner {
+  background: none;
+  border: 0;
+  border-radius: 0;
+  padding: 0 4px;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--muted);
+  animation: none;
+}
+.banner > .hi {
+  display: none;
+}
+.banner > div {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 8px;
+}
+.banner b {
+  font-weight: 600;
+  color: var(--fg);
+}
+.banner .small {
+  font-size: 13px;
+}
+.banner .btn.primary {
+  background: none;
+  color: var(--accent);
+  padding: 4px 2px;
+  min-height: 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  box-shadow: none;
+}
+.banner .mx {
+  opacity: 0.6;
+}
+@media (max-width: 520px) {
+  .banner {
+    padding: 0 2px;
+  }
+  .banner .btn {
+    order: 0;
+    margin-left: 0;
+  }
+}
+
+/* ===== Cuaca ===== */
+.weather {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+.wbtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 6px 14px 6px 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--fg);
+  font: 600 13.5px var(--f-body);
+  cursor: pointer;
+}
+.wbtn[aria-pressed="true"] {
+  background: var(--soft);
+  border-color: var(--accent);
+}
+.rweather {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  font-size: 13.5px;
+  color: var(--muted);
+}
+
+/* ===== Coretan ===== */
+.doodle {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+#dcanvas {
+  width: 100%;
+  aspect-ratio: 2 / 1;
+  border-radius: 12px;
+  background: var(--page2);
+  border: 1px dashed var(--line);
+  touch-action: none;
+  cursor: crosshair;
+}
+.drow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.inks {
+  display: flex;
+  gap: 8px;
+}
+.ink {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 3px solid var(--surface);
+  background: var(--ic);
+  box-shadow: 0 0 0 1px var(--line);
+  cursor: pointer;
+}
+.ink[aria-pressed="true"] {
+  box-shadow: 0 0 0 2px var(--fg);
+}
+.rdoodle {
+  max-width: 100%;
+  border-radius: 12px;
+  background: var(--surface);
+  border: 1px dashed var(--line);
+}
+
+/* ===== Mode hari yang berat ===== */
+body.heavy .xtras,
+body.heavy #intent {
+  display: none !important;
+}
+.heavymore {
+  align-self: flex-start;
+  font-size: 13.5px;
+  color: var(--muted);
+}
+
+/* ===== Rekap musim ===== */
+.season {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 12px;
+}
+.sbar {
+  display: flex;
+  gap: 2px;
+  height: 16px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.sbar i {
+  min-width: 4px;
+}
+.slegend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  font-size: 12.5px;
+  color: var(--muted);
+}
+.slegend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.slegend i {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.stext {
+  font-family: var(--f-display);
+  font-variation-settings: "SOFT" 100;
+  font-size: 17px;
+  line-height: 1.6;
+  max-width: 46ch;
+  padding-right: 56px;
+}
+.stext b {
+  font-weight: 600;
+}
+.sfern {
+  position: absolute;
+  right: -6px;
+  bottom: -10px;
+  width: 64px;
+  transform: rotate(14deg);
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+/* ===== Sampul buku di layar pembuka ===== */
+.splash .cover {
+  position: relative;
+  width: 230px;
+  aspect-ratio: 3 / 4;
+  border-radius: 6px 14px 14px 6px;
+  padding: 34px 22px 22px 34px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: repeating-linear-gradient(45deg, rgb(255 255 255 / 0.05) 0 2px, transparent 2px 6px),
+    #6a7b4e;
+  color: #f4f1e6;
+  box-shadow:
+    0 2px 0 #55643d,
+    0 30px 50px -20px rgb(0 0 0 / 0.45);
+  animation: sppop 0.5s cubic-bezier(0.3, 1.4, 0.5, 1) both;
+}
+.splash .cspine {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 14px;
+  border-radius: 6px 0 0 6px;
+  background: rgb(0 0 0 / 0.18);
+}
+.splash .cband {
+  position: absolute;
+  right: 26px;
+  top: -6px;
+  width: 16px;
+  height: 64px;
+  background: #e2c98e;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 85%, 0 100%);
+}
+.splash .cover .splogo {
+  width: 84px;
+  height: 84px;
+  animation: bob 3s ease-in-out infinite;
+}
+.splash .cover .spname {
+  color: inherit;
+  font-size: 28px;
+}
+.splash .cover .sptag {
+  color: inherit;
+  opacity: 0.8;
+}
+:root[data-cover="kraft"] .splash .cover {
+  background:
+    radial-gradient(rgb(120 90 50 / 0.12) 1px, transparent 1.5px) 0 0 / 7px 7px,
+    #c9b08a;
+  color: #3f3426;
+  box-shadow:
+    0 2px 0 #a88f68,
+    0 30px 50px -20px rgb(0 0 0 / 0.4);
+}
+:root[data-cover="kraft"] .splash .cband {
+  background: #6a7b4e;
+}
+:root[data-cover="malam"] .splash .cover {
+  background:
+    radial-gradient(rgb(255 255 255 / 0.35) 1px, transparent 1.5px) 0 0 / 23px 23px,
+    linear-gradient(#262b22, #383f31);
+  color: #ebe9de;
+  box-shadow:
+    0 2px 0 #1a1e17,
+    0 30px 50px -20px rgb(0 0 0 / 0.55);
+}
+.coverpick {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.cvr {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--fg);
+  border-radius: 999px;
+  padding: 5px 10px 5px 5px;
+  font: 600 12.5px var(--f-body);
+  cursor: pointer;
+}
+.cvr i {
+  width: 18px;
+  height: 22px;
+  border-radius: 2px 5px 5px 2px;
+  background: #6a7b4e;
+}
+.cvr[data-cover="kraft"] i {
+  background: #c9b08a;
+}
+.cvr[data-cover="malam"] i {
+  background: #2c3227;
+}
+.cvr[aria-pressed="true"] {
+  border-color: var(--accent);
+  background: var(--soft);
+}
+
+/* ===== Balik halaman saat pindah tab (desktop) ===== */
+@media (min-width: 821px) {
+  .grid {
+    perspective: 1800px;
+  }
+  .grid.turn .pgR {
+    transform-origin: left center;
+    animation: pageturn 0.45s cubic-bezier(0.3, 0.7, 0.3, 1);
+  }
+  .grid.turn .pgL > * {
+    animation: pagefade 0.35s ease;
+  }
+}
+@keyframes pageturn {
+  from {
+    transform: rotateY(-14deg);
+    opacity: 0.35;
+  }
+}
+@keyframes pagefade {
+  from {
+    opacity: 0.4;
+  }
+}
+
+/* ===== Pembatas "terakhir dibaca" ===== */
+#hist .entry.mark {
+  position: relative;
+}
+#hist .entry.mark::after {
+  content: "";
+  position: absolute;
+  right: 12px;
+  top: -1px;
+  width: 12px;
+  height: 22px;
+  background: var(--accent);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 75%, 0 100%);
+}
+
+/* ===== Kilas balik: setahun lalu tampil seperti surat lama ===== */
+.flash .entry.yearago {
+  background: var(--page2);
+  border: 1px dashed var(--line);
+  border-radius: 14px;
+  padding: 12px;
+}
+
+/* ===== Fitur yang ditampilkan: dikelompokkan ===== */
+.featgrp {
+  margin: 12px 0 2px;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.featgrp:first-child {
+  margin-top: 2px;
+}
+
+/* ===== Panduan: tiap layar seperti satu halaman buku ===== */
+.weldlg {
+  width: min(440px, calc(100vw - 24px));
+  padding: 14px 14px 18px;
+  background: var(--desk);
+}
+.wel {
+  gap: 14px;
+}
+.wel > * {
+  animation: none;
+}
+.wpage {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 22px 40px 30px;
+  background: var(--page2);
+  border-radius: 6px 16px 16px 6px;
+  box-shadow:
+    inset 16px 0 18px -16px rgb(0 0 0 / 0.22),
+    0 1px 0 var(--line),
+    0 8px 22px -14px rgb(0 0 0 / 0.35);
+  transform-origin: left center;
+}
+.wpage.fwd {
+  animation: welfwd 0.42s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+.wpage.back {
+  animation: welback 0.42s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+@keyframes welfwd {
+  from {
+    opacity: 0.3;
+    transform: perspective(1200px) rotateY(-14deg) translateX(10px);
+  }
+}
+@keyframes welback {
+  from {
+    opacity: 0.3;
+    transform: perspective(1200px) rotateY(10deg) translateX(-10px);
+  }
+}
+.wrun {
+  margin: 0;
+  align-self: stretch;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-align: left;
+}
+.wpage h2 {
+  margin: 4px 0 0;
+  font-size: 28px;
+  font-weight: 500;
+}
+.wpage > p.muted {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.55;
+}
+.whand {
+  margin: 2px 0 0;
+  font-family: "Caveat", cursive;
+  font-size: 23px;
+  color: var(--accent);
+  transform: rotate(-2deg);
+}
+.wfolio {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--f-display);
+  font-style: italic;
+  font-size: 15px;
+  color: var(--muted);
+}
+.wart {
+  min-height: 112px;
+}
+.wnote {
+  flex-direction: column;
+  gap: 10px;
+}
+.wpaper {
+  width: 100%;
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px 12px 8px 26px;
+  text-align: left;
+  border-left: 2px solid color-mix(in srgb, var(--m5) 55%, transparent);
+  background: repeating-linear-gradient(transparent 0 27px, var(--line) 27px 28px);
+  line-height: 28px;
+}
+.wq {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--muted);
+}
+.wline {
+  font-family: "Caveat", cursive;
+  font-size: 22px;
+  line-height: 28px;
+  color: var(--fg);
+}
+.wplus {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px 14px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--accent);
+}
+.wart.tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.wart.tabs .wtab {
+  background: transparent;
+  border: 1px solid var(--line);
+  padding: 8px 10px;
+  gap: 9px;
+}
+.wart.tabs .wtab small {
+  font-size: 12px;
+  line-height: 1.3;
+}
+@media (max-width: 360px) {
+  .wart.tabs {
+    grid-template-columns: 1fr;
+  }
+}
+/* Layar pendek atau sempit (HP kecil): panduan diringkas supaya tombolnya tetap terlihat tanpa menggulir. */
+@media (max-height: 700px), (max-width: 360px) {
+  .weldlg {
+    padding: 10px 10px 12px;
+  }
+  .wel {
+    gap: 10px;
+  }
+  .wpage {
+    gap: 6px;
+    padding: 12px 16px 30px 22px;
+  }
+  .wrun {
+    display: none;
+  }
+  .wart {
+    min-height: 0;
+  }
+  .wart.faces svg {
+    width: 38px;
+    height: 38px;
+  }
+  .wpaper {
+    line-height: 24px;
+    background: repeating-linear-gradient(transparent 0 23px, var(--line) 23px 24px);
+  }
+  .wq {
+    line-height: 24px;
+  }
+  .wline {
+    font-size: 19px;
+    line-height: 24px;
+  }
+  .wpage h2 {
+    font-size: 23px;
+  }
+  .wpage > p.muted {
+    font-size: 14px;
+    line-height: 1.45;
+  }
+  .whand {
+    font-size: 20px;
+  }
+  .wart.tabs .wtab small {
+    display: none;
+  }
+}
+@media (max-height: 600px) {
+  .whand,
+  .wq {
+    display: none;
+  }
+  .wart.tabs {
+    gap: 6px;
+  }
+  .wart.tabs .wtab {
+    padding: 6px 8px;
+  }
+}

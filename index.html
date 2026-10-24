@@ -12,7 +12,8 @@
       content="Jurnal mood harian: catat perasaan, lihat kalender rasa dan grafik bulanan."
     />
     <link rel="manifest" href="manifest.webmanifest" />
-    <meta name="theme-color" content="#21706a" />
+    <meta name="theme-color" content="#6a7b4e" />
+    <link rel="icon" href="icons/logo.svg" type="image/svg+xml" />
     <link rel="icon" href="icons/favicon-32.png" sizes="32x32" type="image/png" />
     <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
     <meta name="mobile-web-app-capable" content="yes" />
@@ -22,7 +23,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600;700&family=Caveat:wght@600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,SOFT,wght@9..144,0..100,400..800&family=Figtree:wght@400;500;600;700&family=Caveat:wght@600&display=swap"
     />
     <link rel="stylesheet" href="css/dasar.css" />
     <link rel="stylesheet" href="css/tata-letak.css" />
@@ -35,33 +36,48 @@
     <link rel="stylesheet" href="css/dialog.css" />
     <link rel="stylesheet" href="css/stiker.css" />
     <link rel="stylesheet" href="css/template.css" />
+    <link rel="stylesheet" href="css/tenang.css" />
     <link rel="stylesheet" href="css/cetak.css" />
     <script>
       try {
         const t = localStorage.getItem("jurnal-rasa:theme");
         if (t === "light" || t === "dark") document.documentElement.dataset.theme = t;
+        const c = localStorage.getItem("jurnal-rasa:cover");
+        if (c === "kraft" || c === "malam") document.documentElement.dataset.cover = c;
       } catch (e) {}
     </script>
   </head>
   <body data-tab="tulis" data-rtab="kalender">
     <div class="splash" id="splash" role="status" aria-label="Memuat Jurnal Rasa">
       <div class="spbox">
-        <svg class="splogo" viewBox="0 0 44 44" width="84" height="84" aria-hidden="true">
-          <circle cx="22" cy="22" r="20" fill="var(--m4)" />
-          <g class="eyes">
-            <circle cx="16" cy="18" r="2.2" fill="var(--face)" />
-            <circle cx="28" cy="18" r="2.2" fill="var(--face)" />
-          </g>
-          <path
-            d="M15.5 27 Q22 32 28.5 27"
-            fill="none"
-            stroke="var(--face)"
-            stroke-width="2.4"
-            stroke-linecap="round"
-          />
-        </svg>
-        <p class="spname">Jurnal Rasa</p>
-        <p class="sptag">Catat rasamu, kenali dirimu</p>
+        <div class="cover">
+          <span class="cspine" aria-hidden="true"></span>
+          <svg class="splogo" viewBox="0 0 100 100" width="96" height="96" aria-hidden="true">
+            <defs>
+              <mask id="spMoon">
+                <rect width="100" height="100" fill="#fff" />
+                <circle cx="64" cy="40" r="25" fill="#000" />
+              </mask>
+            </defs>
+            <circle class="moon" cx="47" cy="53" r="31" fill="var(--m1)" mask="url(#spMoon)" />
+            <path
+              class="eyes"
+              d="M29 58 q4 3.6 8 0"
+              fill="none"
+              stroke="var(--surface)"
+              stroke-width="3"
+              stroke-linecap="round"
+            />
+            <path
+              class="star"
+              d="M72 26 L74.2 33.8 L82 36 L74.2 38.2 L72 46 L69.8 38.2 L62 36 L69.8 33.8 Z"
+              fill="var(--m4)"
+            />
+          </svg>
+          <p class="spname">Jurnal Rasa</p>
+          <p class="sptag">Catat rasamu, kenali dirimu</p>
+          <span class="cband" aria-hidden="true"></span>
+        </div>
         <div class="spdots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
       </div>
     </div>
@@ -73,13 +89,109 @@
     <div class="wrap">
       <header class="top">
         <div class="brand">
-          <span class="logo" id="logo" aria-hidden="true"></span>
+          <span class="logo" id="logo" aria-hidden="true"
+            ><svg viewBox="0 0 100 100" width="52" height="52" aria-hidden="true">
+              <defs>
+                <mask id="hdMoon">
+                  <rect width="100" height="100" fill="#fff" />
+                  <circle cx="64" cy="40" r="25" fill="#000" />
+                </mask>
+              </defs>
+              <circle class="moon" cx="47" cy="53" r="31" fill="var(--m1)" mask="url(#hdMoon)" />
+              <path
+                class="eyes"
+                d="M29 58 q4 3.6 8 0"
+                fill="none"
+                stroke="var(--surface)"
+                stroke-width="3"
+                stroke-linecap="round"
+              />
+              <path
+                class="star"
+                d="M72 26 L74.2 33.8 L82 36 L74.2 38.2 L72 46 L69.8 38.2 L62 36 L69.8 33.8 Z"
+                fill="var(--m4)"
+              /></svg
+          ></span>
           <div>
             <h1>Jurnal Rasa</h1>
             <p class="sub">
               <span id="greet"></span> · <span id="todayText"></span><span id="todayShort"></span>
             </p>
           </div>
+        </div>
+        <div class="rtabs" role="tablist" aria-label="Pembatas buku">
+          <button data-tab="tulis">
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M4 20h4L19 9l-4-4L4 16z" />
+              <path d="M13.5 6.5l4 4" /></svg
+            >Tulis
+          </button>
+          <button data-tab="kalender">
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect x="3.5" y="5" width="17" height="15" rx="3" />
+              <path d="M3.5 10h17M8 3v4M16 3v4" /></svg
+            >Kalender
+          </button>
+          <button data-tab="wawasan">
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M3 20h18M6 16v-5M11 16V6M16 16v-8" /></svg
+            >Wawasan
+          </button>
+          <button data-tab="koleksi">
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M6 3h12v18l-6-4-6 4z" /></svg
+            >Koleksi
+          </button>
+          <button data-tab="catatan">
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M9 6h11M9 12h11M9 18h11M4.5 6h.01M4.5 12h.01M4.5 18h.01" /></svg
+            >Catatan
+          </button>
         </div>
         <div class="tools">
           <span class="status" id="status"><i></i>Menyiapkan…</span
@@ -105,9 +217,14 @@
       <div class="wrapnote" id="wrapNote" hidden></div>
 
       <div class="grid">
-        <section class="panel editor" data-sec="tulis" aria-label="Catatan harian">
+        <div class="pg pgL" id="pgL"></div>
+        <div class="pg pgR" id="pgR"></div>
+        <section class="panel editor" id="secTulis" data-sec="tulis" aria-label="Catatan harian">
           <div class="ehead">
-            <h2 id="edTitle">Hari ini</h2>
+            <div class="edhead">
+              <p class="label" id="edDay"></p>
+              <h2 id="edTitle">Hari ini</h2>
+            </div>
             <div class="estk" id="estk"></div>
             <button
               class="btn ghost"
@@ -122,7 +239,7 @@
           <div class="care" id="care" hidden></div>
           <div class="intent" id="intent" hidden></div>
           <div>
-            <p class="label" style="margin-bottom: 8px">Bagaimana perasaanmu?</p>
+            <p class="feelq">Bagaimana perasaanmu?</p>
             <div class="moods" id="moods"></div>
           </div>
           <div class="emos" id="emos" hidden></div>
@@ -195,52 +312,57 @@
                 </button>
               </span>
             </div>
-            <div class="prompt">
-              <button
-                class="ptext"
-                id="promptUse"
-                title="Masukkan pertanyaan ini ke catatan"
-              ></button
-              ><button
-                class="iconbtn sm"
-                id="promptNext"
-                aria-label="Pertanyaan lain"
-                title="Pertanyaan lain"
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+            <div class="writebox">
+              <div class="prompt">
+                <button
+                  class="ptext"
+                  id="promptUse"
+                  title="Masukkan pertanyaan ini ke catatan"
+                ></button
+                ><button
+                  class="iconbtn sm"
+                  id="promptNext"
+                  aria-label="Pertanyaan lain"
+                  title="Pertanyaan lain"
                 >
-                  <path
-                    d="M3 12a9 9 0 0 1 15.5-6.2L21 8M21 3v5h-5M21 12a9 9 0 0 1-15.5 6.2L3 16M3 21v-5h5"
-                  />
-                </svg>
-              </button>
-              <label class="iconbtn sm ptheme" id="pThemeBtn" title="Tema pertanyaan"
-                ><svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  aria-hidden="true"
-                >
-                  <path d="M12 3l9 5-9 5-9-5z" />
-                  <path d="M3 13l9 5 9-5" /></svg
-                ><select id="pTheme" aria-label="Tema pertanyaan pemantik"></select
-              ></label>
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path
+                      d="M3 12a9 9 0 0 1 15.5-6.2L21 8M21 3v5h-5M21 12a9 9 0 0 1-15.5 6.2L3 16M3 21v-5h5"
+                    />
+                  </svg>
+                </button>
+                <label class="iconbtn sm ptheme" id="pThemeBtn" title="Tema pertanyaan"
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M12 3l9 5-9 5-9-5z" />
+                    <path d="M3 13l9 5 9-5" /></svg
+                  ><select id="pTheme" aria-label="Tema pertanyaan pemantik"></select
+                ></label>
+              </div>
+              <textarea
+                id="note"
+                placeholder="Apa yang terjadi hari ini? Hal kecil yang bikin senang, atau yang lagi dipikirkan."
+              ></textarea>
             </div>
-            <textarea
-              id="note"
-              placeholder="Apa yang terjadi hari ini? Hal kecil yang bikin senang, atau yang lagi dipikirkan."
-            ></textarea>
             <p class="micline" data-micline="note" hidden></p>
           </div>
+          <button class="link heavymore" id="heavyMore" hidden>
+            Tambahkan detail lain (label, energi, syukur…)
+          </button>
           <div class="xtras">
             <p class="label">Isi cepat <span class="xhint">boleh dilewati</span></p>
             <div class="xbar">
@@ -299,6 +421,34 @@
                     <rect x="3.5" y="3.5" width="17" height="17" rx="4" />
                     <path d="M8 12.5l3 3 5-6" /></svg></span
                 >Kebiasaan<span class="xstat" id="sHab"></span>
+              </button>
+              <button class="xchip" data-x="weather" aria-expanded="false">
+                <span class="hi sm" style="--hc: var(--m2)"
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path
+                      d="M7 18.5a4 4 0 0 1-.6-8A5.5 5.5 0 0 1 17 9.5a3.5 3.5 0 0 1-.5 9z"
+                    /></svg></span
+                >Cuaca<span class="xstat" id="sWeather"></span>
+              </button>
+              <button class="xchip" data-x="doodle" aria-expanded="false">
+                <span class="hi sm" style="--hc: var(--m4)"
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M3 17c3-6 6-9 8-7s-3 6 0 7 6-6 9-8" /></svg></span
+                >Coretan<span class="xstat" id="sDoodle"></span>
               </button>
               <button class="xchip" data-x="photo" aria-expanded="false">
                 <span class="hi sm" style="--hc: var(--m5)"
@@ -359,6 +509,16 @@
               <p class="muted small">Centang kebiasaan yang kamu lakukan hari ini.</p>
               <div class="habits" id="habits"></div>
             </div>
+            <div class="xpanel" data-xp="weather" hidden>
+              <p class="muted small">
+                Cuaca hari ini. Wawasan akan melihat apakah cuaca memengaruhi rasamu.
+              </p>
+              <div class="weather" id="weather"></div>
+            </div>
+            <div class="xpanel" data-xp="doodle" hidden>
+              <p class="muted small">Kalau sulit diungkapkan dengan kata-kata, coret saja.</p>
+              <div class="doodle" id="doodle"></div>
+            </div>
             <div class="xpanel" data-xp="photo" hidden>
               <div class="photo" id="photo"></div>
               <input type="file" accept="image/*" id="photoIn" hidden />
@@ -370,66 +530,7 @@
         </section>
 
         <div class="right">
-          <div class="rtabs" role="tablist" aria-label="Bagian">
-            <button data-tab="kalender" aria-current="page">
-              <svg
-                width="22"
-                height="22"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <rect x="3.5" y="5" width="17" height="15" rx="3" />
-                <path d="M3.5 10h17M8 3v4M16 3v4" /></svg
-              >Kalender
-            </button>
-            <button data-tab="wawasan">
-              <svg
-                width="22"
-                height="22"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M3 20h18M6 16v-5M11 16V6M16 16v-8" /></svg
-              >Wawasan
-            </button>
-            <button data-tab="koleksi">
-              <svg
-                width="22"
-                height="22"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M6 3h12v18l-6-4-6 4z" /></svg
-              >Koleksi
-            </button>
-            <button data-tab="catatan">
-              <svg
-                width="22"
-                height="22"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M9 6h11M9 12h11M9 18h11M4.5 6h.01M4.5 12h.01M4.5 18h.01" /></svg
-              >Catatan
-            </button>
-          </div>
-          <section class="panel" data-sec="kalender" aria-label="Bulan ini">
+          <section class="panel" data-sec="kalender" aria-label="Bulan ini" id="secMonth">
             <div class="mhead">
               <h2>
                 <span class="hi" style="--hc: var(--accent)"
@@ -552,6 +653,21 @@
                     <path d="M12 4v11M7 10l5 5 5-5M5 20h14" /></svg
                   >Simpan sebagai gambar
                 </button>
+                <button role="menuitem" id="yearBook">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z" />
+                    <path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5" />
+                    <path d="M9 8h7M9 11.5h5" /></svg
+                  >Buku tahunan
+                </button>
               </div>
             </div>
             <div class="mpick" id="mpick" hidden></div>
@@ -572,7 +688,7 @@
             </div>
           </section>
 
-          <section class="panel" data-sec="kalender" aria-label="Grafik rasa">
+          <section class="panel" data-sec="kalender" aria-label="Grafik rasa" id="secChart">
             <h2>
               <span class="hi" style="--hc: var(--m5)"
                 ><svg
@@ -590,7 +706,7 @@
             <div class="chartbox" id="chart"></div>
           </section>
 
-          <section class="panel" data-sec="kalender" aria-label="Setahun">
+          <section class="panel" data-sec="kalender" aria-label="Setahun" id="secYear">
             <div class="mhead">
               <h2>
                 <span class="hi" style="--hc: var(--m1)"
@@ -641,7 +757,12 @@
             <div class="yearwrap" id="yearWrap"><div id="year"></div></div>
           </section>
 
-          <section class="panel" data-sec="wawasan" aria-label="Apa yang membuat harimu lebih baik">
+          <section
+            class="panel"
+            data-sec="wawasan"
+            aria-label="Apa yang membuat harimu lebih baik"
+            id="secFactors"
+          >
             <div>
               <h2>
                 <span class="hi" style="--hc: var(--m2)"
@@ -670,8 +791,15 @@
             <div id="factors"></div>
             <div id="habDone"></div>
           </section>
+          <section class="panel" data-sec="wawasan" aria-label="Musim ini" id="secSeason">
+            <div class="mhead">
+              <h2>Musim ini</h2>
+              <span class="muted small" id="seasonRange"></span>
+            </div>
+            <div class="season" id="season"></div>
+          </section>
 
-          <section class="panel" data-sec="wawasan" aria-label="Perasaan bulan ini">
+          <section class="panel" data-sec="wawasan" aria-label="Perasaan bulan ini" id="secEmo">
             <div>
               <h2>
                 <span class="hi" style="--hc: var(--m5)"
@@ -692,7 +820,7 @@
             <div id="emoList"></div>
           </section>
 
-          <section class="panel" data-sec="wawasan" aria-label="Rasa per hari">
+          <section class="panel" data-sec="wawasan" aria-label="Rasa per hari" id="secWeek">
             <div>
               <h2>
                 <span class="hi" style="--hc: var(--accent)"
@@ -736,7 +864,7 @@
             <div class="wraplist" id="wrapList"></div>
           </section>
 
-          <section class="panel" data-sec="koleksi" aria-label="Syukur">
+          <section class="panel" data-sec="koleksi" aria-label="Syukur" id="secGrat">
             <div class="mhead">
               <h2>
                 <span class="hi" style="--hc: var(--m4)"
@@ -785,7 +913,7 @@
             <div class="gwall" id="gwall"></div>
           </section>
 
-          <section class="panel" data-sec="koleksi" aria-label="Refleksi mingguan">
+          <section class="panel" data-sec="koleksi" aria-label="Refleksi mingguan" id="secRefl">
             <div class="mhead">
               <h2>
                 <span class="hi" style="--hc: var(--m3)"
@@ -808,7 +936,7 @@
             <div class="refs" id="refList"></div>
           </section>
 
-          <section class="panel" data-sec="koleksi" aria-label="Buku stiker">
+          <section class="panel" data-sec="koleksi" aria-label="Buku stiker" id="secStk">
             <div class="mhead">
               <h2>
                 <span class="hi" style="--hc: var(--m5)"
@@ -894,7 +1022,7 @@
             <div class="badges" id="badges"></div>
           </section>
 
-          <section class="panel" data-sec="catatan" aria-label="Semua catatan">
+          <section class="panel" data-sec="catatan" aria-label="Semua catatan" id="secHist">
             <div class="mhead">
               <h2>
                 <span class="hi" style="--hc: var(--m3)"
@@ -956,6 +1084,13 @@
             </div>
             <p class="muted small" id="histCount"></p>
             <div class="hist" id="hist"></div>
+          </section>
+          <section class="panel" data-sec="catatan" aria-label="Isi catatan" id="secRead">
+            <div class="readv" id="readView"></div>
+          </section>
+          <section class="panel" data-sec="tulis" aria-label="Minggu ini" id="secSide">
+            <h2>Minggu ini</h2>
+            <div class="wkstrip" id="wkStrip"></div>
           </section>
         </div>
       </div>
@@ -1258,6 +1393,20 @@
       </div>
       <div class="setrow">
         <div>
+          <b>Suara kertas</b>
+          <p class="muted small">Bunyi lembut saat membalik halaman dan menyimpan.</p>
+        </div>
+        <label class="switch"><input type="checkbox" id="soundOn" /><span></span></label>
+      </div>
+      <div class="setrow">
+        <div>
+          <b>Sampul buku</b>
+          <p class="muted small">Tampil saat jurnal dibuka.</p>
+        </div>
+        <div class="coverpick" id="coverPick" role="group" aria-label="Sampul buku"></div>
+      </div>
+      <div class="setrow">
+        <div>
           <b>Fitur yang ditampilkan</b>
           <p class="muted small" id="featSum"></p>
         </div>
@@ -1265,7 +1414,10 @@
       </div>
       <div class="setsub" id="featBox" hidden>
         <div class="feats" id="feats"></div>
-        <p class="muted small">Yang dimatikan hanya disembunyikan. Datanya tetap tersimpan.</p>
+        <p class="muted small">
+          Yang dimatikan hanya disembunyikan. Datanya tetap tersimpan dan muncul lagi saat
+          dinyalakan.
+        </p>
       </div>
 
       <p class="setgrp">Lainnya</p>
@@ -1362,12 +1514,12 @@
     <script src="js/refleksi.js"></script>
     <script src="js/dukungan.js"></script>
     <script src="js/stiker.js"></script>
-    <script src="js/hewan.js"></script>
-    <script src="js/lucu.js"></script>
+    <script src="js/hiasan.js"></script>
     <script src="js/hias.js"></script>
     <script src="js/rekap.js"></script>
     <script src="js/pengaturan.js"></script>
     <script src="js/sambutan.js"></script>
+    <script src="js/fitur.js"></script>
     <script src="js/main.js"></script>
   </body>
 </html>

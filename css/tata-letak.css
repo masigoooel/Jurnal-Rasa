@@ -396,9 +396,22 @@
 
 /* Fitur yang dimatikan di Pengaturan hanya disembunyikan; datanya tetap ada. */
 .no-intent #intent,
+.no-emo #emos,
+.no-emo #secEmo,
+.no-body [data-x="body"],
+.no-body [data-xp="body"],
 .no-habit [data-x="hab"],
 .no-habit [data-xp="hab"],
 .no-habit #habDone,
+.no-weather [data-x="weather"],
+.no-weather [data-xp="weather"],
+.no-doodle [data-x="doodle"],
+.no-doodle [data-xp="doodle"],
+.no-photo [data-x="photo"],
+.no-photo [data-xp="photo"],
+.no-flash #flash,
+.no-season #secSeason,
+.no-refl #secRefl,
 .no-cap #secCap,
 .no-badge #secBadge {
   display: none !important;

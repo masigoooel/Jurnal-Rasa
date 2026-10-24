@@ -178,7 +178,7 @@ async function wrapImage(d) {
     mu = v("--muted"),
     sf = v("--surface"),
     s2 = v("--surface-2");
-  const D = "'Bricolage Grotesque', sans-serif",
+  const D = "'Fraunces', sans-serif",
     B = "Figtree, sans-serif";
   x.fillStyle = v("--bg");
   x.fillRect(0, 0, W, H);

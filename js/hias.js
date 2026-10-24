@@ -3,61 +3,29 @@
 const PAGE_KEY = "jurnal-rasa:calpages",
   DECO_MAX = 40;
 const TEMPLATES = [
-  { id: "klasik", n: "Klasik", d: "Kotak berwarna, rapi" },
-  { id: "tulis", n: "Buku tulis", d: "Kertas bergaris, dilingkari spidol" },
-  { id: "scrap", n: "Scrapbook", d: "Kertas krem, foto jadi isi kotak" },
-  { id: "bujo", n: "Bullet journal", d: "Kertas titik, bulatan kecil" },
-  { id: "malam", n: "Langit malam", d: "Rasa jadi bintang" },
-  { id: "musim", n: "Musim", d: "Hiasan berganti tiap bulan" },
-  { id: "hewan", n: "Teman hewan", d: "Hewan lucu mengintip, ganti tiap bulan" },
-  { id: "permen", n: "Toko permen", d: "Garis pastel, rasa jadi permen" },
-  { id: "hati", n: "Penuh cinta", d: "Merah muda, rasa jadi hati" },
-  { id: "kebun", n: "Kebun bunga", d: "Rasa mekar jadi bunga" },
-  { id: "kaki", n: "Jejak kaki", d: "Kucing dan anjing, rasa jadi jejak" },
-  { id: "laut", n: "Bawah laut", d: "Biru laut, rasa jadi gelembung" },
-  { id: "awan", n: "Awan kapas", d: "Langit pastel, rasa jadi awan" },
+  { id: "klasik", n: "Bulatan", d: "Polos, rasa jadi bulatan warna" },
+  { id: "tulis", n: "Buku bergaris", d: "Kertas bergaris, dilingkari tinta" },
+  { id: "herba", n: "Herbarium", d: "Daun kering, rasa jadi daun" },
+  { id: "embun", n: "Embun pagi", d: "Sejuk berkabut, rasa jadi tetes embun" },
+  { id: "kerikil", n: "Taman batu", d: "Tenang membumi, rasa jadi kerikil" },
+  { id: "teh", n: "Teh sore", d: "Hangat, rasa jadi cangkir teh" },
+  { id: "kraft", n: "Kertas kraft", d: "Selotip dan prangko, rasa jadi cap" },
+  { id: "senyap", n: "Malam tenang", d: "Gelap dan hening, rasa jadi bulan" },
 ];
-// Template Teman hewan: tiga hewan yang mengintip dari sudut halaman, berbeda tiap bulan.
-const ANIMAL_SETS = [
-  ["a-penguin", "a-bunny", "a-chick"],
-  ["a-bear", "a-cat", "a-ladybug"],
-  ["a-frog", "a-duck", "a-snail"],
-  ["a-bunny", "a-chick", "a-butterfly"],
-  ["a-cat", "a-bee", "a-hamster"],
-  ["a-dog", "a-turtle", "a-butterfly"],
-  ["a-whale", "a-fish", "a-duck"],
-  ["a-panda", "a-fox", "a-bee"],
-  ["a-owl", "a-hamster", "a-snail"],
-  ["a-fox", "a-cat", "a-ladybug"],
-  ["a-frog", "a-bear", "a-duck"],
-  ["a-unicorn", "a-penguin", "a-panda"],
-];
-const PEEK_POS = [
-  [0.9, 0.06, 0.15, 10],
-  [0.08, 0.95, 0.14, -8],
-  [0.92, 0.96, 0.12, 6],
-];
-// Template Musim: warna kertas dan tiga hiasan untuk tiap bulan (Januari–Desember).
-const SEASONS = [
-  ["#e8f0ff", ["sparkle", "cloud", "star-deco"]],
-  ["#ffeef4", ["heart-doodle", "flower", "bow"]],
-  ["#eaf6ff", ["cloud", "rainbow", "leaf-sprig"]],
-  ["#eefaec", ["flower", "daisy", "leaf-sprig"]],
-  ["#fff7e3", ["sun-doodle", "daisy", "leaf-sprig"]],
-  ["#fff1e2", ["sun-doodle", "cloud", "flower"]],
-  ["#fff5d9", ["sun-doodle", "rainbow", "sparkle"]],
-  ["#fff0ee", ["flag-id", "star-deco", "sparkle"]],
-  ["#f4f0e6", ["leaf-sprig", "cloud", "moon-stars"]],
-  ["#fbefe2", ["leaf-sprig", "daisy", "sparkle"]],
-  ["#e9f1f8", ["cloud", "rainbow", "moon-stars"]],
-  ["#edf3fb", ["star-deco", "bow", "sparkle"]],
-];
-const MOTIF_POS = [
-  [0.92, 0.05, 0.15, 12],
-  [0.07, 0.95, 0.14, -10],
-  [0.62, 0.97, 0.09, 6],
-];
-
+// Template lama diganti yang senada dengan tema. Pilihan yang tersimpan dipindah ke pengganti terdekat.
+const OLD_TPL = {
+  scrap: "kraft",
+  bujo: "kerikil",
+  malam: "senyap",
+  musim: "herba",
+  hewan: "herba",
+  permen: "teh",
+  hati: "teh",
+  kebun: "herba",
+  kaki: "kerikil",
+  laut: "embun",
+  awan: "embun",
+};
 // Template lucu punya ruang kosong di atas dan bawah (template.css), jadi hiasannya tidak menutupi tulisan.
 const CUTE_POS = [
   [0.92, 0.055, 0.11, 10],
@@ -68,15 +36,16 @@ const CUTE_POS = [
 /* ===== Data ===== */
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 const isTpl = t => TEMPLATES.some(x => x.id === t);
+const newTpl = t => (isTpl(t) ? t : OLD_TPL[t]);
 function cleanPages(o) {
   const out = { def: "klasik", months: {} };
   if (!o || typeof o !== "object") return out;
-  if (isTpl(o.def)) out.def = o.def;
+  if (newTpl(o.def)) out.def = newTpl(o.def);
   if (o.months && typeof o.months === "object")
     for (const [k, p] of Object.entries(o.months)) {
       if (!/^\d{4}-\d{2}$/.test(k) || !p || typeof p !== "object") continue;
       const x = {};
-      if (isTpl(p.tpl)) x.tpl = p.tpl;
+      if (newTpl(p.tpl)) x.tpl = newTpl(p.tpl);
       if (typeof p.title === "string" && p.title.trim()) x.title = p.title.slice(0, 60);
       if (Array.isArray(p.deco)) {
         const d = p.deco
@@ -111,28 +80,13 @@ function setPage(y, m, patch) {
   else delete S.pages.months[k];
   return savePages();
 }
-// Hiasan bawaan template (tidak bisa digeser): selotip Scrapbook dan hiasan Musim.
+// Hiasan bawaan template (tidak bisa digeser): tiga hiasan di sudut halaman.
 function templateMotif(tpl, m) {
-  if (tpl === "musim")
-    return SEASONS[m][1].map((s, i) => {
-      const [x, y, w, r] = MOTIF_POS[i];
-      return { s, x, y, w, r };
-    });
-  if (tpl === "hewan")
-    return ANIMAL_SETS[m].map((s, i) => {
-      const [x, y, w, r] = PEEK_POS[i];
-      return { s, x, y, w, r };
-    });
   if (CUTE_TPL[tpl])
     return CUTE_TPL[tpl].motif.map((s, i) => {
       const [x, y, w, r] = CUTE_POS[i];
       return { s, x, y, w: stickerById(s)?.vb === "0 0 64 32" ? w * 1.3 : w, r };
     });
-  if (tpl === "scrap")
-    return [
-      { s: "tape-pink", x: 0.07, y: 0.02, w: 0.24, r: -30 },
-      { s: "tape-mint", x: 0.93, y: 0.02, w: 0.24, r: 28 },
-    ];
   return [];
 }
 
@@ -167,7 +121,6 @@ function paintPage(el, y, m, edit) {
   const p = pageOf(y, m),
     tpl = tplOf(y, m);
   el.dataset.tpl = tpl;
-  el.style.setProperty("--season", SEASONS[m][0]);
   cuteStyle(el, tpl);
   const t = el.querySelector(":scope > .ptitle");
   t.hidden = !p.title;
@@ -199,7 +152,7 @@ function renderTpl() {
     cur = tplOf(y, m),
     p = pageOf(y, m);
   const mini = id =>
-    `<div class="calpage mini" data-tpl="${id}" style="--season:${SEASONS[m][0]}"><div class="cal">${MINI.map(
+    `<div class="calpage mini" data-tpl="${id}"><div class="cal">${MINI.map(
       (c, i) =>
         `<div class="day${c ? " has" : ""}"${c ? ` data-c="${c}"` : ""}><span class="n">${i + 1}</span></div>`
     ).join("")}</div></div>`;
@@ -225,7 +178,7 @@ function openHias() {
   S.hy = S.vm;
   S.hm = S.vmo;
   S.hSel = -1;
-  S.hTab = S.hTab || "deco";
+  S.hTab = S.hTab || "alam";
   const d = $("#dlgHias");
   d.innerHTML = `<div class="hhead"><h2>Hias ${monthName(S.hy, S.hm)}</h2><div class="row"><button class="btn ghost sm iconlbl" data-page-png="hpage"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Gambar</button><button class="btn primary sm" id="hiasDone">Selesai</button></div></div>
     <div class="hstage" id="hstage"><div class="calpage" id="hpage"><div class="motif" aria-hidden="true"></div><div class="decob edit"></div><p class="ptitle" hidden></p><div class="cal">${monthCells(S.hy, S.hm, false)}</div><div class="legend">${legendHtml()}</div><div class="deco edit"></div></div></div>
@@ -245,16 +198,17 @@ function renderHias() {
 }
 function renderTray() {
   const tabs = [
-    ["deco", "Dekorasi"],
-    ["animal", "Hewan"],
-    ["food", "Makanan"],
-    ["cute", "Lucu"],
+    ["alam", "Alam"],
+    ["langit", "Langit"],
+    ["meja", "Meja"],
+    ["kata", "Kata-kata"],
   ];
+  if (!tabs.some(t => t[0] === S.hTab)) S.hTab = "alam";
   $("#htab").innerHTML = tabs
     .map(([id, n]) => `<button data-htab="${id}" aria-pressed="${S.hTab === id}">${n}</button>`)
     .join("");
   // Hias khusus hiasan halaman. Stiker rasa dan stiker buatanmu ditempel per tanggal lewat mode tempel.
-  const list = { deco: DECOS, animal: ANIMALS, food: SNACKS, cute: CUTES }[S.hTab] || DECOS;
+  const list = { alam: NATURE, langit: SKY, meja: DESK, kata: WORDS }[S.hTab] || NATURE;
   $("#hlist").innerHTML = list.length
     ? list
         .map(
@@ -461,46 +415,12 @@ function drawBg(g, tpl, W, H, s, el, top) {
     g.fillRect(0, 0, W, H);
   };
   if (tpl === "tulis") {
-    fill("#fffdf7");
-    g.fillStyle = "#dfe6f1";
+    fill("#faf9f4");
+    g.fillStyle = "#eaeced";
     for (let y = top + 27 * s; y < H; y += 28 * s) g.fillRect(0, y, W, s);
     for (let y = top - s; y > 0; y -= 28 * s) g.fillRect(0, y, W, s);
-    g.fillStyle = "#f3b4b4";
+    g.fillStyle = "#deb9bb";
     g.fillRect(29 * s, 0, 2 * s, H);
-  } else if (tpl === "scrap") {
-    fill("#efe3cf");
-    g.fillStyle = "rgba(120,90,50,.07)";
-    for (let y = 4.5 * s; y < H; y += 9 * s)
-      for (let x = 4.5 * s; x < W; x += 9 * s) g.fillRect(x, y, s, s);
-  } else if (tpl === "bujo") {
-    fill("#fbfbf7");
-    g.fillStyle = "#cdd1d8";
-    for (let y = top + 8 * s; y < H; y += 16 * s)
-      for (let x = 8 * s; x < W; x += 16 * s) {
-        g.beginPath();
-        g.arc(x, y, 1.2 * s, 0, 7);
-        g.fill();
-      }
-  } else if (tpl === "malam") {
-    const gr = g.createLinearGradient(0, 0, 0, H);
-    gr.addColorStop(0, "#121a38");
-    gr.addColorStop(1, "#2a2f5e");
-    fill(gr);
-    const pts = [
-      [20, 30, 1.2],
-      [70, 80, 1],
-      [110, 20, 1.5],
-      [150, 110, 1],
-      [40, 140, 1.2],
-    ];
-    g.fillStyle = "#fff";
-    for (let ty = 0; ty < H; ty += 170 * s)
-      for (let tx = 0; tx < W; tx += 180 * s)
-        pts.forEach(([x, y, r]) => {
-          g.beginPath();
-          g.arc(tx + x * s, ty + y * s, r * s, 0, 7);
-          g.fill();
-        });
   } else if (CUTE_TPL[tpl]) {
     const t = CUTE_TPL[tpl];
     if (Array.isArray(t.bg)) {
@@ -530,16 +450,6 @@ function drawBg(g, tpl, W, H, s, el, top) {
         for (let y = top - (gap / 2) * s; y > 0; y -= gap * s) dot(x, y);
       }
     }
-  } else if (tpl === "musim") fill(SEASONS[S.expM][0]);
-  else if (tpl === "hewan") {
-    fill("#eaf7ef");
-    g.fillStyle = "#d3eedb";
-    for (let y = top + 11 * s; y < H; y += 22 * s)
-      for (let x = 11 * s; x < W; x += 22 * s) {
-        g.beginPath();
-        g.arc(x, y, 2 * s, 0, 7);
-        g.fill();
-      }
   } else fill(solidBg(el));
 }
 async function drawDeco(g, list, R, s, alpha = 1) {
@@ -571,15 +481,6 @@ function drawText(g, el, R, s, align, text) {
   const x = (r.left - R.left) * s + (align === "center" ? (r.width * s) / 2 : 0);
   g.fillText(text ?? el.textContent.trim(), x, (r.top - R.top + r.height / 2) * s, r.width * s);
 }
-function star(g, cx, cy, rad) {
-  g.beginPath();
-  for (let i = 0; i < 10; i++) {
-    const a = -Math.PI / 2 + (i * Math.PI) / 5,
-      rr2 = i % 2 ? rad * 0.42 : rad;
-    g.lineTo(cx + Math.cos(a) * rr2, cy + Math.sin(a) * rr2);
-  }
-  g.closePath();
-}
 async function drawCell(g, d, tpl, R, s, mc) {
   const r = d.getBoundingClientRect(),
     st = getComputedStyle(d),
@@ -593,51 +494,17 @@ async function drawCell(g, d, tpl, R, s, mc) {
   g.globalAlpha = parseFloat(st.opacity) || 1;
   const bg = st.backgroundColor;
   if (bg && !/rgba\(.*,\s*0\)$/.test(bg) && bg !== "transparent") {
-    if (tpl === "scrap") {
-      g.shadowColor = "rgba(60,40,20,.2)";
-      g.shadowBlur = 3 * s;
-      g.shadowOffsetY = s;
-    }
     g.fillStyle = bg;
     rr(g, x, y, w, h, parseFloat(st.borderTopLeftRadius) * s);
     g.fill();
     g.shadowColor = "transparent";
   }
-  if (tpl === "scrap") {
-    const ix = x + 3 * s,
-      iy = y + 3 * s,
-      iw = w - 6 * s,
-      ih = h - 16 * s;
-    rr(g, ix, iy, iw, ih, 2 * s);
-    g.fillStyle = col || "#e9e1d3";
-    g.fill();
-    const ph = d.dataset.ph && S.entries[d.dataset.day]?.photo;
-    const im = ph && (await loadImg(ph));
-    if (im) {
-      g.save();
-      rr(g, ix, iy, iw, ih, 2 * s);
-      g.clip();
-      const k = Math.max(iw / im.width, ih / im.height);
-      g.drawImage(
-        im,
-        ix + (iw - im.width * k) / 2,
-        iy + (ih - im.height * k) / 2,
-        im.width * k,
-        im.height * k
-      );
-      g.restore();
-    }
-  } else if (col && tpl === "tulis") {
+  if (col && tpl === "tulis") {
     g.strokeStyle = col;
     g.lineWidth = 2.5 * s;
     g.beginPath();
     g.ellipse(x + w / 2, y + h / 2, w * 0.36, h * 0.42, -0.14, 0, Math.PI * 2);
     g.stroke();
-  } else if (col && tpl === "bujo") {
-    g.fillStyle = col;
-    g.beginPath();
-    g.arc(x + w / 2, y + h * 0.56, w * 0.2, 0, Math.PI * 2);
-    g.fill();
   } else if (col && CUTE_TPL[tpl]) {
     // Sama dengan .day.has::before di template.css: lebar 56% kotak, titik tengah di 58% tinggi.
     const sh = CUTE_TPL[tpl].shape,
@@ -649,20 +516,6 @@ async function drawCell(g, d, tpl, R, s, mc) {
     g.fillStyle = col;
     g.fill(new Path2D(SHAPES[sh]), SHAPE_EVENODD[sh] ? "evenodd" : "nonzero");
     g.restore();
-  } else if (col && tpl === "malam") {
-    const sz = w * (0.24 + lvl * 0.06),
-      cx = x + w / 2,
-      cy = y + h * 0.54,
-      glow = g.createRadialGradient(cx, cy, 0, cx, cy, sz * 0.95);
-    glow.addColorStop(0, col);
-    glow.addColorStop(1, "rgba(0,0,0,0)");
-    g.globalAlpha *= 0.6;
-    g.fillStyle = glow;
-    g.fillRect(cx - sz, cy - sz, sz * 2, sz * 2);
-    g.globalAlpha /= 0.6;
-    g.fillStyle = col;
-    star(g, cx, cy, sz / 2);
-    g.fill();
   }
   drawText(g, d.querySelector(".n"), R, s, "center");
   const ds = d.querySelector(".dstk");
@@ -687,11 +540,11 @@ async function drawCell(g, d, tpl, R, s, mc) {
   }
   g.restore();
 }
-async function pagePng(id) {
+// Menggambar halaman bulan ke canvas (lebar 1080). Dipakai untuk gambar satu bulan dan buku tahunan.
+async function pageCanvas(id, bare) {
   const el = $("#" + id),
     y = id === "hpage" ? S.hy : S.vm,
     m = id === "hpage" ? S.hm : S.vmo;
-  S.expM = m;
   if (document.fonts) await document.fonts.ready;
   // Tunggu animasi muncul (kotak tanggal, stiker) selesai, supaya ukuran dan warnanya terbaca utuh.
   await Promise.all(
@@ -717,12 +570,12 @@ async function pagePng(id) {
   drawBg(g, tpl, W, H, s, el, HEAD);
   g.save();
   g.translate(0, HEAD);
-  await drawDeco(g, templateMotif(tpl, m), R, s, tpl === "musim" ? 0.85 : 1);
+  await drawDeco(g, templateMotif(tpl, m), R, s);
   g.restore();
   g.fillStyle = cs.color;
   g.textBaseline = "alphabetic";
   g.textAlign = "left";
-  g.font = `800 72px "Bricolage Grotesque", system-ui, sans-serif`;
+  g.font = `800 72px "Fraunces", system-ui, sans-serif`;
   g.fillText(monthName(y, m), 56, 112);
   g.globalAlpha = 0.6;
   g.font = `600 28px Figtree, system-ui, sans-serif`;
@@ -766,10 +619,17 @@ async function pagePng(id) {
     s
   );
   g.restore();
-  g.globalAlpha = 0.5;
-  g.fillStyle = cs.color;
-  g.font = `600 24px Figtree, system-ui, sans-serif`;
-  g.fillText("Dibuat dengan Jurnal Rasa", 56, H - 34);
+  // bare: tanpa tulisan kaki (buku tahunan sudah punya satu di bagian bawah).
+  if (!bare) {
+    g.globalAlpha = 0.5;
+    g.fillStyle = cs.color;
+    g.font = `600 24px Figtree, system-ui, sans-serif`;
+    g.fillText("Dibuat dengan Jurnal Rasa", 56, H - 34);
+  }
+  return c;
+}
+async function pagePng(id) {
+  const c = await pageCanvas(id);
   return new Promise(res => c.toBlob(res, "image/png"));
 }
 async function downloadPage(id, btn) {

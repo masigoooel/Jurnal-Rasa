@@ -234,7 +234,7 @@ h2 {
 @property --tint {
   syntax: "<color>";
   inherits: true;
-  initial-value: #f2bf6c;
+  initial-value: #e2c98e;
 }
 body {
   --glow: 24%;
