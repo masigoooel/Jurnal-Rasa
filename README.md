@@ -2,186 +2,246 @@
 
 # Jurnal Rasa
 
-**Catat rasamu, kenali polanya.**
+### catat rasamu, kenali polanya.
 
-Jurnal mood harian buat kamu yang pengen lebih kenal sama perasaan sendiri.
-Privat, bisa dipakai offline, dan nggak perlu bikin akun.
+**jurnal mood harian di browser.** pilih rasa, tulis harimu, hias kalendernya.<br>
+privat, bisa dipakai offline, dan nggak perlu bikin akun.
+
+![html](https://img.shields.io/badge/html-5-111111?style=flat-square&logo=html5&logoColor=E34F26)
+![css](https://img.shields.io/badge/css-3-111111?style=flat-square&logo=css3&logoColor=1572B6)
+![javascript](https://img.shields.io/badge/javascript-murni-111111?style=flat-square&logo=javascript&logoColor=F7DF1E)
+![tanpa build](https://img.shields.io/badge/tanpa-build-111111?style=flat-square)
+![pwa](https://img.shields.io/badge/pwa-bisa_dipasang-5E7A4F?style=flat-square)
+![privasi](https://img.shields.io/badge/catatan-100%25_di_perangkat-5E7A4F?style=flat-square)
+
+**[buka Jurnal Rasa →](https://jurnalrasa.vercel.app)**
+
+[fitur](#-fitur) · [tangkapan layar](#-tangkapan-layar) · [coba jalankan](#-coba-jalankan) · [di balik layar](#-di-balik-layar) · [privasi](#-privasi)
+
+<br>
+
+<img src="docs/screenshots/desktop-kalender.png" alt="Jurnal Rasa di laptop: kalender bertema Herbarium di halaman kiri, grafik dan ringkasan setahun di halaman kanan" width="100%">
 
 </div>
 
-![Jurnal Rasa di laptop: kalender bertema Herbarium di halaman kiri, grafik dan ringkasan setahun di halaman kanan](docs/screenshots/desktop-kalender.png)
+<br>
+
+## ✦ kenapa Jurnal Rasa?
+
+Kadang kita merasa sesuatu tapi susah menamainya. **Jurnal Rasa** membantu mencatat perasaan setiap hari dan melihat polanya dari waktu ke waktu, tanpa ada yang ikut membaca.
+
+| | |
+| --- | --- |
+| 🔒 **privat sepenuhnya** | semua catatan disimpan di perangkatmu sendiri. Tidak ada server, tidak ada akun |
+| 🍃 **ringan dan cepat** | cuma HTML, CSS, dan JavaScript. Bisa dipasang di HP dan tetap jalan tanpa internet |
+| 🤍 **lembut, bukan menuntut** | tidak ada target menulis. Saat hari terasa berat, aplikasinya menawarkan latihan napas dan kontak bantuan |
+| 📖 **terasa seperti buku** | di laptop terbuka sebagai dua halaman dengan pita pembatas; di HP kertasnya penuh layar dan bergaris |
+| 🗓️ **kalender yang bisa dihias** | 8 template halaman, stiker, dan buku tahunan yang bisa disimpan sebagai gambar |
+| 🌙 **nyaman di mata** | palet Lumut & Pasir yang redup, mode gelap, huruf lebih besar, dan opsi mengurangi animasi |
+
+<br>
+
+## ✦ tangkapan layar
 
 <table>
-  <tr>
-    <td align="center" width="25%"><img src="docs/screenshots/tulis.png" alt="Menulis catatan harian"><br><sub><b>Tulis</b><br>Pilih rasa, lalu ceritakan harimu</sub></td>
-    <td align="center" width="25%"><img src="docs/screenshots/kalender.png" alt="Kalender rasa bertema Herbarium, rasa jadi daun"><br><sub><b>Kalender</b><br>Sebulan rasamu dalam satu halaman</sub></td>
-    <td align="center" width="25%"><img src="docs/screenshots/hias.png" alt="Menghias halaman bulan dengan pakis, selotip, bulan, dan tulisan"><br><sub><b>Hias</b><br>Tempel stiker di mana saja</sub></td>
-    <td align="center" width="25%"><img src="docs/screenshots/rekap.png" alt="Rekap bulanan bergaya Wrapped"><br><sub><b>Rekap</b><br>Cerita singkat tiap bulan</sub></td>
-  </tr>
+<tr>
+<td align="center" width="25%"><img src="docs/screenshots/tulis.png" alt="Menulis catatan harian"><br><sub><b>Tulis</b><br>Pilih rasa, lalu ceritakan harimu</sub></td>
+<td align="center" width="25%"><img src="docs/screenshots/kalender.png" alt="Kalender rasa bertema Herbarium, rasa jadi daun"><br><sub><b>Kalender</b><br>Sebulan rasamu dalam satu halaman</sub></td>
+<td align="center" width="25%"><img src="docs/screenshots/hias.png" alt="Menghias halaman bulan dengan pakis, selotip, bulan, dan tulisan"><br><sub><b>Hias</b><br>Tempel stiker di mana saja</sub></td>
+<td align="center" width="25%"><img src="docs/screenshots/rekap.png" alt="Rekap bulanan bergaya Wrapped"><br><sub><b>Rekap</b><br>Cerita singkat tiap bulan</sub></td>
+</tr>
 </table>
 
 <details>
-<summary><b>Halaman tulis di laptop</b></summary>
+<summary><b>halaman tulis di laptop</b></summary>
 
 ![Halaman tulis di laptop: menulis catatan di halaman kiri, ringkasan minggu ini dan refleksi mingguan di halaman kanan](docs/screenshots/desktop.png)
 
 </details>
 
-## Kenapa Jurnal Rasa
+<br>
 
-- **Privat sepenuhnya.** Semua catatan disimpan di perangkatmu sendiri. Tidak ada server, tidak ada akun, tidak ada yang ikut membaca.
-- **Ringan dan cepat.** Cuma HTML, CSS, dan JavaScript. Bisa dipasang di HP seperti aplikasi biasa dan tetap jalan tanpa internet.
-- **Lembut, bukan menuntut.** Tidak ada target menulis yang bikin merasa bersalah. Saat beberapa hari terasa berat, aplikasinya menawarkan latihan napas dan kontak bantuan.
-- **Terasa seperti buku.** Di laptop, setiap tab terbuka sebagai dua halaman buku dengan pita pembatas. Di HP, kertasnya penuh layar dan kolom tulisnya bergaris.
-- **Nyaman di mata.** Palet Lumut & Pasir yang redup dan tidak silau, mode gelap, pilihan huruf lebih besar, dan opsi mengurangi animasi.
+## ✦ fitur
 
-## Fitur
+<details open>
+<summary><b>menulis</b></summary>
 
-### Menulis
-- Pilih rasa dari **Berat** sampai **Senang**, lalu kata perasaan yang lebih tepat seperti cemas, lega, atau bangga
-- Pertanyaan pemantik yang menyesuaikan rasa, atau pilih tema: diri sendiri, hubungan, kerja, masa depan, syukur
-- Mode menulis fokus layar penuh, dan bicara jadi tulisan lewat mikrofon
-- Isi cepat yang boleh dilewati: label, energi, jam tidur, tiga hal yang disyukuri, kebiasaan, cuaca, coretan tangan, dan satu foto
-- Di hari yang berat, halaman tulis dibuat lebih sederhana
-- Niat harian, refleksi mingguan, dan kilas balik catatan seminggu, sebulan, atau setahun lalu
-- Draf tersimpan otomatis, dan hapus catatan bisa diurungkan
+- pilih rasa dari **Berat** sampai **Senang**, lalu kata perasaan yang lebih tepat seperti cemas, lega, atau bangga
+- pertanyaan pemantik yang menyesuaikan rasa, atau pilih tema: diri sendiri, hubungan, kerja, masa depan, syukur
+- mode menulis fokus layar penuh, dan bicara jadi tulisan lewat mikrofon
+- isi cepat yang boleh dilewati: label, energi, jam tidur, tiga hal yang disyukuri, kebiasaan, cuaca, coretan tangan, dan satu foto
+- di hari yang berat, halaman tulis dibuat lebih sederhana
+- niat harian, refleksi mingguan, dan kilas balik catatan seminggu, sebulan, atau setahun lalu
+- draf tersimpan otomatis, dan hapus catatan bisa diurungkan
 
-### Kalender yang bisa dihias
-- Kalender rasa, grafik naik turun bulanan, dan ringkasan setahun
-- **8 template halaman** yang senada tema, dari Bulatan dan Buku bergaris sampai Herbarium, Embun pagi, Teh sore, dan Malam tenang. Di sebagian template, tanda rasa berubah jadi daun, tetes embun, kerikil, cangkir, cap, atau bulan
-- Stiker dan hiasan Alam, Langit, Meja, dan Kata-kata. Bisa ditempel di tanggal atau di mana saja di halaman, lalu digeser, diputar, diubah ukurannya, atau ditaruh di balik tanggal
-- Bikin stiker sendiri dari emoji atau tulisan pendek
-- Simpan halaman bulan sebagai gambar PNG, atau satu **buku tahunan**: sampul, rekap setahun dan empat musim, lalu semua halaman bulan dalam satu gambar
+</details>
 
-### Wawasan
-- Apa yang membuat harimu lebih baik, dilihat dari label, kebiasaan, tidur, dan energi
-- Perasaan yang paling sering muncul tiap bulan, dan rasa per hari dalam seminggu
-- **Rekap bulanan bergaya Wrapped** yang bisa disimpan sebagai gambar, dan rekap musim (tiga bulan terakhir)
+<details open>
+<summary><b>kalender yang bisa dihias</b></summary>
 
-### Koleksi
-- Dinding syukur, daftar refleksi mingguan, buku stiker, kapsul waktu (surat untuk dirimu beberapa bulan lagi), dan lencana
+- kalender rasa, grafik naik turun bulanan, dan ringkasan setahun
+- **8 template halaman**, dari Bulatan dan Buku bergaris sampai Herbarium, Embun pagi, Teh sore, dan Malam tenang. Di sebagian template, tanda rasa berubah jadi daun, tetes embun, kerikil, cangkir, cap, atau bulan
+- stiker dan hiasan Alam, Langit, Meja, dan Kata-kata yang bisa digeser, diputar, diubah ukurannya, atau ditaruh di balik tanggal
+- bikin stiker sendiri dari emoji atau tulisan pendek
+- simpan halaman bulan sebagai PNG, atau satu **buku tahunan**: sampul, rekap setahun dan empat musim, lalu semua halaman bulan
 
-### Privasi dan kenyamanan
-- Kunci PIN, dan pilihan menyembunyikan isi catatan sampai disentuh
-- Backup ke satu file dan pulihkan kapan saja
-- Pengingat harian, tema terang dan gelap, huruf lebih besar, kurangi animasi, pilihan sampul buku, dan suara kertas (mati secara bawaan)
-- Semua fitur pilihan (niat, kata perasaan, energi, kebiasaan, cuaca, coretan, foto, kenangan, rekap musim, refleksi, kapsul waktu, lencana) diatur di satu tempat: Pengaturan > Fitur yang ditampilkan
-- Panduan singkat tiga halaman untuk pengguna baru, bisa dibuka lagi dari Pengaturan
+</details>
 
-## Mencoba
+<details open>
+<summary><b>wawasan & koleksi</b></summary>
 
-Tidak perlu install apa pun. Klik dua kali `index.html`, dan aplikasinya langsung terbuka di browser.
+- apa yang membuat harimu lebih baik, dilihat dari label, kebiasaan, tidur, dan energi
+- perasaan yang paling sering muncul tiap bulan, dan rasa per hari dalam seminggu
+- **rekap bulanan bergaya Wrapped** yang bisa disimpan sebagai gambar, dan rekap musim
+- dinding syukur, daftar refleksi mingguan, buku stiker, kapsul waktu, dan lencana
 
-Supaya bisa dipasang di HP dan dipakai offline, aplikasinya perlu dibuka dari alamat web (https), misalnya lewat GitHub Pages atau Netlify. Setelah itu:
+</details>
+
+<details open>
+<summary><b>privasi & kenyamanan</b></summary>
+
+- kunci PIN, dan pilihan menyembunyikan isi catatan sampai disentuh
+- backup ke satu file dan pulihkan kapan saja
+- pengingat harian, tema terang dan gelap, huruf lebih besar, kurangi animasi, pilihan sampul buku, dan suara kertas (mati secara bawaan)
+- semua fitur pilihan diatur di satu tempat: **Pengaturan > Fitur yang ditampilkan**
+- panduan singkat tiga halaman untuk pengguna baru
+
+</details>
+
+<br>
+
+## ✦ coba jalankan
+
+Cara paling cepat: buka **[jurnalrasa.vercel.app](https://jurnalrasa.vercel.app)**. Untuk menjalankan di komputer sendiri:
+
+```bash
+git clone https://github.com/masigoooel/Jurnal-Rasa.git
+cd Jurnal-Rasa
+# klik dua kali index.html, tidak perlu install apa pun
+```
+
+| cara | gunanya |
+| --- | --- |
+| buka `index.html` | langsung jalan di browser, tanpa install |
+| `python -m http.server 8765 --bind 0.0.0.0` | buka dari HP di Wi-Fi yang sama lewat `http://<IP-laptop>:8765` |
+| buka lewat alamat https | supaya bisa dipasang di HP dan dipakai offline |
+
+<details>
+<summary><b>pasang di HP</b></summary>
 
 - **Android (Chrome):** buka Pengaturan, lalu Pasang di HP, atau lewat menu ⋮, lalu Instal aplikasi
 - **iPhone (Safari):** tombol Bagikan, lalu Tambahkan ke Layar Utama
 
-<details>
-<summary><b>Coba di HP lewat Wi-Fi yang sama</b></summary>
-
-1. Di folder proyek, jalankan `python -m http.server 8765 --bind 0.0.0.0`
-2. Di HP yang terhubung ke Wi-Fi yang sama, buka `http://<IP-laptop>:8765`
-3. Kalau tidak terbuka, izinkan Python di Windows Firewall untuk jaringan privat
-
-Cara ini cukup untuk mencoba, tapi aplikasinya belum bisa dipasang atau dipakai offline karena belum https.
+Kalau dibuka lewat `http` biasa (misalnya dari laptop di Wi-Fi yang sama), aplikasinya belum bisa dipasang atau dipakai offline. Kalau tidak terbuka dari HP, izinkan Python di Windows Firewall untuk jaringan privat.
 
 </details>
 
-## Dibuat dengan
+<br>
 
-- **HTML, CSS, dan JavaScript murni.** Tanpa framework, tanpa proses build, tanpa dependensi.
-- **Progressive Web App:** service worker untuk mode offline, dan manifest supaya bisa dipasang.
-- **Canvas API** untuk menyimpan halaman kalender, rekap, dan buku tahunan sebagai gambar, serta untuk coretan tangan.
-- **Web Speech API** untuk bicara jadi tulisan, dan **Web Audio API** untuk suara kertas yang dibuat langsung tanpa file suara.
-- **localStorage** untuk menyimpan semua data di perangkat.
+## ✦ di balik layar
+
+| bagian | teknologi |
+| --- | --- |
+| dasar | HTML, CSS, dan JavaScript murni, tanpa framework, build, atau dependensi |
+| offline | Progressive Web App: service worker + manifest |
+| gambar | Canvas API untuk menyimpan kalender, rekap, dan buku tahunan, serta coretan tangan |
+| suara | Web Speech API (bicara jadi tulisan), Web Audio API (suara kertas tanpa file suara) |
+| penyimpanan | localStorage |
+| backend | tidak ada |
+
+File JS dan CSS dimuat berurutan seperti di `index.html`, tanpa build. Kode dirapikan dengan [Prettier](https://prettier.io): `npx prettier --write index.html "css/*.css" "js/*.js"`.
 
 <details>
-<summary><b>Struktur proyek</b></summary>
+<summary><b>struktur folder</b></summary>
 
-| File | Isi |
+| file | isi |
 |---|---|
-| `index.html` | Struktur halaman dan dialog |
-| `manifest.webmanifest` | Nama, ikon, dan warna aplikasi saat dipasang di HP |
-| `sw.js` | Service worker untuk mode offline. Kalau menambah file baru, tambahkan ke `CORE` dan naikkan versi `CACHE` |
-| `icons/` | Ikon aplikasi dan logo Rembulan (`logo.svg`) |
-| `docs/screenshots/` | Gambar untuk README ini |
-| `css/dasar.css` | Reset, warna tema terang dan gelap, huruf, komponen kecil |
-| `css/tata-letak.css` | Header, banner, grid, panel, tab, dan penyesuaian HP |
-| `css/editor.css` | Halaman menulis |
-| `css/kalender.css` | Kalender, grafik, setahun rasa, menu halaman |
-| `css/wawasan.css` | Wawasan dan daftar rekap |
-| `css/catatan.css` | Daftar catatan, cari dan saring, cetak |
-| `css/hidup.css` | Latar, gradasi rasa, animasi kecil |
-| `css/koleksi.css` | Dinding syukur, refleksi, kapsul waktu, lencana |
-| `css/dialog.css` | Semua dialog, termasuk pengaturan |
-| `css/stiker.css` | Stiker di tanggal, laci stiker, buku stiker |
-| `css/template.css` | Template halaman bulan dan layar hias |
-| `css/tenang.css` | Tampilan "buku terbuka": dua halaman di desktop, pita pembatas, kertas penuh layar di HP, logo, kalender bulatan |
-| `css/cetak.css` | Tampilan saat dicetak atau disimpan ke PDF |
-| `js/inti.js` | Konstanta, helper, state, dan penyimpanan bersama |
-| `js/editor.js` | Menulis catatan, isi cepat, draf otomatis |
-| `js/menulis.js` | Mode fokus, bicara jadi tulisan, tema pertanyaan |
-| `js/refleksi.js` | Niat harian dan refleksi mingguan |
-| `js/dukungan.js` | Kartu dukungan dan kontak bantuan (`HELP_LINES`) |
-| `js/kalender.js` | Kalender, pemilih bulan, grafik, setahun rasa |
-| `js/wawasan.js` | Faktor yang memengaruhi rasa dan rasa per hari |
-| `js/rekap.js` | Rekap bulanan bergaya Wrapped |
-| `js/catatan.js` | Cari, saring, daftar catatan, cetak |
-| `js/koleksi.js` | Dinding syukur, kapsul waktu, lencana |
-| `js/stiker.js` | Stiker bawaan, stiker buatan sendiri, mode tempel |
-| `js/hiasan.js` | Mesin template berbentuk (`CUTE_TPL`, `SHAPES`), stiker dan hiasan Alam, Langit, Meja, Kata-kata, template Herbarium, Embun pagi, Taman batu, Teh sore, Kertas kraft, Malam tenang, dan `muatLama` |
-| `js/lama.js` | Stiker dan hiasan versi lama (hewan, makanan, selotip warna-warni). Tidak dimuat di awal; hanya dimuat kalau masih ada yang tertempel |
-| `js/hias.js` | Template, mode hias, dan simpan halaman sebagai PNG |
-| `js/napas.js` | Latihan napas |
-| `js/pengaturan.js` | Tema, backup, pengingat, PIN, pilihan tampilan, dan daftar fitur pilihan (`FEATS`) |
-| `js/sambutan.js` | Panduan tiga halaman untuk pengguna baru |
-| `js/fitur.js` | Cuaca, coretan tangan, mode hari yang berat, rekap musim, sampul buku, pembatas terakhir dibaca, suara kertas (Web Audio), buku tahunan |
-| `js/main.js` | Tab, susunan dua halaman buku di desktop (`SPREADS`, `layoutBook`), dan urutan saat aplikasi dibuka (dimuat paling akhir) |
+| `index.html` | struktur halaman dan dialog |
+| `manifest.webmanifest` | nama, ikon, dan warna aplikasi saat dipasang di HP |
+| `sw.js` | service worker untuk mode offline. Kalau menambah file baru, tambahkan ke `CORE` dan naikkan versi `CACHE` |
+| `icons/` | ikon aplikasi dan logo Rembulan (`logo.svg`) |
+| `docs/screenshots/` | gambar untuk README ini |
+| `css/dasar.css` | reset, warna tema terang dan gelap, huruf, komponen kecil |
+| `css/tata-letak.css` | header, banner, grid, panel, tab, dan penyesuaian HP |
+| `css/editor.css` | halaman menulis |
+| `css/kalender.css` | kalender, grafik, setahun rasa, menu halaman |
+| `css/wawasan.css` | wawasan dan daftar rekap |
+| `css/catatan.css` | daftar catatan, cari dan saring, cetak |
+| `css/hidup.css` | latar, gradasi rasa, animasi kecil |
+| `css/koleksi.css` | dinding syukur, refleksi, kapsul waktu, lencana |
+| `css/dialog.css` | semua dialog, termasuk pengaturan |
+| `css/stiker.css` | stiker di tanggal, laci stiker, buku stiker |
+| `css/template.css` | template halaman bulan dan layar hias |
+| `css/tenang.css` | tampilan "buku terbuka": dua halaman di desktop, pita pembatas, kertas penuh layar di HP |
+| `css/cetak.css` | tampilan saat dicetak atau disimpan ke PDF |
+| `js/inti.js` | konstanta, helper, state, dan penyimpanan bersama |
+| `js/editor.js` | menulis catatan, isi cepat, draf otomatis |
+| `js/menulis.js` | mode fokus, bicara jadi tulisan, tema pertanyaan |
+| `js/refleksi.js` | niat harian dan refleksi mingguan |
+| `js/dukungan.js` | kartu dukungan dan kontak bantuan (`HELP_LINES`) |
+| `js/kalender.js` | kalender, pemilih bulan, grafik, setahun rasa |
+| `js/wawasan.js` | faktor yang memengaruhi rasa dan rasa per hari |
+| `js/rekap.js` | rekap bulanan bergaya Wrapped |
+| `js/catatan.js` | cari, saring, daftar catatan, cetak |
+| `js/koleksi.js` | dinding syukur, kapsul waktu, lencana |
+| `js/stiker.js` | stiker bawaan, stiker buatan sendiri, mode tempel |
+| `js/hiasan.js` | mesin template berbentuk, stiker dan hiasan, template Herbarium sampai Malam tenang |
+| `js/lama.js` | stiker dan hiasan versi lama; hanya dimuat kalau masih ada yang tertempel |
+| `js/hias.js` | template, mode hias, dan simpan halaman sebagai PNG |
+| `js/napas.js` | latihan napas |
+| `js/pengaturan.js` | tema, backup, pengingat, PIN, pilihan tampilan, dan daftar fitur pilihan (`FEATS`) |
+| `js/sambutan.js` | panduan tiga halaman untuk pengguna baru |
+| `js/fitur.js` | cuaca, coretan, mode hari yang berat, rekap musim, sampul buku, suara kertas, buku tahunan |
+| `js/main.js` | tab, susunan dua halaman buku di desktop, dan urutan saat aplikasi dibuka |
 
-File JS dan CSS dimuat berurutan seperti di `index.html`, tanpa build. Kalau mengubah bentuk tanda rasa di `css/template.css`, ubah juga `drawCell` di `js/hias.js` supaya gambar PNG tetap sama dengan tampilan.
-
-Kode dirapikan dengan [Prettier](https://prettier.io):
-
-```
-npx prettier --write index.html "css/*.css" "js/*.js"
-```
+Kalau mengubah bentuk tanda rasa di `css/template.css`, ubah juga `drawCell` di `js/hias.js` supaya gambar PNG tetap sama dengan tampilan.
 
 </details>
+
+<br>
+
+## ✦ privasi
+
+> Tidak ada server, tidak ada akun, tidak ada yang ikut membaca. Semua catatan ada di perangkatmu.
+
+- semua data disimpan di `localStorage` browser, jadi hanya ada di browser dan perangkat itu
+- catatan di laptop tidak otomatis pindah ke HP. Untuk memindahkannya, unduh backup lalu pulihkan lewat Pengaturan
+- PIN disimpan sebagai hash
 
 <details>
-<summary><b>Data dan privasi</b></summary>
+<summary><b>data yang disimpan</b></summary>
 
-Semua data disimpan di `localStorage` browser, jadi hanya ada di browser dan perangkat itu. Catatan di laptop tidak otomatis pindah ke HP. Untuk memindahkannya, unduh backup di laptop lalu pulihkan di HP lewat Pengaturan.
-
-| Kunci | Isi |
+| kunci | isi |
 |---|---|
-| `jurnal-rasa:entries` | Catatan per tanggal, termasuk kata perasaan, cuaca, coretan, foto, syukur, dan kebiasaan |
-| `jurnal-rasa:intents` | Niat harian dan hasilnya |
-| `jurnal-rasa:reflections` | Refleksi mingguan |
-| `jurnal-rasa:stickers` | Stiker per tanggal dan stiker buatan sendiri |
-| `jurnal-rasa:calpages` | Template, judul, dan hiasan tiap bulan |
-| `jurnal-rasa:draft` | Draf yang belum disimpan |
-| `jurnal-rasa:tags`, `jurnal-rasa:habits` | Daftar label dan kebiasaan |
-| `jurnal-rasa:capsules`, `jurnal-rasa:badges` | Kapsul waktu dan lencana |
-| `jurnal-rasa:settings` | Pengaturan, PIN (disimpan sebagai hash), dan kontak yang dipercaya |
-| `jurnal-rasa:theme`, `jurnal-rasa:ptheme` | Tema tampilan dan tema pertanyaan |
-| `jurnal-rasa:cover`, `jurnal-rasa:lastread` | Sampul buku yang dipilih dan pembatas catatan terakhir dibaca |
-
-**Batasan:**
-- Kapasitas `localStorage` sekitar 5 MB. Foto dikecilkan sampai 30–60 KB, jadi muat kira-kira 80–150 foto. Coretan tangan juga disimpan sebagai gambar dan ikut memakai tempat.
-- Kunci PIN dan kapsul waktu hanya mengunci tampilan. Isinya tidak dienkripsi.
-- Pengingat hanya muncul selama aplikasi terbuka.
-- Setelah aplikasi diperbarui, versi barunya baru terlihat saat aplikasi dibuka untuk kedua kalinya.
+| `jurnal-rasa:entries` | catatan per tanggal, termasuk kata perasaan, cuaca, coretan, foto, syukur, dan kebiasaan |
+| `jurnal-rasa:intents` | niat harian dan hasilnya |
+| `jurnal-rasa:reflections` | refleksi mingguan |
+| `jurnal-rasa:stickers` | stiker per tanggal dan stiker buatan sendiri |
+| `jurnal-rasa:calpages` | template, judul, dan hiasan tiap bulan |
+| `jurnal-rasa:draft` | draf yang belum disimpan |
+| `jurnal-rasa:tags`, `jurnal-rasa:habits` | daftar label dan kebiasaan |
+| `jurnal-rasa:capsules`, `jurnal-rasa:badges` | kapsul waktu dan lencana |
+| `jurnal-rasa:settings` | pengaturan, PIN (hash), dan kontak yang dipercaya |
+| `jurnal-rasa:theme`, `jurnal-rasa:ptheme` | tema tampilan dan tema pertanyaan |
+| `jurnal-rasa:cover`, `jurnal-rasa:lastread` | sampul buku dan pembatas catatan terakhir dibaca |
 
 </details>
 
-## Catatan penting
+<br>
 
-Jurnal Rasa adalah alat bantu untuk mengenali perasaan, **bukan pengganti bantuan profesional**. Kalau kamu sedang merasa sangat berat atau berpikir untuk menyakiti diri sendiri, hubungi **112** atau layanan kesehatan jiwa Kemenkes di **119 ext 8**. Kamu tidak harus menghadapinya sendirian.
+## ✦ catatan & kredit
 
----
+- kapasitas `localStorage` sekitar 5 MB. Foto dikecilkan sampai 30–60 KB, jadi muat kira-kira 80–150 foto
+- kunci PIN dan kapsul waktu hanya mengunci tampilan; isinya tidak dienkripsi
+- pengingat hanya muncul selama aplikasi terbuka
+- setelah aplikasi diperbarui, versi barunya baru terlihat saat dibuka untuk kedua kalinya
+
+> Jurnal Rasa adalah alat bantu untuk mengenali perasaan, **bukan pengganti bantuan profesional**. Kalau kamu sedang merasa sangat berat atau berpikir untuk menyakiti diri sendiri, hubungi **112** atau layanan kesehatan jiwa Kemenkes di **119 ext 8**. Kamu tidak harus menghadapinya sendirian.
+
+<br>
 
 <div align="center">
-<sub>Dibuat oleh <a href="https://github.com/masigoooel">masigoooel</a></sub>
+
+**Jurnal Rasa** · dibuat dengan ♥ oleh [@masigoooel](https://github.com/masigoooel)
+
 </div>
